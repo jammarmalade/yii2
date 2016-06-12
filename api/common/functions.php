@@ -1,26 +1,14 @@
 <?php
-<<<<<<< HEAD
-namespace api\common;
-
-class Functions {
-    public static function printarr($arr){
-=======
 
 namespace api\common;
 
 class Functions {
 
     public static function printarr($arr) {
->>>>>>> f59ee97123803bb24cfdf87180f035b4694c234a
         echo '<pre>';
         print_r($arr);
         echo '</pre>';
     }
-<<<<<<< HEAD
-}
-
-
-=======
     //curl 获取数据
     public static function myCurl($url) {
         $ch = curl_init();
@@ -39,4 +27,3 @@ class Functions {
     }
 
 }
->>>>>>> f59ee97123803bb24cfdf87180f035b4694c234a
