@@ -32,6 +32,10 @@ return [
             'password' => '123456',
             'charset' => 'utf8',
         ],
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
+            'directoryLevel'=>'2',   //缓存文件的目录深度
+        ],
         'request' => [
             'enableCookieValidation' => true,
             //必须配置
