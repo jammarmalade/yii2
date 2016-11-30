@@ -67,6 +67,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        Yii::$app->language = 'zh-CN';
         return $this->render('index');
     }
 
