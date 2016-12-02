@@ -69,7 +69,7 @@ class SiteController extends Controller {
             return $this->goBack();
         } else {
             // 非post直接渲染登录表单
-            return $this->rend('login', [
+            return $this->render('login', [
                 'model' => $model,
             ]);
         }

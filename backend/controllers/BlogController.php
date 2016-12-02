@@ -3,42 +3,45 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\UserBackend;
-use backend\models\UserBackendSearch;
+use backend\models\Blog;
+use backend\models\BlogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * UserBackendController implements the CRUD actions for UserBackend model.
+ * BlogController implements the CRUD actions for Blog model.
  */
-class UserBackendController extends Controller {
+class BlogController extends Controller {
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors() {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        // 当前rule将会针对这里设置的actions起作用，如果actions不设置，默认就是当前控制器的所有操作
-                        'actions' => ['index', 'view', 'update', 'delete', 'signup'],
-                        // 设置actions的操作是允许访问还是拒绝访问
-                        'allow' => true,
-                        // @ 当前规则针对认证过的用户; ? 所有方可均可访问
-                        'roles' => ['@'],
-                    ],
+            //附加行为
+            'as access' => [
+                'class' => 'backend\components\AccessControl',
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all UserBackend models.
+     * Lists all Blog models.
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new UserBackendSearch();
+        //权限检查
+//        if (!Yii::$app->user->can('/blog/index')) {
+//            throw new \yii\web\ForbiddenHttpException("没权限访问.");
+//        }
+        $searchModel = new BlogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +51,7 @@ class UserBackendController extends Controller {
     }
 
     /**
-     * Displays a single UserBackend model.
+     * Displays a single Blog model.
      * @param string $id
      * @return mixed
      */
@@ -59,12 +62,12 @@ class UserBackendController extends Controller {
     }
 
     /**
-     * Creates a new UserBackend model.
+     * Creates a new Blog model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate() {
-        $model = new UserBackend();
+        $model = new Blog();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +79,7 @@ class UserBackendController extends Controller {
     }
 
     /**
-     * Updates an existing UserBackend model.
+     * Updates an existing Blog model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -113,30 +116,11 @@ class UserBackendController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = UserBackend::findOne($id)) !== null) {
+        if (($model = Blog::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    /**
-     * 用户注册
-     */
-    public function actionSignup() {
-        $model = new \backend\models\SignupForm();
-
-        // 如果是post提交且有对提交的数据校验成功（我们在SignupForm的signup方法进行了实现）
-        // $model->load() 方法，实质是把post过来的数据赋值给model
-        // $model->signup() 方法, 是我们要实现的具体的添加用户操作
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            return $this->redirect(['index']);
-        }
-
-        // 渲染添加新用户的表单
-        return $this->render('signup', [
-                    'model' => $model,
-        ]);
     }
 
 }
