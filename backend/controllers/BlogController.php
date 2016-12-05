@@ -8,6 +8,8 @@ use backend\models\BlogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Exception;
+use backend\models\BlogCategory;
 
 /**
  * BlogController implements the CRUD actions for Blog model.
@@ -68,11 +70,47 @@ class BlogController extends Controller {
      */
     public function actionCreate() {
         $model = new Blog();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        // 注意这里调用的是validate，非save,save我们放在了事务中处理了
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // 开启事务
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+                /**
+                * current model save
+                */
+               $model->save(false);
+               // 注意我们这里是获取刚刚插入blog表的id
+               $blogId = $model->id;
+               /**
+                * batch insert category
+                * 我们在Blog模型中设置过category字段的验证方式是required,因此下面foreach使用之前无需再做判断
+                */
+               $data = [];
+               foreach ($model->category as $k => $v) {
+                    // 注意这里的数组形式[blog_id, category_id]，一定要跟下面 batchInsert 方法的第二个参数保持一致
+                    $data[] = [$blogId, $v];
+                }
+                // 获取 BlogCategory 模型的所有属性和表名
+                $blogCategory = new BlogCategory;
+                $attributes = array_keys($blogCategory->getAttributes());
+                $tableName = $blogCategory::tableName();
+                // 批量插入栏目到BlogCategory::tableName()表,第一个参数是 BlogCategory 对应的数据表名，
+                // 第二个参数是该模型对应的属性字段，第三个参数是我们需要批量插入到该模型的字段，记得第二个参数和第三个参数对应值一致哦
+                Yii::$app->db->createCommand()->batchInsert(
+                    $tableName, 
+                    $attributes,
+                    $data
+                )->execute();
+                // 提交
+                $transaction->commit();
+                return $this->redirect(['index']);
+            } catch (Exception $e) {
+                // 回滚
+                $transaction->rollback();
+                throw $e;
+            }
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                         'model' => $model,
             ]);
         }
@@ -86,10 +124,56 @@ class BlogController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+
+                /**
+                 * current model save
+                 */
+                $model->save(false);
+
+                // 注意我们这里是获取刚刚插入blog表的id
+                $blogId = $model->id;
+
+                /**
+                 * batch insert category
+                 * 我们在Blog模型中设置过category字段的验证方式是required,因此下面foreach使用之前无需再做判断
+                 */
+                $data = [];
+                foreach ($model->category as $k => $v) {
+                    // 注意这里的属组形式[blog_id, category_id]，一定要跟下面batchInsert方法的第二个参数保持一致
+                    $data[] = [$blogId, $v];
+                }
+
+                // 获取BlogCategory模型的所有属性和表名
+                $blogCategory = new BlogCategory;
+                $attributes = array_keys($blogCategory->getAttributes());
+                $tableName = $blogCategory::tableName();
+
+                // 先全部删除对应的栏目
+                $sql = "DELETE FROM `{$tableName}`  WHERE `blog_id` = {$blogId}";
+                Yii::$app->db->createCommand($sql)->execute();
+
+                // 再批量插入栏目到BlogCategory::tableName()表
+                Yii::$app->db->createCommand()->batchInsert(
+                    $tableName, 
+                    $attributes,
+                    $data
+                )->execute();
+
+                // 提交
+                $transaction->commit();
+                return $this->redirect(['index']);
+            } catch (Exception $e) {
+                // 回滚
+                $transaction->rollback();
+                throw $e;
+            }
         } else {
+            // 获取博客关联的栏目
+            $model->category = BlogCategory::getRelationCategorys($id);
             return $this->render('update', [
                         'model' => $model,
             ]);

@@ -2,22 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use backend\models\Category;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Blog */
+/* @var $model backend\models\Category */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="blog-form">
+<div class="category-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'category')->label('栏目')->checkboxList(Category::dropDownList()) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

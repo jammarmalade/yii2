@@ -17,6 +17,7 @@ use Yii;
  */
 class Blog extends \yii\db\ActiveRecord
 {
+    public $category;
     /**
      * @inheritdoc
      */
@@ -35,7 +36,8 @@ class Blog extends \yii\db\ActiveRecord
             [['content'], 'string'],
             [['views', 'status'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['title'], 'string', 'max' => 100]
+            [['title'], 'string', 'max' => 100],
+            [['title', 'content', 'category'], 'required'],
         ];
     }
 
