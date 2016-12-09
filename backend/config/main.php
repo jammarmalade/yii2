@@ -11,13 +11,16 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'language' => 'zh-CN',
     'modules' => [
         'admin' => [        
             'class' => 'mdm\admin\Module',   
+//            'layout' => 'left-menu',
+            'mainLayout' => '@app/themes/ace/layouts/main.php',
         ],
     ],
     'aliases' => [    
-        '@mdm/admin' => '@vendor/mdmsoft/yii2-admin',
+        '@mdm/admin' => '@app/modules/yii2-admin',
     ],
     'components' => [
         'user' => [
@@ -49,29 +52,24 @@ return [
             'defaultRoles' => ['guest'],    
         ],
         //配置主题
-//        'view' => [
-//            'theme' => [
-//                // 'basePath' => '@app/themes/spring',
-//                // 'baseUrl' => '@web/themes/spring',
-//                'pathMap' => [ 
-//                    '@app/views' => [ 
-//                        '@app/themes/spring',
-//                    ]
-//                ],
-//            ],
-//        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [ 
+                    '@app/views' => [ 
+                        '@app/themes/ace',
+                    ]
+                ],
+            ],
+        ],
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             //这里是允许访问的action
             //controller/action
-            '*',//测试时开启
+//            '*',//测试时开启
 //            'site/*',
         ],
-    ],
-    'as theme' => [
-        'class' => 'backend\components\ThemeControl',
     ],
     'params' => $params,
 ];

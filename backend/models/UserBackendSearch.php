@@ -19,7 +19,7 @@ class UserBackendSearch extends UserBackend
     {
         return [
             [['id', 'notice', 'group_id', 'status'], 'integer'],
-            [['username', 'password', 'email', 'time_login', 'time_register'], 'safe'],
+            [['username', 'password', 'email', 'time_login', 'time_register','time_register_form','time_register_to'], 'safe'],
         ];
     }
 
@@ -63,6 +63,13 @@ class UserBackendSearch extends UserBackend
             'time_register' => $this->time_register,
             'status' => $this->status,
         ]);
+        if($this->time_register_form!='' && $this->time_register_to!=''){
+            $query->andFilterWhere(['between', 'time_register', $this->time_register_form,$this->time_register_to]);
+        }elseif($this->time_register_form!=''){
+            $query->andFilterWhere(['>=', 'time_register', $this->time_register_form]);
+        }elseif($this->time_register_to!=''){
+            $query->andFilterWhere(['<=', 'time_register', $this->time_register_to]);
+        }
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'password', $this->password])

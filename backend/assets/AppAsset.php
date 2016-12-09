@@ -8,6 +8,7 @@
 
 namespace backend\assets;
 
+use yii;
 use yii\web\AssetBundle;
 
 /**
@@ -19,7 +20,7 @@ class AppAsset extends AssetBundle {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+//        'static/css/site.css',
     ];
     public $js = [
     ];
@@ -30,11 +31,17 @@ class AppAsset extends AssetBundle {
     //view 层使用 AppAsset::addScript($this,Yii::$app->request->baseUrl."/css/main.js");
     //定义按需加载JS方法，注意加载顺序在最后  
     public static function addScript($view, $jsfile) {
+        if(strpos($jsfile, 'http')===false){
+            $jsfile = Yii::$app->request->baseUrl.'/static/js/'.$jsfile;
+        }
         $view->registerJsFile($jsfile, [AppAsset::className(), "depends" => "backend\assets\AppAsset"]);
     }
 
     //定义按需加载css方法，注意加载顺序在最后  
     public static function addCss($view, $cssfile) {
+        if(strpos($cssfile, 'http')===false){
+            $cssfile = Yii::$app->request->baseUrl.'/static/css/'.$cssfile;
+        }
         $view->registerCssFile($cssfile, [AppAsset::className(), "depends" => "backend\assets\AppAsset"]);
     }
 }

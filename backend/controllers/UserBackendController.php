@@ -9,11 +9,12 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use backend\components\AdminController;
 
 /**
  * UserBackendController implements the CRUD actions for UserBackend model.
  */
-class UserBackendController extends Controller {
+class UserBackendController extends AdminController {
 
     public function behaviors() {
         return [
@@ -25,7 +26,7 @@ class UserBackendController extends Controller {
                         'actions' => ['index', 'view', 'update', 'delete', 'signup'],
                         // 设置actions的操作是允许访问还是拒绝访问
                         'allow' => true,
-                        // @ 当前规则针对认证过的用户; ? 所有方可均可访问
+                        // @ 当前规则针对认证过的用户; ? 所有方法均可访问
                         'roles' => ['@'],
                     ],
                 ],
@@ -40,7 +41,7 @@ class UserBackendController extends Controller {
     public function actionIndex() {
         $searchModel = new UserBackendSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->pagination->defaultPageSize = 10;
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,

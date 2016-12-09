@@ -1,0 +1,12 @@
+.ace-settings-container{
+	position: static;
+}
+.btn.ace-settings-btn{
+	border-radius: 6px 6px !important;
+}
+.navbar-brand {
+    height: 45px;
+}
+.btn:focus,.btn:active:focus,.btn.active:focus,.btn.focus,.btn:active.focus,.btn.active.focus {
+    outline: none;          
+}

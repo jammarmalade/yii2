@@ -19,7 +19,11 @@ use yii\web\IdentityInterface;
  * @property integer $status
  */
 class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
-
+    
+    //注册开始时间
+    public $time_register_form;
+    //注册结束时间
+    public $time_register_to;
     /**
      * @inheritdoc
      */
