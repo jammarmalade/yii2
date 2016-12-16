@@ -82,6 +82,13 @@ class AdminController extends Controller {
             ],
         ];
     }
+    
+    public function message($data){
+        if(!isset($data['title'])){
+            $data['title'] = '错误提示';
+        }
+        return $this->render('/site/message', $data);
+    }
 
 
 }

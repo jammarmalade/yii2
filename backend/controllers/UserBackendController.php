@@ -101,8 +101,11 @@ class UserBackendController extends AdminController {
      * @return mixed
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
+        $status = Yii::$app->request->get('status');
+        if(!in_array($status,[0,1])){
+            return $this->message(['msg' => '数据错误']);
+        }
+        $this->findModel($id)->updateAll(['status' => $status],['id' => $id]);
         return $this->redirect(['index']);
     }
 
