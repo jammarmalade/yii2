@@ -11,14 +11,17 @@ use yii\helpers\Url;
 /* @var $content string */
 
 AppAsset::register($this);
+AppAsset::addCss($this, 'bootstrap.min.css');
+AppAsset::addCss($this, 'jquery-ui-1.10.3.full.min.css');
 AppAsset::addCss($this, 'font-awesome.min.css');
 AppAsset::addCss($this, 'http://fonts.googleapis.com/css?family=Open+Sans:400,300');
 AppAsset::addCss($this, 'ace.min.css');
 AppAsset::addCss($this, 'ace-rtl.min.css');
 AppAsset::addCss($this, 'ace-skins.min.css');
 AppAsset::addCss($this, 'ace-custom.css');
-AppAsset::addScript($this, 'ace-extra.min.js');
+//AppAsset::addScript($this, 'jquery.min.js');
 AppAsset::addScript($this, 'bootstrap.min.js');
+AppAsset::addScript($this, 'ace-extra.min.js');
 AppAsset::addScript($this, 'jquery.mobile.custom.min.js');
 //AppAsset::addScript($this, 'typeahead-bs2.min.js');//自动完成插件 AutoComplete
 //AppAsset::addScript($this, 'jquery-ui-1.10.3.custom.min.js');

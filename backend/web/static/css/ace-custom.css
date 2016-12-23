@@ -14,3 +14,26 @@ table{
 	vertical-align: middle;
 	text-align: center;
 }
+.table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
+    vertical-align: middle;
+}
+.nav-tabs {
+	height:34px;
+}
+/*上传*/
+.btn-upload{
+	position: relative;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+#uploadform-imagefile{
+	position: absolute;
+	width: 80px;
+	height: 77px;
+	z-index: 2;
+	opacity: 0;
+}
+.img-list{
+	width:150px;
+}

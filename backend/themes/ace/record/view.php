@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\UserBackend */
+/* @var $model backend\models\Record */
 
-$this->title = '用户信息 - '.$model->username;
-$this->params['breadcrumbs'][] = ['label' => '用户列表', 'url' => ['index']];
+$this->title = '查看收支记录 - '.$model->id;
+$this->params['breadcrumbs'][] = ['label' => '收支列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-backend-view">
+<div class="record-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => '确认删除？',
+                'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,14 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'uid',
             'username',
-            'password',
-            'email:email',
-            'notice',
-            'group_id',
-            'time_login',
-            'time_register',
-            'status',
+            'account',
+            'type',
+            'content:ntext',
+            'imgstatus',
+            'longitude',
+            'latitude',
+            'weather',
+            'remark',
+            'time_create',
         ],
     ]) ?>
 

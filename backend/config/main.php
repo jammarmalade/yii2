@@ -21,6 +21,7 @@ return [
     ],
     'aliases' => [    
         '@mdm/admin' => '@app/modules/yii2-admin',
+        '@uploads' => '@app/../uploads/',//上传目录
     ],
     'components' => [
         'user' => [

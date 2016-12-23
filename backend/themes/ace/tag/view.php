@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\UserBackend */
+/* @var $model backend\models\Tag */
 
-$this->title = '用户信息 - '.$model->username;
-$this->params['breadcrumbs'][] = ['label' => '用户列表', 'url' => ['index']];
+$this->title = '标签信息 - '.$model->name;
+$this->params['breadcrumbs'][] = ['label' => '标签列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-backend-view">
+<div class="tag-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => '确认删除？',
+                'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'name',
+            'uid',
             'username',
-            'password',
-            'email:email',
-            'notice',
-            'group_id',
-            'time_login',
-            'time_register',
+            'time_create',
+            'content:ntext',
+            'img',
+            'time_update',
             'status',
         ],
     ]) ?>

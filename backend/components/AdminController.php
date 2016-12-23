@@ -14,6 +14,8 @@ use mdm\admin\components\MenuHelper;
 class AdminController extends Controller {
     
     private $nav1ActiveId ;
+    protected $formatTime ;
+    protected $time ;
     /**
      * 初始化一些变量
      * @inheritdoc
@@ -25,6 +27,8 @@ class AdminController extends Controller {
             return $this->menuListCallBack($menu);
         });
         $view->params['activeId'] = $this->nav1ActiveId;
+        $this->time = time();
+        $this->formatTime = date('Y-m-d H:i:s',$this->time);
     }
     //menulist callback
     public function menuListCallBack($menu){
@@ -58,8 +62,11 @@ class AdminController extends Controller {
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        // 当前rule将会针对这里设置的actions起作用，如果actions不设置，默认就是当前控制器的所有操作
+//                        'actions' => ['logout', 'index','view', 'update', 'delete', 'signup','create'],
+                        // 设置actions的操作是允许访问还是拒绝访问
                         'allow' => true,
+                        // @ 当前规则针对认证过的用户; ? 所有方法均可访问
                         'roles' => ['@'],
                     ],
                 ],
