@@ -11,7 +11,7 @@ class WeatherController extends ApiactiveController
 {
     public $modelClass = 'api\modules\v1\models\district';
     const GET_WEATHER_URL = 'http://wthrcdn.etouch.cn/WeatherApi?citykey=';
-
+//和风天气接口 https://free-api.heweather.com/v5/weather?city=CN101270608&key=41b1c534a9284d5785e21ef1e3ac38fe
 
 //    public function behaviors() {
 //
@@ -63,6 +63,7 @@ class WeatherController extends ApiactiveController
         }
         $url = self::GET_WEATHER_URL.$cityCode;
         $xml = preg_replace('/<!--.+?-->/is','',Functions::myCurl($url));//去除 <!----> 注释内容，防止转义成 数组时出错
+        
         $weather = XML2Array::createArray($xml)['resp'];
         //若是有错误信息
         if(isset($weather['error'])){

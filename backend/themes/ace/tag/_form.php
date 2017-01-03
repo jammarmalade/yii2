@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true,'autocomplete ' => 'off']) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
@@ -20,7 +20,13 @@ use yii\widgets\ActiveForm;
 
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php if($model->isNewRecord){?>
+            <?= Html::submitButton('新增', ['class' => 'btn btn-success' , 'name' => 'submitBtn']) ?>
+            <?= Html::submitButton('新增并继续', ['class' => 'btn btn-success' , 'name' => 'submitBtn', 'value' => 'continue']) ?>
+        <?php }else{?>
+            <?= Html::submitButton('修改', ['class' => 'btn btn-primary' , 'name' => 'submitBtn']) ?>
+        <?php }?>
+        
     </div>
 
     <?php ActiveForm::end(); ?>

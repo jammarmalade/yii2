@@ -37,7 +37,7 @@ class Tag extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'uid', 'username','time_create'], 'required'],
-            [['uid', 'status'], 'integer'],
+            [['uid', 'status','classify'], 'integer'],
             [['time_create', 'time_update'], 'safe'],
             [['content'], 'string'],
             [['name','username'], 'string', 'max' => 15],
@@ -59,8 +59,21 @@ class Tag extends \yii\db\ActiveRecord
             'time_create' => '创建时间',
             'content' => '描述',
             'img' => '标签图标',
+            'classify' => '大分类，0其它，1衣，2食，3住，4行',//暂未使用
             'time_update' => '更新时间',
             'status' => '标签状态，0删除，1正常',
+        ];
+    }
+    /**
+     * 大分类
+     */
+    public function getClassify(){
+        return [
+            '0' => '其它',
+            '1' => '衣',
+            '2' => '食',
+            '3' => '住',
+            '4' => '行',
         ];
     }
 }

@@ -37,7 +37,7 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             [['username', 'group_id', 'time_login', 'time_register', 'status'], 'required'],
-            [['notice', 'group_id', 'status'], 'integer'],
+            [['notice', 'group_id', 'status', 'records'], 'integer'],
             [['time_login', 'time_register'], 'safe'],
             [['username'], 'string', 'max' => 15],
             [['password', 'email'], 'string', 'max' => 32]
@@ -55,6 +55,7 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
             'email' => '邮箱',
             'auth_key' => '记住我的认证key',
             'notice' => '提醒数',
+            'records' => '记录数',
             'group_id' => '用户组id',
             'time_login' => '最后登录时间',
             'time_register' => '注册时间',

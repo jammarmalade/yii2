@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a('新增', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -35,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'time_create',
             'content:ntext',
             'img',
+            'classify',
             'time_update',
             'status',
         ],

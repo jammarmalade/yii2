@@ -53,10 +53,14 @@ class TagController extends AdminController
         $model->setAttribute('time_create', $this->formatTime );
         $model->setAttribute('time_update', $this->formatTime );
         $model->setAttribute('status', 1);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if($model->save(false)){
-                return $this->redirect(['view', 'id' => $model->id]);
+                if(Yii::$app->request->post("submitBtn")=='continue'){
+                    return $this->redirect(['create']);
+                }else{
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         }
         return $this->render('create', [

@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php $form = ActiveForm::begin(['id' => 'form-signup']);?>
-        <?= $form->field($model, 'username')->label('用户名')->textInput(['actufocus' => true])?>
-        <?= $form->field($model, 'email')->label('邮箱')?>
+        <?= $form->field($model, 'username')->label('用户名')->textInput(['actufocus' => true,'autocomplete ' => 'off'])?>
+        <?= $form->field($model, 'email')->label('邮箱')->textInput(['autocomplete ' => 'off'])?>
         <?= $form->field($model, 'password')->label('密码')->passwordInput()?>
         <div class="form-group">
             <?= Html::submitButton('注册', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
