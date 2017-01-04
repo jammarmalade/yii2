@@ -1,12 +1,11 @@
 <?php
 
-namespace api\modules\v1\models;
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 
 /**
- * This is the model class for table "district".
+ * This is the model class for table "{{%district}}".
  *
  * @property string $id
  * @property string $name
@@ -16,17 +15,23 @@ use Yii;
  * @property string $upid
  * @property string $yh_code
  * @property string $zh_code
+ * @property string $hf_code
+ * @property integer $order_number
  * @property double $latitude
  * @property double $longitude
  */
 class District extends \yii\db\ActiveRecord
 {
+    //时期搜索（开始）
+    public $time_create_from;
+    //时期搜索（结束）
+    public $time_create_to;
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'district';
+        return '{{%district}}';
     }
 
     /**
@@ -35,9 +40,10 @@ class District extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['level', 'upid', 'yh_code', 'zh_code'], 'integer'],
+            [['level', 'upid', 'yh_code', 'zh_code', 'order_number'], 'integer'],
             [['latitude', 'longitude'], 'number'],
-            [['name', 'alias', 'pinyin'], 'string', 'max' => 50]
+            [['name', 'alias', 'pinyin'], 'string', 'max' => 50],
+            [['hf_code'], 'string', 'max' => 15]
         ];
     }
 
@@ -49,12 +55,14 @@ class District extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'alias' => 'Alias',
+            'alias' => '别名',
             'pinyin' => 'Pinyin',
             'level' => 'Level',
             'upid' => 'Upid',
-            'yh_code' => 'Yh Code',
-            'zh_code' => 'Zh Code',
+            'yh_code' => '雅虎城市代码',
+            'zh_code' => '中国天气网城市代码',
+            'hf_code' => '和风天气代码',
+            'order_number' => '值越大越靠前',
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
         ];

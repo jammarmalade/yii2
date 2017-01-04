@@ -10,7 +10,7 @@ class Functions {
         echo '</pre>';
     }
     //curl 获取数据
-    public static function myCurl($url) {
+    public static function curlHeader($url) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36");
         $header = array(
@@ -25,5 +25,4 @@ class Functions {
         curl_close($ch);
         return $result;
     }
-
 }
