@@ -48,33 +48,36 @@ return [
 //            'suffix' => '.html',//后缀
             'showScriptName' => false, //隐藏index.php  
             'rules' => [
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => [
-                        'v1/weather',
-                    ],
-//                    'tokens' => [
-//                        '{id}' => '<id:\\d[\\d,]*>',
+                //模块单独配置
+//                [
+//                    'class' => 'yii\rest\UrlRule',
+//                    'controller' => [
+//                        'v1/weather',
 //                    ],
-                    'patterns' => [
-                        'GET province' => 'province',//获取省
-                        'GET city/<id>' => 'city',//获取城市 省id
-                        'GET area/<id>' => 'area',//获取区县 城市id
-                        'GET weather/<id>' => 'weather',//获取天气情况 城市天气代号id
-                    ],
-                    //扩展操作
-                    'extraPatterns' => [
-                        
-                    ],
-                    'pluralize' => false,//不启用复数形式访问 weathers
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => [
-                        'v2/weather',
-                    ]
-                ],
-//                '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+////                    'tokens' => [
+////                        '{id}' => '<id:\\d[\\d,]*>',
+////                    ],
+//                    'patterns' => [
+//                        'GET province' => 'province',//获取省
+//                        'GET city/<id>' => 'city',//获取城市 省id
+//                        'GET area/<id>' => 'area',//获取区县 城市id
+//                        'GET weather/<id>' => 'weather',//获取天气情况 城市天气代号id
+//                    ],
+//                    //扩展操作
+//                    'extraPatterns' => [
+//                        
+//                    ],
+//                    'pluralize' => false,//不启用复数形式访问 weathers
+//                ],
+//                [
+//                    'class' => 'yii\rest\UrlRule',
+//                    'controller' => [
+//                        'v2/weather',
+//                    ]
+//                ],
+                //模块访问
+                '<module:\w+>/<controller:\w+>/<action:\w+>/<id>'=>'<module>/<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>'=>'<module>/<controller>/<action>',
             ]
         ],
         
