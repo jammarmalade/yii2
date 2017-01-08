@@ -26,7 +26,7 @@ class ApiactiveController extends ActiveController{
     }
     public function result($result ,$message = '' ,$status = true){
         $result = $result ? $this->object2array($result) : $result;
-        return ['status'=>$status, 'message'=> $message,'result'=>$result];
+        return ['weather'=>['status'=>$status, 'message'=> $message,'result'=>$result]];
     }
     
     public function actionError(){
