@@ -13,13 +13,19 @@ use Yii;
  * @property string $surl
  * @property string $subject
  * @property string $content
+ * @property string $tags
  * @property integer $type
  * @property string $path
  * @property string $psid
- * @property integer $get
+ * @property integer $count
  * @property string $time_create
  */
 class Source extends \yii\db\ActiveRecord {
+
+    //时期搜索
+    public $time_create_from;
+    //期搜索
+    public $time_create_to;
 
     /**
      * @inheritdoc
@@ -33,9 +39,10 @@ class Source extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['name', 'sid', 'subject', 'content'], 'required'],
+            ['surl', 'unique', 'targetClass' => '\backend\models\Source', 'message' => '此页已收录。'],//唯一性验证
+            [['name', 'sid', 'surl'], 'required'],
             [['content', 'tags'], 'string'],
-            [['type', 'get', 'page'], 'integer'],
+            [['type', 'page', 'count'], 'integer'],
             [['time_create'], 'safe'],
             [['name'], 'string', 'max' => 15],
             [['sid', 'psid'], 'string', 'max' => 32],
@@ -52,16 +59,53 @@ class Source extends \yii\db\ActiveRecord {
             'id' => 'ID',
             'name' => 'Name',
             'sid' => 'Sid',
-            'surl' => 'Surl',
+            'surl' => '源链接（本站必须支持）',
             'subject' => 'Subject',
             'content' => 'Content',
             'tags' => 'Tags',
             'type' => 'Type',
             'path' => 'Path',
             'psid' => 'Psid',
-            'get' => 'Get',
             'page' => 'Page',
+            'status' => 'Status',
+            'digest' => 'Digest',
+            'count' => 'Count',
             'time_create' => 'Time Create',
+        ];
+    }
+
+    /**
+     * 站点名称
+     */
+    public function siteName() {
+        return [
+            'zhaofuli.biz' => '宅福利',
+            'fuli.asia' => '宅福利2',
+            'zhaofuli.in' => '宅福利3',
+            'zhaofuli.mobi' => '宅福利4',
+        ];
+    }
+
+    /**
+     * 状态
+     */
+    public function statusType() {
+        return [
+            0 => '删除',
+            1 => '未获取内容',
+            2 => '正在获取内容',
+            3 => '已获取内容',
+            4 => '已使用此内容',
+            5 => '已查看此内容',
+        ];
+    }
+    /**
+     * 精华
+     */
+    public function digestList() {
+        return [
+            0 => '无',
+            1 => '精华',
         ];
     }
 

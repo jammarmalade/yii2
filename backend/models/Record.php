@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use backend\models\TagRecord;
+use backend\models\Tag;
 
 /**
  * This is the model class for table "{{%record}}".
@@ -61,7 +63,7 @@ class Record extends \yii\db\ActiveRecord
             'uid' => '用户id',
             'username' => '用户名',
             'account' => '金额',
-            'type' => '金额类型',
+            'type' => '金额类型，0没有消费，1支出，2收入',
             'content' => '描述',
             'imgstatus' => '是否有图片',
             'longitude' => '经度',
@@ -69,7 +71,24 @@ class Record extends \yii\db\ActiveRecord
             'weather' => '天气',
             'remark' => '备注',
             'time_create' => '创建时间',
-            'status' => '标签状态，0删除，1正常',
+            'status' => '记录状态，0删除，1正常',
         ];
+    }
+    /**
+     * 记录支出类型
+     */
+    public function recordType() {
+        return [
+            0 => '没有消费',
+            1 => '支出',
+            2 => '收入',
+        ];
+    }
+    /**
+     * 获取标签
+     */
+    public function getTag($rid){
+        $resTagList = TagRecord::findBySql('SELECT t.id,t.`name` FROM '.TagRecord::tableName().' tr,'.Tag::tableName().' t WHERE tr.rid='.$rid.' AND tr.tid = t.id')->asArray()->all();
+        return $resTagList;
     }
 }

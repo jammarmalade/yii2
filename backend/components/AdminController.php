@@ -8,6 +8,7 @@ use yii\helpers\Url;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use mdm\admin\components\MenuHelper;
+use yii\helpers\Json;
 /**
  * Admin controller
  */
@@ -95,6 +96,15 @@ class AdminController extends Controller {
             $data['title'] = '错误提示';
         }
         return $this->render('/site/message', $data);
+    }
+    
+    public function ajaxReturn($data , $msg = '', $status = false){
+        $resData = [
+            'data' => $data,
+            'msg' => $msg,
+            'status' => $status,
+        ];
+        return Json::encode($resData);
     }
 
 

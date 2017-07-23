@@ -19,7 +19,9 @@ class UserController extends ApiactiveController
         if(!\Yii::$app->security->validatePassword($password, $userInfo['password'])){
             $this->resultError('密码错误');
         }
-        return $userInfo;
+        $userInfo = $this->object2array($userInfo);
+        $userInfo['authkey'] = Functions::authcode($userInfo['id']."\t".$userInfo['username'], 'ENCODE');
+        return $this->result($userInfo);
     }
     
 }

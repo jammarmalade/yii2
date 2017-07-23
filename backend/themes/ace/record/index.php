@@ -88,14 +88,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'type',
                             'label' => '记录类型',
                             'value' => function($model){
-                               $state = [
-                                    '1' => '支出',
-                                    '2' => '收入',
-                                ];
+                                $state = $model->recordType();
                                 return $state[$model->type];   
                             },
                             'headerOptions' => ['width' => '70'],
-                            'filter' => Html::activeDropDownList($searchModel,'type',['1' => '支出','2' => '收入'],['prompt'=>'全部'])
+                            'filter' => Html::activeDropDownList($searchModel,'type',$searchModel->recordType(),['prompt'=>'全部'])
+                        ],
+                        [
+                            'label' => '标签',
+                            'value' => function($model){
+                                $res = $model->getTag($model->id);
+                                $str = join('，',array_column($res, 'name'));
+                                return $str;
+                            }
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',

@@ -2,5 +2,5 @@
 
 return [
     'adminEmail' => 'admin@example.com',
-    'SERVER_IMG' => 'http://192.168.1.100/advanced/uploads/',
+    'SERVER_IMG' => 'http://192.168.31.200/advanced/uploads/',
 ];

@@ -1,9 +1,7 @@
 <?php
+
 $params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+        require(__DIR__ . '/../../common/config/params.php'), require(__DIR__ . '/../../common/config/params-local.php'), require(__DIR__ . '/params.php'), require(__DIR__ . '/params-local.php')
 );
 
 return [
@@ -11,19 +9,23 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'api\controllers',
     'bootstrap' => ['log'],
-    'defaultRoute' => 'v1/weather',//默认控制器
-    'layout' => false,//禁用布局
+    'defaultRoute' => 'v1/weather', //默认控制器
+    'layout' => false, //禁用布局
     //模块
     'modules' => [
         'v1' => [
             'class' => 'api\modules\v1\Module',
-            'basePath' => dirname(__DIR__).'/modules/v1/',
+            'basePath' => dirname(__DIR__) . '/modules/v1/',
         ],
         'v2' => [
             'class' => 'api\modules\v2\Module',
-            'basePath' => dirname(__DIR__).'/modules/v2/',
+            'basePath' => dirname(__DIR__) . '/modules/v2/',
         ],
     ],
+    'aliases' => [
+        '@uploads' => '@app/../uploads/', //上传目录
+    ],
+    'timeZone' => 'Asia/Shanghai',
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
@@ -35,7 +37,7 @@ return [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-            'directoryLevel'=>'2',   //缓存文件的目录深度
+            'directoryLevel' => '2', //缓存文件的目录深度
         ],
         'request' => [
             'enableCookieValidation' => true,
@@ -46,7 +48,7 @@ return [
             'enablePrettyUrl' => true, // 启用美化URL
             'enableStrictParsing' => true, // 是否执行严格的url解析
 //            'suffix' => '.html',//后缀
-            'showScriptName' => false, //隐藏index.php  
+            'showScriptName' => false, //隐藏index.php
             'rules' => [
                 //模块单独配置
 //                [
@@ -65,7 +67,7 @@ return [
 //                    ],
 //                    //扩展操作
 //                    'extraPatterns' => [
-//                        
+//
 //                    ],
 //                    'pluralize' => false,//不启用复数形式访问 weathers
 //                ],
@@ -76,17 +78,16 @@ return [
 //                    ]
 //                ],
                 //模块访问
-                '<module:\w+>/<controller:\w+>/<action:\w+>/<id>'=>'<module>/<controller>/<action>',
-                '<module:\w+>/<controller:\w+>/<action:\w+>'=>'<module>/<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>/<id>' => '<module>/<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ]
         ],
-        
         //测试
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => false, // API change to false  
-            'enableSession' => false,  // API ++  
-            'loginUrl' => null // API ++  
+            'enableAutoLogin' => false, // API change to false
+            'enableSession' => false, // API ++
+            'loginUrl' => null // API ++
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

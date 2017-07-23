@@ -8,13 +8,14 @@ use backend\models\RecordSearch;
 use backend\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\components\Functions as func;
 
 /**
  * RecordController implements the CRUD actions for Record model.
  */
 class RecordController extends AdminController
 {
-
+    
     /**
      * Lists all Record models.
      * @return mixed
@@ -23,6 +24,9 @@ class RecordController extends AdminController
     {
         $searchModel = new RecordSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $searchModel->getTag(7);
+        //查询id
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

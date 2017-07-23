@@ -19,6 +19,7 @@ return [
             'mainLayout' => '@app/themes/ace/layouts/main.php',
         ],
     ],
+    'timeZone' => 'Asia/Shanghai',
     'aliases' => [    
         '@mdm/admin' => '@app/modules/yii2-admin',
         '@uploads' => '@app/../uploads/',//上传目录

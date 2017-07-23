@@ -19,12 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Tag', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
             'uid',
@@ -33,9 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'img',
             // 'time_update',
             // 'status',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+    ?>
 
 </div>

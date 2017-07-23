@@ -76,4 +76,15 @@ class Tag extends \yii\db\ActiveRecord
             '4' => '行',
         ];
     }
+    
+    public static function searchTag($q){
+        $rows = Tag::find()
+            ->where("status=:status and `name` like :keyword")
+            ->addParams([':status'=>1,':keyword'=>"%$q%"])
+            ->asArray()
+            ->select('id,name,img')
+            ->limit(10)
+            ->all();
+        return $rows;
+    }
 }

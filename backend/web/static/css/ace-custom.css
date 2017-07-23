@@ -1,8 +1,8 @@
 .ace-settings-container{
-	position: static;
+    position: static;
 }
 .btn.ace-settings-btn{
-	border-radius: 6px 6px !important;
+    border-radius: 6px 6px !important;
 }
 .navbar-brand {
     height: 45px;
@@ -11,29 +11,36 @@
     outline: none;          
 }
 table{
-	vertical-align: middle;
-	text-align: center;
+    vertical-align: middle;
+    text-align: center;
 }
 .table thead>tr>th, .table tbody>tr>th, .table tfoot>tr>th, .table thead>tr>td, .table tbody>tr>td, .table tfoot>tr>td {
     vertical-align: middle;
 }
 .nav-tabs {
-	height:34px;
+    height:34px;
 }
 /*上传*/
 .btn-upload{
-	position: relative;
-	top: 0px;
-	left: 0px;
-	z-index: 1;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
 }
 #uploadform-imagefile{
-	position: absolute;
-	width: 80px;
-	height: 77px;
-	z-index: 2;
-	opacity: 0;
+    position: absolute;
+    width: 80px;
+    height: 77px;
+    z-index: 2;
+    opacity: 0;
 }
 .img-list{
-	width:150px;
+    width:150px;
+}
+.view-img-list{
+    margin-top: 10px;
+}
+//操作按钮
+#opt-btn{
+    size: 30px;
 }

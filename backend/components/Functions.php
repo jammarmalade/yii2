@@ -8,10 +8,13 @@ class Functions {
      * 打印数组
      * @param type $arr
      */
-    public static function printarr($arr) {
+    public static function printarr($arr,$ext = 0) {
         echo '<pre>';
         print_r($arr);
         echo '</pre>';
+        if($ext){
+            exit();
+        }
     }
 
     /**
@@ -22,7 +25,7 @@ class Functions {
      */
     public static function fput($msg, $arr = 0, $ext = '') {
         $time = date('Y-m-d H:i:s', time());
-        $path = YII_DEBUG ? 'E:\wamp\www\log.txt' : INDEX_ROOT . '/log.txt';
+        $path = YII_DEBUG ? \Yii::getAlias("@webroot").'/log.txt' : INDEX_ROOT . '/log.txt';
         if ($arr) {
             file_put_contents($path, var_export($msg, true) . ' - ' . $ext . ' - ' . $time . PHP_EOL, FILE_APPEND);
         } else {

@@ -12,11 +12,15 @@ class ApiactiveController extends ActiveController {
 
     public $modelClass = '';
     public $timestamp;
+    public $formatTime;
     public $request;
+    public $uid = 0;
+    public $username = '';
 
     public function init() {
         parent::init();
         $this->timestamp = $_SERVER['REQUEST_TIME'];
+        $this->formatTime = date('Y-m-d H:i:s', $this->timestamp);
         $this->request = \Yii::$app->request;
     }
 
@@ -77,4 +81,19 @@ class ApiactiveController extends ActiveController {
         return $value;
     }
 
+    //是否登录
+    public function isLogin(){
+        $authkey = $this->input('post.authkey','');
+        if(!$authkey){
+            $this->resultError('请先登录 - 001');
+        }
+        $decodeKey = \api\common\Functions::authcode($authkey);
+        if(!$decodeKey){
+            $this->resultError('请先登录 - 002');
+        }
+        list($this->uid,$this->username) = explode("\t", $decodeKey);
+        if(!is_numeric($this->uid)){
+            $this->resultError('验证错误');
+        }
+    }
 }
