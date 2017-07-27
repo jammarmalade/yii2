@@ -5,9 +5,10 @@
 namespace api\modules\v1\controllers;
 
 use api\controllers\ApiactiveController;
-use api\common\Functions;
+use backend\components\Functions as helper;
 use backend\models\Record;
 use backend\models\TagRecord;
+use backend\models\Tag;
 
 class RecordController extends ApiactiveController
 {
@@ -41,9 +42,10 @@ class RecordController extends ApiactiveController
         $model->type = $type;
         $model->content = $content;
         $model->imgstatus = 0;
-        $model->longitude = 0;
-        $model->latitude = 0;
+        $model->longitude = $this->input('post.longitude', 0);
+        $model->latitude = $this->input('post.latitude', 0);
         $model->weather = '';
+        $model->date = $this->input('post.date', date('Y-m-d',$this->timestamp));
         $model->remark = '';
         $model->time_create = $this->formatTime;
         $model->status = 1;
@@ -68,6 +70,39 @@ class RecordController extends ApiactiveController
             $this->resultError('没有记录关系');
         }
         return $this->result($rid);
+    }
+    //记录列表
+    public function actionList(){
+        $this->isLogin();
+        $page = $this->input('post.page',1);
+        $limit = 10;
+        $startLimit = ($page - 1) * $limit;
+        
+        $reocrdList = Record::find()->where(['uid'=>$this->uid])->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
+        $rids = array_column($reocrdList, 'id');
+        //查询出标签名称
+        $tagRecord = TagRecord::find()->from(TagRecord::tableName().' as tr')
+                ->join('LEFT JOIN',Tag::tableName().' as t' , 't.id = tr.tid')
+                ->where(['in','rid',$rids])->select('tr.id,tr.rid,tr.tid,t.name as tagname')->asArray()->all();//createCommand()->getRawSql()
+        //按照记录分组
+        $tagByRecord = [];
+        foreach($tagRecord as $k=>$v){
+            if($v['tagname']){
+                $tmp['id'] = $v['tid'];
+                $tmp['name'] = $v['tagname'];
+                $tmp['img'] = '';
+                $tagByRecord[$v['rid']][] = $tmp;
+            }
+        }
+        foreach($reocrdList as $k=>$v){
+            if(isset($tagByRecord[$v['id']])){
+                $reocrdList[$k]['tagList'] = $tagByRecord[$v['id']];
+                $reocrdList[$k]['showTime'] = substr($v['time_create'],0,16);
+            }else{
+                unset($reocrdList[$k]);
+            }
+        }
+        return $this->result($reocrdList);
     }
     
 }

@@ -3,8 +3,9 @@
 namespace api\modules\v1\controllers;
 
 use api\controllers\ApiactiveController;
-use api\common\Functions;
+use backend\components\Functions as helper;
 use backend\models\Tag;
+use backend\models\TagRecord;
 
 class TagController extends ApiactiveController
 {
@@ -43,8 +44,10 @@ class TagController extends ApiactiveController
         $this->isLogin();
         $name = $this->input('post.name', '',1);
         
-        if(Tag::findOne(['name'=>$name])){
-            $this->resultError('已存在该标签');
+        if($info = Tag::findOne(['name'=>$name])){
+            $res['id'] = $info->id;
+            $res['name'] = $info->name;
+            return $this->result([$res],'该标签已存在');
         }
         
         $model = new Tag();
@@ -55,10 +58,34 @@ class TagController extends ApiactiveController
         $model->setAttribute('time_update', $this->formatTime );
         $model->setAttribute('status', 1);
         if($model->save(false)){
-            $tid = $model->id;
-            return $this->result($tid);
+            $res['id'] = $model->id;
+            $res['name'] = $model->name;
+            return $this->result([$res]);
         }else{
             $this->resultError('新增失败');
         }
+    }
+    /**
+     * 获取推荐标签  
+     * 192.168.31.200/advanced/api/web/index.php/v1/tag/recommend
+     */
+    public function actionRecommend(){
+        $this->isLogin(false);
+        $tagIdList = [];
+        //若是登录
+        if($this->uid){
+            //查询最近使用的标签
+            $lastUseTag = TagRecord::find()->where('uid = '.$this->uid)->select('tid')->limit(5)->asArray()->orderBy('create_time DESC')->all();
+            $tagIdList = array_column($lastUseTag, 'tid');
+        }
+        $tmpCount = 10 - count($tagIdList);//推荐十个
+        if($tmpCount > 0){
+            //查询系统推荐标签
+            $tmpList = Tag::getRecommendTag($tmpCount);
+            $tagIdList = array_merge($tagIdList, $tmpList);
+        }
+        //查询标签
+        $tagList = Tag::find()->where(['in','id' , $tagIdList])->select('id,name,img')->all();
+        return $this->result($tagList);
     }
 }

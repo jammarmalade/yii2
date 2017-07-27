@@ -20,6 +20,7 @@ use backend\models\Tag;
  * @property double $latitude
  * @property string $weather
  * @property string $remark
+ * @property string $date
  * @property string $time_create
  */
 class Record extends \yii\db\ActiveRecord
@@ -46,7 +47,7 @@ class Record extends \yii\db\ActiveRecord
             [['uid', 'type', 'imgstatus','status'], 'integer'],
             [['account', 'longitude', 'latitude'], 'number'],
             [['content'], 'string'],
-            [['time_create'], 'safe'],
+            [['time_create','date'], 'safe'],
             [['username'], 'string', 'max' => 15],
             [['weather'], 'string', 'max' => 100],
             [['remark'], 'string', 'max' => 500]

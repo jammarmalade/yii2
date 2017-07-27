@@ -81,19 +81,30 @@ class ApiactiveController extends ActiveController {
         return $value;
     }
 
-    //是否登录
-    public function isLogin(){
+    /**
+     * 是否登录
+     * @param type $err     是否强制提醒
+     * @return boolean
+     */
+    public function isLogin($err = true){
+        if($this->uid > 0 && $this->username){
+            return true;
+        }
         $authkey = $this->input('post.authkey','');
         if(!$authkey){
-            $this->resultError('请先登录 - 001');
+            if(!$err){
+                return true;
+            }else{
+                $this->resultError('请先登录 - 001',[]);
+            }
         }
         $decodeKey = \api\common\Functions::authcode($authkey);
-        if(!$decodeKey){
-            $this->resultError('请先登录 - 002');
+        if(!$decodeKey && $err){
+            $this->resultError('请先登录 - 002',[]);
         }
         list($this->uid,$this->username) = explode("\t", $decodeKey);
-        if(!is_numeric($this->uid)){
-            $this->resultError('验证错误');
+        if(!is_numeric($this->uid) && $err){
+            $this->resultError('验证错误',[]);
         }
     }
 }

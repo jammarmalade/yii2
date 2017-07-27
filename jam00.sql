@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
+Source Server         : localhost
 Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : jam00
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-07-23 21:41:05
+Date: 2017-07-27 18:12:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5390,20 +5390,26 @@ CREATE TABLE `t_record` (
   `latitude` double(14,10) DEFAULT NULL COMMENT '纬度',
   `weather` varchar(100) DEFAULT NULL COMMENT '天气',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `date` date DEFAULT NULL COMMENT '记录日期',
   `time_create` datetime DEFAULT NULL COMMENT '创建时间',
   `status` tinyint(2) unsigned DEFAULT '1' COMMENT '记录状态，0删除，1正常',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='收支记录';
+  PRIMARY KEY (`id`),
+  KEY `date` (`uid`,`date`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='收支记录';
 
 -- ----------------------------
 -- Records of t_record
 -- ----------------------------
-INSERT INTO `t_record` VALUES ('1', '1', 'admin', '10.50', '1', '午饭', '0', null, null, null, null, '2016-12-20 15:53:37', '1');
-INSERT INTO `t_record` VALUES ('2', '2', 'test2', '10.25', '1', '午餐费', '0', null, null, null, null, '2016-12-20 17:36:09', '1');
-INSERT INTO `t_record` VALUES ('3', '1', 'admin', '8.00', '2', '红包', '0', null, null, null, null, '2016-12-20 17:42:16', '1');
-INSERT INTO `t_record` VALUES ('6', '1', 'admin', '50.00', '1', '一天的费用', '0', '0.0000000000', '0.0000000000', '', '', '2017-06-03 17:30:56', '1');
-INSERT INTO `t_record` VALUES ('7', '1', 'admin', '568.26', '1', '记录一下', '0', '0.0000000000', '0.0000000000', '', '', '2017-06-03 17:35:20', '1');
-INSERT INTO `t_record` VALUES ('8', '1', 'admin', '508.26', '1', '记录一下,hahahah', '0', '0.0000000000', '0.0000000000', '', '', '2017-06-03 17:52:07', '1');
+INSERT INTO `t_record` VALUES ('1', '1', 'admin', '10.50', '1', '午饭', '0', null, null, null, null, null, '2016-12-20 15:53:37', '1');
+INSERT INTO `t_record` VALUES ('2', '2', 'test2', '10.25', '1', '午餐费', '0', null, null, null, null, null, '2016-12-20 17:36:09', '1');
+INSERT INTO `t_record` VALUES ('3', '1', 'admin', '8.00', '2', '红包', '0', null, null, null, null, null, '2016-12-20 17:42:16', '1');
+INSERT INTO `t_record` VALUES ('6', '1', 'admin', '50.00', '1', '一天的费用', '0', '0.0000000000', '0.0000000000', '', '', null, '2017-06-03 17:30:56', '1');
+INSERT INTO `t_record` VALUES ('7', '1', 'admin', '568.26', '1', '记录一下', '0', '0.0000000000', '0.0000000000', '', '', null, '2017-06-03 17:35:20', '1');
+INSERT INTO `t_record` VALUES ('8', '1', 'admin', '508.26', '1', '记录一下,hahahah', '0', '0.0000000000', '0.0000000000', '', '', null, '2017-06-03 17:52:07', '1');
+INSERT INTO `t_record` VALUES ('9', '1', 'admin', '2.80', '1', '呵呵定\n哦你在宿舍', '0', '106.5658010000', '29.5409900000', '', '', null, '2017-07-24 14:20:10', '1');
+INSERT INTO `t_record` VALUES ('10', '1', 'admin', '98.50', '1', '黑泥沟', '0', '106.5657790000', '29.5409980000', '', '', '2017-08-24', '2017-07-24 14:38:18', '1');
+INSERT INTO `t_record` VALUES ('11', '1', 'admin', '94.66', '1', '装备好啊', '0', '106.5657650000', '29.5410440000', '', '', '2017-07-24', '2017-07-24 14:57:34', '1');
+INSERT INTO `t_record` VALUES ('12', '1', 'admin', '16.66', '2', '三个人一起点的', '0', '106.5656740000', '29.5409740000', '', '', '2017-07-25', '2017-07-25 15:50:23', '1');
 
 -- ----------------------------
 -- Table structure for `t_source`
@@ -5479,8 +5485,9 @@ CREATE TABLE `t_tag` (
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '标签状态，0删除，1正常',
   `time_create` datetime NOT NULL COMMENT '创建时间',
   `time_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `record_count` (`record_count`)
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_tag
@@ -5488,21 +5495,21 @@ CREATE TABLE `t_tag` (
 INSERT INTO `t_tag` VALUES ('1', '公交费', '1', 'admin', '', '', '4', '0', '1', '2016-12-19 18:09:59', '2017-06-03 15:02:45');
 INSERT INTO `t_tag` VALUES ('2', '午餐', '1', 'admin', '午餐费用', '', '2', '0', '1', '2016-12-19 18:39:34', '2016-12-29 14:04:47');
 INSERT INTO `t_tag` VALUES ('3', '餐饮', '1', 'admin', '', '', '2', '0', '1', '2016-12-29 14:20:57', '2016-12-29 14:23:38');
-INSERT INTO `t_tag` VALUES ('4', '交通', '1', 'admin', '', '', '4', '0', '1', '2016-12-29 14:23:51', '2016-12-29 14:23:51');
+INSERT INTO `t_tag` VALUES ('4', '交通', '1', 'admin', '', '', '4', '5', '1', '2016-12-29 14:23:51', '2017-07-24 09:57:46');
 INSERT INTO `t_tag` VALUES ('5', '购物', '1', 'admin', '', '', '1', '0', '1', '2016-12-29 14:24:09', '2016-12-29 14:24:09');
-INSERT INTO `t_tag` VALUES ('6', '发红包', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:29:55', '2016-12-29 14:29:55');
+INSERT INTO `t_tag` VALUES ('6', '发红包', '1', 'admin', '', '', '0', '2', '1', '2016-12-29 14:29:55', '2017-07-24 09:57:44');
 INSERT INTO `t_tag` VALUES ('7', '日用品', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:30:13', '2016-12-29 14:30:13');
-INSERT INTO `t_tag` VALUES ('8', '买菜', '1', 'admin', '', '', '2', '0', '1', '2016-12-29 14:30:25', '2016-12-29 14:30:25');
+INSERT INTO `t_tag` VALUES ('8', '买菜', '1', 'admin', '', '', '2', '7', '1', '2016-12-29 14:30:25', '2017-07-24 09:58:08');
 INSERT INTO `t_tag` VALUES ('9', '水果', '1', 'admin', '', '', '2', '0', '1', '2016-12-29 14:30:38', '2016-12-29 14:30:38');
 INSERT INTO `t_tag` VALUES ('10', '零食', '1', 'admin', '', '', '2', '0', '1', '2016-12-29 14:30:53', '2016-12-29 14:30:53');
-INSERT INTO `t_tag` VALUES ('11', '护肤品', '1', 'admin', '', '', '1', '0', '1', '2016-12-29 14:31:19', '2016-12-29 14:31:19');
+INSERT INTO `t_tag` VALUES ('11', '护肤品', '1', 'admin', '', '', '1', '5', '1', '2016-12-29 14:31:19', '2017-07-24 09:57:43');
 INSERT INTO `t_tag` VALUES ('12', '服饰', '1', 'admin', '', '', '1', '0', '1', '2016-12-29 14:31:41', '2016-12-29 14:31:41');
 INSERT INTO `t_tag` VALUES ('13', '烟酒', '1', 'admin', '', '', '2', '0', '1', '2016-12-29 14:32:05', '2016-12-29 14:32:05');
 INSERT INTO `t_tag` VALUES ('14', '育婴', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:32:30', '2016-12-29 14:32:30');
-INSERT INTO `t_tag` VALUES ('15', '奶粉', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:33:05', '2016-12-29 14:33:05');
+INSERT INTO `t_tag` VALUES ('15', '奶粉', '1', 'admin', '', '', '0', '6', '1', '2016-12-29 14:33:05', '2017-07-24 09:57:41');
 INSERT INTO `t_tag` VALUES ('16', '尿布', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:33:12', '2016-12-29 14:33:12');
 INSERT INTO `t_tag` VALUES ('17', '娱乐', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:40:25', '2016-12-29 14:40:25');
-INSERT INTO `t_tag` VALUES ('18', '电影', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:41:02', '2016-12-29 14:41:02');
+INSERT INTO `t_tag` VALUES ('18', '电影', '1', 'admin', '', '', '0', '8', '1', '2016-12-29 14:41:02', '2017-07-24 09:57:39');
 INSERT INTO `t_tag` VALUES ('19', '住房', '1', 'admin', '', '', '3', '0', '1', '2016-12-29 14:42:55', '2016-12-29 14:42:55');
 INSERT INTO `t_tag` VALUES ('20', '水电气', '1', 'admin', '', '', '3', '0', '1', '2016-12-29 14:44:54', '2016-12-29 14:44:54');
 INSERT INTO `t_tag` VALUES ('21', '话费', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:45:10', '2016-12-29 14:45:10');
@@ -5523,6 +5530,11 @@ INSERT INTO `t_tag` VALUES ('35', '利息', '1', 'admin', '', '', '0', '0', '1',
 INSERT INTO `t_tag` VALUES ('36', '还钱', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:48:05', '2016-12-29 14:48:05');
 INSERT INTO `t_tag` VALUES ('37', '借钱', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:48:10', '2016-12-29 14:48:10');
 INSERT INTO `t_tag` VALUES ('38', '工资', '1', 'admin', '', '', '0', '0', '1', '2016-12-29 14:48:21', '2016-12-29 14:48:21');
+INSERT INTO `t_tag` VALUES ('39', '烧烤', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 10:49:34', '2017-07-24 10:49:34');
+INSERT INTO `t_tag` VALUES ('40', '天猫', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 13:36:27', '2017-07-24 13:36:27');
+INSERT INTO `t_tag` VALUES ('41', '淘宝', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 13:37:14', '2017-07-24 13:37:14');
+INSERT INTO `t_tag` VALUES ('42', '小孩', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 14:38:08', '2017-07-24 14:38:08');
+INSERT INTO `t_tag` VALUES ('43', '游戏', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 14:57:21', '2017-07-24 14:57:21');
 
 -- ----------------------------
 -- Table structure for `t_tag_record`
@@ -5535,8 +5547,9 @@ CREATE TABLE `t_tag_record` (
   `rid` int(10) unsigned NOT NULL COMMENT '记录id',
   `create_time` datetime DEFAULT NULL COMMENT '插入时间',
   PRIMARY KEY (`id`),
-  KEY `rid` (`rid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='标签和收支记录关系';
+  KEY `rid` (`rid`),
+  KEY `lastuse` (`uid`,`create_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='标签和收支记录关系';
 
 -- ----------------------------
 -- Records of t_tag_record
@@ -5552,6 +5565,16 @@ INSERT INTO `t_tag_record` VALUES ('8', '1', '6', '8', '2017-06-03 17:52:07');
 INSERT INTO `t_tag_record` VALUES ('9', '1', '17', '8', '2017-06-03 17:52:07');
 INSERT INTO `t_tag_record` VALUES ('10', '1', '18', '8', '2017-06-03 17:52:07');
 INSERT INTO `t_tag_record` VALUES ('11', '1', '22', '8', '2017-06-03 17:52:07');
+INSERT INTO `t_tag_record` VALUES ('12', '1', '6', '9', '2017-07-24 14:20:10');
+INSERT INTO `t_tag_record` VALUES ('13', '1', '5', '9', '2017-07-24 14:20:10');
+INSERT INTO `t_tag_record` VALUES ('14', '1', '5', '10', '2017-07-24 14:38:18');
+INSERT INTO `t_tag_record` VALUES ('15', '1', '14', '10', '2017-07-24 14:38:18');
+INSERT INTO `t_tag_record` VALUES ('16', '1', '18', '10', '2017-07-24 14:38:18');
+INSERT INTO `t_tag_record` VALUES ('17', '1', '12', '10', '2017-07-24 14:38:18');
+INSERT INTO `t_tag_record` VALUES ('18', '1', '5', '11', '2017-07-24 14:57:34');
+INSERT INTO `t_tag_record` VALUES ('19', '1', '12', '11', '2017-07-24 14:57:34');
+INSERT INTO `t_tag_record` VALUES ('20', '1', '43', '11', '2017-07-24 14:57:34');
+INSERT INTO `t_tag_record` VALUES ('21', '1', '2', '12', '2017-07-25 15:50:23');
 
 -- ----------------------------
 -- Table structure for `t_user`
@@ -5569,7 +5592,9 @@ CREATE TABLE `t_user` (
   `time_login` datetime NOT NULL COMMENT '最后登录时间',
   `time_register` datetime NOT NULL COMMENT '注册时间',
   `status` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '用户状态，0删除，1正常',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `username` (`username`),
+  KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------

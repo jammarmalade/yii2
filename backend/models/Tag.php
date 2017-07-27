@@ -76,7 +76,7 @@ class Tag extends \yii\db\ActiveRecord
             '4' => '行',
         ];
     }
-    
+    //模糊搜索标签
     public static function searchTag($q){
         $rows = Tag::find()
             ->where("status=:status and `name` like :keyword")
@@ -86,5 +86,17 @@ class Tag extends \yii\db\ActiveRecord
             ->limit(10)
             ->all();
         return $rows;
+    }
+    //推荐标签
+    public static function getRecommendTag($count = 10){
+        $sKey = 'recommendTag';
+        $data = Yii::$app->cache->get($sKey);
+        if(!$data){
+            $res = Tag::find()->orderBy('record_count DESC')->limit(100)->select('id')->asArray()->indexBy('id')->all();
+            $data = array_column($res, 'id');
+            Yii::$app->cache->set($sKey, $data, 86400);
+        }
+        shuffle($data);
+        return array_slice($data, 0, $count);
     }
 }
