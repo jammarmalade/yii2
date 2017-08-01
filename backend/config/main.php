@@ -1,9 +1,9 @@
 <?php
 $params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+        require(__DIR__ . '/../../common/config/params.php'), 
+        require(__DIR__ . '/../../common/config/params-local.php'), 
+        require(__DIR__ . '/params.php'), 
+        require(__DIR__ . '/params-local.php')
 );
 
 return [
@@ -13,14 +13,14 @@ return [
     'bootstrap' => ['log'],
     'language' => 'zh-CN',
     'modules' => [
-        'admin' => [        
-            'class' => 'mdm\admin\Module',   
+        'admin' => [
+            'class' => 'mdm\admin\Module',
 //            'layout' => 'left-menu',
             'mainLayout' => '@app/themes/ace/layouts/main.php',
         ],
     ],
     'timeZone' => 'Asia/Shanghai',
-    'aliases' => [    
+    'aliases' => [
         '@mdm/admin' => '@app/modules/yii2-admin',
         '@uploads' => '@app/../uploads/',//上传目录
     ],
@@ -49,15 +49,25 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'authManager' => [        
+        'authManager' => [
             'class' => 'yii\rbac\DbManager',
-            'defaultRoles' => ['guest'],    
+            'defaultRoles' => ['guest'],
         ],
+//        'urlManager' => [
+//            'enablePrettyUrl' => true,
+//            'showScriptName' => false,
+//            'enableStrictParsing' => false,
+//            'suffix' => '.html',
+//            'rules' => [
+//                '<controller:\w+>/<action:\w+>/<page:\d+>' => '<controller>/<action>',
+//                "<controller:\w+>/<action:\w+>" => "<controller>/<action>",
+//            ],
+//        ],
         //配置主题
         'view' => [
             'theme' => [
-                'pathMap' => [ 
-                    '@app/views' => [ 
+                'pathMap' => [
+                    '@app/views' => [
                         '@app/themes/ace',
                     ]
                 ],

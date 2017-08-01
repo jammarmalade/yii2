@@ -96,7 +96,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => 'jam00,后台管理']
                         </li>
                         <li class="light-blue">
                             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                                <img class="nav-user-photo" src="static/images/user.png" alt="Admin" />
+                                <img class="nav-user-photo" src="/static/images/user.png" alt="Admin" />
                                 <span class="user-info">
                                     <small>欢迎</small>
                                     <?= Yii::$app->user->identity->username?>
@@ -171,7 +171,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => 'jam00,后台管理']
                     <!-- #sidebar-nav -->
                     <ul class="nav nav-list">
                         <li <?php if(Yii::$app->controller->id == 'site'){?>class="active"<?php }?>>
-                            <a href="index.php">
+                            <a href="/">
                                 <i class="icon-dashboard"></i>
                                 <span class="menu-text"> 首页 </span>
                             </a>
