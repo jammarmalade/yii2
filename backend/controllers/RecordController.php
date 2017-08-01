@@ -91,6 +91,8 @@ class RecordController extends AdminController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        //删除对应的标签-记录id
+        \backend\models\TagRecord::deleteAll(['rid'=>$id]);
 
         return $this->redirect(['index']);
     }

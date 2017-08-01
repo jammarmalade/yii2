@@ -24,6 +24,7 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
     public $time_register_form;
     //注册结束时间
     public $time_register_to;
+    public $password1;
     /**
      * @inheritdoc
      */
@@ -40,7 +41,8 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
             [['notice', 'group_id', 'status', 'records'], 'integer'],
             [['time_login', 'time_register'], 'safe'],
             [['username'], 'string', 'max' => 15],
-            [['password', 'email'], 'string', 'max' => 32]
+            [['password', 'email'], 'string', 'max' => 32],
+            ['password1', 'compare', 'compareAttribute' => 'password','message'=>'两次输入的密码不一致！'],
         ];
     }
 
@@ -52,6 +54,7 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
             'id' => '用户id',
             'username' => '用户名',
             'password' => '密码',
+            'password1' => '确认密码',
             'email' => '邮箱',
             'auth_key' => '记住我的认证key',
             'notice' => '提醒数',

@@ -66,14 +66,24 @@ class UserBackendController extends AdminController {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model->setAttribute('password', "");
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if($model->password){
+                $model->setPassword($model->password);
+                $model->generateAuthKey();
+                $attrs = null;
+            }else{
+                $attrs = $model->getAttributes();
+                unset($attrs['password']);
+                $attrs = array_keys($attrs);
+            }
+            $model->save(false,$attrs);
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
         }
+        return $this->render('update', [
+                    'model' => $model,
+        ]);
     }
 
     /**
@@ -111,6 +121,12 @@ class UserBackendController extends AdminController {
      */
     public function actionSignup() {
         $model = new \backend\models\SignupForm();
+        
+        $model->load($_POST);
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return \yii\bootstrap\ActiveForm::validate($model);
+        }
 
         // 如果是post提交且有对提交的数据校验成功（我们在SignupForm的signup方法进行了实现）
         // $model->load() 方法，实质是把post过来的数据赋值给model

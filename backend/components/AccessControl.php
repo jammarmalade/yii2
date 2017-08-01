@@ -29,7 +29,7 @@ class AccessControl extends \yii\base\ActionFilter {
                 $routes[] = $name;
             }
         }
-
+        
         // 判断当前用户是否有权限访问正在请求的路由
         if (in_array($actionId, $routes)) {
             return true;

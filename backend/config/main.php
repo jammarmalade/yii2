@@ -70,7 +70,7 @@ return [
             //这里是允许访问的action
             //controller/action
 //            '*',//测试时开启
-//            'site/*',
+            'site/logout',
         ],
     ],
     'params' => $params,

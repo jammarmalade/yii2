@@ -26,10 +26,12 @@ class SignupForm extends Model {
             ['username', 'required', 'message' => '用户名不可以为空'],
             // unique表示唯一性，targetClass 表示的数据模型 这里就是说 UserBackend 模型对应的数据表字段username必须唯一
             ['username', 'unique', 'targetClass' => '\backend\models\UserBackend', 'message' => '用户名已存在.'],
+            ['username', 'match','pattern'=>'/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})a-zA-Z_\d]*$/u','message'=>'用户名由字母，汉字，数字，下划线组成，且不能以数字和下划线开头。'],
             // string 字符串，这里我们限定的意思就是username至少包含 5 个字符，最多 15 个字符
-            ['username', 'string', 'min' => 5, 'max' => 15],
+            ['username', 'string', 'min' => 6, 'max' => 16],
+            
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required', 'message' => '邮箱不可以唯恐'],
+            ['email', 'required', 'message' => '邮箱不可以为空'],
             ['email', 'email'],
             ['email', 'string', 'max' => 32],
             ['email', 'unique', 'targetClass' => '\backend\models\UserBackend', 'message' => 'email已经被设置了.'],
