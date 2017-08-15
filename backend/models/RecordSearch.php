@@ -47,6 +47,10 @@ class RecordSearch extends Record
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        //默认倒序
+        if(!isset($params['sort'])){
+            $query->orderBy('id DESC');
+        }
 
         $this->load($params);
 

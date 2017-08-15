@@ -25,7 +25,6 @@ class RecordController extends AdminController
         $searchModel = new RecordSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
-        $searchModel->getTag(7);
         //查询id
         return $this->render('index', [
             'searchModel' => $searchModel,
