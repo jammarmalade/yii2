@@ -9,6 +9,8 @@ use backend\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\components\Functions as func;
+use backend\models\TagRecord;
+use backend\models\Tag;
 
 /**
  * RecordController implements the CRUD actions for Record model.
@@ -109,6 +111,59 @@ class RecordController extends AdminController
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    //删除记录-标签关系
+    public function actionAjaxdeletetag($id) {
+        $tagid = Yii::$app->request->get('tagid');
+        if(!$tagid){
+            return $this->ajaxReturn('','没有tagid',false);
+        }
+        $res = TagRecord::deleteAll('tid = :tid AND rid=:rid',[':tid'=>$tagid,':rid'=>$id]);
+        return $this->ajaxReturn($id,'',true);
+    }
+    //添加记录-标签关系
+    public function actionAddrelation(){
+        $rid = Yii::$app->request->post('rid');
+        if(!$rid){
+            return $this->ajaxReturn('', '缺少 rid', false);
+        }
+        $tagid = Yii::$app->request->post('tagid');
+        $tagname = Yii::$app->request->post('tagname');
+        if($tagid==0){
+            //新增标签
+            if($info = Tag::findOne(['name'=>$tagname])){
+                return $this->ajaxReturn($tagname, '该标签已存在', false);
+            }
+            $model = new Tag();
+            $model->setAttribute('uid', Yii::$app->user->identity->id);
+            $model->setAttribute('name', $tagname);
+            $model->setAttribute('username', Yii::$app->user->identity->username);
+            $model->setAttribute('time_create', $this->formatTime );
+            $model->setAttribute('time_update', $this->formatTime );
+            $model->setAttribute('status', 1);
+            if($model->save(false)){
+                $tagid = $model->id;
+            }else{
+                return $this->ajaxReturn($tagname, '增加标签失败', false);
+            }
+        }
+        //添加关系
+        $exists = TagRecord::find()->where('rid = :rid AND tid = :tid', [':rid'=>$rid,':tid'=>$tagid])->all();
+        if(!$exists){
+            $tagRecordModel = new TagRecord();
+            $tagRecordModel->uid = Yii::$app->user->identity->id;
+            $tagRecordModel->tid = $tagid;
+            $tagRecordModel->rid = $rid;
+            $tagRecordModel->create_time = $this->formatTime;
+            if($tagRecordModel->save(false)){
+                $relationid = $tagRecordModel->id;
+                return $this->ajaxReturn($tagid, '', true);
+            }else{
+                return $this->ajaxReturn('', '添加关系失败', false);
+            }
+        }else{
+            return $this->ajaxReturn('', '已存在该标签关系', false);
         }
     }
 }

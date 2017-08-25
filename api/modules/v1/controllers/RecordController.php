@@ -22,8 +22,8 @@ class RecordController extends ApiactiveController
         $this->isLogin();
         $tagIds = $this->input('post.tids', '',1);
         $tagArr = explode(',', $tagIds);
-        if(count($tagArr)>5){
-            $this->resultError('只能添加五个标签哦');
+        if(count($tagArr)>10){
+            $this->resultError('只能添加十个标签哦');
         }
         $account = $this->input('post.account', 0);
         if($account < 0){

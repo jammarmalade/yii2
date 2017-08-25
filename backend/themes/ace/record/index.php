@@ -1,8 +1,9 @@
 <?php
-
+use backend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\jui\DatePicker;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\RecordSearch */
@@ -11,6 +12,20 @@ use yii\jui\DatePicker;
 $this->title = '收支记录';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style type="text/css">
+    .add-tag{
+        cursor: pointer;
+    }
+    .tag-search{
+        position: static;
+        display: none;
+    }
+    .close-search-area{
+        margin-left: 10px;
+        font-size: 14px;
+    }
+    
+</style>
 <div class="record-index">
     <div class="tabbable">
         <ul class="nav nav-tabs">
@@ -27,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </a>
             </li>
         </ul>
-
+        
         <div class="tab-content">
             <div id="list" class="tab-pane in active">
                 <p>
@@ -96,10 +111,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         [
                             'label' => '标签',
+                            'format' => 'raw',
                             'value' => function($model){
                                 $res = $model->getTag($model->id);
-                                $str = join('，',array_column($res, 'name'));
-                                return $str;
+                                $html = '<div class="show-tag-area" data-rid="'.$model->id.'">';
+                                foreach($res as $k=>$v){
+                                    $tmpUrl = Url::to(['record/ajaxdeletetag']);
+                                    $html .= '<span class="tag"><m>'.$v['name'].'</m><button type="button" class="close delete-tag" data-rid="'.$model->id.'" data-tagid="'.$v['id'].'" data-href="'.$tmpUrl.'">×</button></span>';
+                                }
+                                $html .= '</div>';
+                                //新增
+                                $html .= '<span class="label label-lg label-pink arrowed-right add-tag">新增</span>';
+                                //输入域
+                                $html .= '<div class="nav-search tag-search"><span class="tags-search-area input-icon"><input type="text" class="nav-search-input input-search-tag" placeholder="搜索标签" autocomplete="off"><i class="icon-search nav-search-icon"></i></span><a class="close-search-area label label-lg label-pink arrowed-right" href="javascript:;">完成</a></div>';
+                                return $html;
                             }
                         ],
                         [
@@ -136,6 +161,11 @@ $this->params['breadcrumbs'][] = $this->title;
     
 
 </div>
+<div id="dialog-confirm" class="hide">
+    <p class="bigger-110 bolder center grey">
+        确认去掉标签？
+    </p>
+</div>
 <?php $this->beginBlock("index") ?>
 jQuery(document).ready(function () {
     $("#time_create_from,#time_create_to").tooltip({
@@ -144,6 +174,151 @@ jQuery(document).ready(function () {
             delay: 250
         }
     });
+    $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+        _title: function(title) {
+            var $title = this.options.title || '&nbsp;'
+            if( ("title_html" in this.options) && this.options.title_html == true )
+                title.html($title);
+            else title.text($title);
+        }
+    }));
+    $(".delete-tag").on('click', function(e) {
+        deleteTag($(this),e);
+    });
+    function deleteTag(_this,e){
+        e.preventDefault();
+        var tagid = _this.attr('data-tagid');
+        if(tagid==0){
+            alert('请刷新再试');
+            return false;
+        }
+        var recordid = _this.attr('data-rid');
+        var url = _this.attr('data-href');
+        var tmpdot = '?';
+        if(url.indexOf('?')!=-1){
+            tmpdot = '&';
+        }
+        url += tmpdot+'id='+recordid+'&tagid='+tagid;
+        $( "#dialog-confirm" ).removeClass('hide').dialog({
+            resizable: false,
+            modal: true,
+            title: "<div class='widget-header widget-header-small'><h4 class='smaller'>提示</h4></div>",
+            title_html: true,
+            buttons: [
+                {
+                    html: "<i class='icon-remove bigger-110'></i>&nbsp; 取消",
+                    class : "btn btn-xs",
+                    click: function() {
+                        $( this ).dialog( "close" );
+                    }
+                },{
+                    html: "<i class='icon-trash bigger-110'></i>&nbsp; 删除",
+                    class: "btn btn-danger btn-xs",
+                    click: function() {
+                        var dialogDom = $( this );
+                        $.get(url,function(d){
+                            if(d.status){
+                                _this.parents('span').remove();
+                                dialogDom.dialog( "close" );
+                            }else{
+                                alert(d.msg);
+                            }
+                        },'json')
+                    }
+                }
+            ]
+        });
+    }
+    //显示搜索域
+    $('.add-tag').on('click',function(){
+        $(this).next().show();
+        $(this).hide();
+    })
+    //显示增加按钮
+    $('.close-search-area').on('click',function(){
+        $(this).parent('div').prev().show();
+        $(this).parent('div').hide();
+    })
+    //绑定搜索
+    $('.input-search-tag').autocomplete({
+        minLength: 1,
+        source: '<?php echo Url::to(['tag/search']);?>',
+        focus: function() {
+          // 防止在获得焦点时插入值
+          return false;
+        },
+        select: function(e, ui) {
+            event.preventDefault(); 
+            
+            var tagid = ui.item.value;
+            var tagname = ui.item.label;
+            
+            if (tagid == -1 || tagid == -2) {
+                return false;
+            }
+            //若是新增标签
+            if(tagid==0){
+                var arr = tagname.split(' ');
+                if(arr[0] =='创建' && arr[(arr.length - 1)]=='标签'){
+                    arr.splice(0,1);
+                    arr.splice((arr.length - 1),1);
+                }
+                tagname = arr.join(' ')
+            }
+            var length = mb_strlen(tagname);
+            if (length > 30) {
+                alert('标签长度只能是20个字符或10个汉字');
+                return false;
+            }
+            var showTagArea = $(this).parents('div').prev().prev();
+            var rid = showTagArea.attr('data-rid');
+            var errortitle = '';
+            showTagArea.find('m').each(function () {
+                if (tagname == $(this).text()) {
+                    errortitle = '该标签已存在';
+                    return false;
+                }
+            });
+            showTagArea.find('button').each(function () {
+                if (tagid == $(this).attr('data-tagid')) {
+                    errortitle = '该标签已存在';
+                    return false;
+                }
+            });
+            if (errortitle != '') {
+                alert(errortitle);
+                return false;
+            }
+            
+            //添加关系
+            $.post('<?php echo Url::to(['record/addrelation']);?>',{'rid': rid,'tagid': tagid,'tagname': tagname},function(d){
+                if(d.status){
+                    tagid = d.data;
+                    var url = '<?php echo Url::to(['record/ajaxdeletetag']);?>';
+                    var taghtml = '<span class="tag"><m>'+tagname+'</m><button type="button" class="close delete-tag" data-rid="'+rid+'" data-tagid="'+tagid+'" data-href="'+url+'">×</button></span>';
+                    showTagArea.append(taghtml);
+                    $(".delete-tag").unbind('click').on('click', function(e) {
+                        deleteTag($(this),e);
+                    });
+                }else{
+                    alert(d.msg);
+                }
+            },'json')
+            this.value = '';
+            return false;
+        }
+    }).data("ui-autocomplete")._renderItem = function( ul, item ) {
+        console.log(item.value);
+        var html = '<span>' + item.label + '</span>';
+        if (item.value == -1) {
+            html = '<span>' + item.label + '　正在审核</span>';
+        }
+        if (item.value == -2) {
+            html =  '<span>请使用已存在的标签</span>';
+        }
+        return $("<li>").append(html).appendTo( ul );
+    };
+    
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>

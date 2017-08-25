@@ -120,4 +120,30 @@ class TagController extends AdminController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    //搜索标签
+    public function actionSearch(){
+        $q = Yii::$app->request->get('term');
+        $returnData = Tag::searchTag($q);
+        $add = 1;
+        $data = [];
+        foreach($returnData as $k=>$v){
+            $tmp['value'] = $v['id'];
+            $tmp['label'] = $v['name'];
+            $data[] = $tmp;
+            if($v['name']==$q){
+                $add = 0;
+                break;
+            }
+        }
+        if($add){
+            $tmp = [
+                'value' => "0",
+                'label' => '创建 '.$q.' 标签',
+            ];
+            array_unshift($data,$tmp);
+        }
+	echo json_encode($data);
+	exit();
+    }
 }

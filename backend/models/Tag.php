@@ -78,6 +78,9 @@ class Tag extends \yii\db\ActiveRecord
     }
     //模糊搜索标签
     public static function searchTag($q){
+        if(!$q){
+            return [];
+        }
         $rows = Tag::find()
             ->where("status=:status and `name` like :keyword")
             ->addParams([':status'=>1,':keyword'=>"%$q%"])

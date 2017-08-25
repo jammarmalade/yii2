@@ -75,10 +75,10 @@ class TagController extends ApiactiveController
         //若是登录
         if($this->uid){
             //查询最近使用的标签
-            $lastUseTag = TagRecord::find()->where('uid = '.$this->uid)->select('tid')->limit(5)->asArray()->orderBy('create_time DESC')->all();
+            $lastUseTag = TagRecord::find()->where('uid = '.$this->uid)->select('tid')->limit(30)->asArray()->orderBy('create_time DESC')->all();
             $tagIdList = array_column($lastUseTag, 'tid');
         }
-        $tmpCount = 10 - count($tagIdList);//推荐十个
+        $tmpCount = 40 - count($tagIdList);//推荐40个
         if($tmpCount > 0){
             //查询系统推荐标签
             $tmpList = Tag::getRecommendTag($tmpCount);
