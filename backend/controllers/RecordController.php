@@ -166,4 +166,23 @@ class RecordController extends AdminController
             return $this->ajaxReturn('', '已存在该标签关系', false);
         }
     }
+    //统计
+    public function actionStatistics(){
+        
+        //默认获取本月数据
+        $uid = Yii::$app->user->identity->id;
+        $startDate = date('Y-m-01');
+        $nextMouth = date('n')+1;
+        $endDate = date("Y-$nextMouth-01");
+        $data = Record::find()->where("uid=:uid AND date BETWEEN :startDate AND :endDate")
+            ->addParams([':uid'=>$uid,':startDate'=>$startDate,':endDate'=>$endDate])
+            ->asArray()
+            ->all();
+        $dateArr = func::rangDate($startDate, $endDate);
+//        func::printarr($dateArr);
+        
+        return $this->render('statistics', [
+            'data' => $data,
+        ]);
+    }
 }

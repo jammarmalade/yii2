@@ -64,5 +64,21 @@ class Functions {
         }
         return $hash;
     }
+    /**
+     * 返回两个日期间的所有日期
+     * @param type $start   开始时间 2017-08-25
+     * @param type $end     结束时间 2017-08-25
+     * @return array
+     */
+    public static function rangDate($start, $end) {
+        $dt_start = strtotime($start);
+        $dt_end = strtotime($end);
+        $date = [];
+        while ($dt_start <= $dt_end) {
+            $date[] = date('m-d', $dt_start);
+            $dt_start = strtotime('+1 day', $dt_start);
+        }
+        return $date;
+    }
 
 }

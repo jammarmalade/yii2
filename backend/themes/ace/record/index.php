@@ -1,5 +1,5 @@
 <?php
-use backend\assets\AppAsset;
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\jui\DatePicker;
@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]); ?>
             </div>
-
+            
             <div id="search" class="tab-pane">
                 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
             </div>
