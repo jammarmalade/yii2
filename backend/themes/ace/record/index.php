@@ -239,86 +239,88 @@ jQuery(document).ready(function () {
         $(this).parent('div').prev().show();
         $(this).parent('div').hide();
     })
-    //绑定搜索
-    $('.input-search-tag').autocomplete({
-        minLength: 1,
-        source: '<?php echo Url::to(['tag/search']);?>',
-        focus: function() {
-          // 防止在获得焦点时插入值
-          return false;
-        },
-        select: function(e, ui) {
-            event.preventDefault(); 
-            
-            var tagid = ui.item.value;
-            var tagname = ui.item.label;
-            
-            if (tagid == -1 || tagid == -2) {
-                return false;
-            }
-            //若是新增标签
-            if(tagid==0){
-                var arr = tagname.split(' ');
-                if(arr[0] =='创建' && arr[(arr.length - 1)]=='标签'){
-                    arr.splice(0,1);
-                    arr.splice((arr.length - 1),1);
-                }
-                tagname = arr.join(' ')
-            }
-            var length = mb_strlen(tagname);
-            if (length > 30) {
-                alert('标签长度只能是20个字符或10个汉字');
-                return false;
-            }
-            var showTagArea = $(this).parents('div').prev().prev();
-            var rid = showTagArea.attr('data-rid');
-            var errortitle = '';
-            showTagArea.find('m').each(function () {
-                if (tagname == $(this).text()) {
-                    errortitle = '该标签已存在';
+    //若有数据
+    if($('.input-search-tag').length){
+        //绑定搜索
+        $('.input-search-tag').autocomplete({
+            minLength: 1,
+            source: '<?php echo Url::to(['tag/search']);?>',
+            focus: function() {
+              // 防止在获得焦点时插入值
+              return false;
+            },
+            select: function(e, ui) {
+                event.preventDefault(); 
+
+                var tagid = ui.item.value;
+                var tagname = ui.item.label;
+
+                if (tagid == -1 || tagid == -2) {
                     return false;
                 }
-            });
-            showTagArea.find('button').each(function () {
-                if (tagid == $(this).attr('data-tagid')) {
-                    errortitle = '该标签已存在';
+                //若是新增标签
+                if(tagid==0){
+                    var arr = tagname.split(' ');
+                    if(arr[0] =='创建' && arr[(arr.length - 1)]=='标签'){
+                        arr.splice(0,1);
+                        arr.splice((arr.length - 1),1);
+                    }
+                    tagname = arr.join(' ')
+                }
+                var length = mb_strlen(tagname);
+                if (length > 30) {
+                    alert('标签长度只能是20个字符或10个汉字');
                     return false;
                 }
-            });
-            if (errortitle != '') {
-                alert(errortitle);
+                var showTagArea = $(this).parents('div').prev().prev();
+                var rid = showTagArea.attr('data-rid');
+                var errortitle = '';
+                showTagArea.find('m').each(function () {
+                    if (tagname == $(this).text()) {
+                        errortitle = '该标签已存在';
+                        return false;
+                    }
+                });
+                showTagArea.find('button').each(function () {
+                    if (tagid == $(this).attr('data-tagid')) {
+                        errortitle = '该标签已存在';
+                        return false;
+                    }
+                });
+                if (errortitle != '') {
+                    alert(errortitle);
+                    return false;
+                }
+
+                //添加关系
+                $.post('<?php echo Url::to(['record/addrelation']);?>',{'rid': rid,'tagid': tagid,'tagname': tagname},function(d){
+                    if(d.status){
+                        tagid = d.data;
+                        var url = '<?php echo Url::to(['record/ajaxdeletetag']);?>';
+                        var taghtml = '<span class="tag"><m>'+tagname+'</m><button type="button" class="close delete-tag" data-rid="'+rid+'" data-tagid="'+tagid+'" data-href="'+url+'">×</button></span>';
+                        showTagArea.append(taghtml);
+                        $(".delete-tag").unbind('click').on('click', function(e) {
+                            deleteTag($(this),e);
+                        });
+                    }else{
+                        alert(d.msg);
+                    }
+                },'json')
+                this.value = '';
                 return false;
             }
-            
-            //添加关系
-            $.post('<?php echo Url::to(['record/addrelation']);?>',{'rid': rid,'tagid': tagid,'tagname': tagname},function(d){
-                if(d.status){
-                    tagid = d.data;
-                    var url = '<?php echo Url::to(['record/ajaxdeletetag']);?>';
-                    var taghtml = '<span class="tag"><m>'+tagname+'</m><button type="button" class="close delete-tag" data-rid="'+rid+'" data-tagid="'+tagid+'" data-href="'+url+'">×</button></span>';
-                    showTagArea.append(taghtml);
-                    $(".delete-tag").unbind('click').on('click', function(e) {
-                        deleteTag($(this),e);
-                    });
-                }else{
-                    alert(d.msg);
-                }
-            },'json')
-            this.value = '';
-            return false;
-        }
-    }).data("ui-autocomplete")._renderItem = function( ul, item ) {
-        console.log(item.value);
-        var html = '<span>' + item.label + '</span>';
-        if (item.value == -1) {
-            html = '<span>' + item.label + '　正在审核</span>';
-        }
-        if (item.value == -2) {
-            html =  '<span>请使用已存在的标签</span>';
-        }
-        return $("<li>").append(html).appendTo( ul );
-    };
-    
+        }).data("ui-autocomplete")._renderItem = function( ul, item ) {
+            console.log(item.value);
+            var html = '<span>' + item.label + '</span>';
+            if (item.value == -1) {
+                html = '<span>' + item.label + '　正在审核</span>';
+            }
+            if (item.value == -2) {
+                html =  '<span>请使用已存在的标签</span>';
+            }
+            return $("<li>").append(html).appendTo( ul );
+        };
+    }
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>
