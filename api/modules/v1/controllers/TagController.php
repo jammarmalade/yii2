@@ -84,10 +84,17 @@ class TagController extends ApiactiveController
             $tmpList = Tag::getRecommendTag($tmpCount);
             $tagIdList = array_merge($tagIdList, $tmpList);
         }
-        $tagIdList = array_unique($tagIdList);
+        $tagIdList = array_values(array_unique($tagIdList));
         //查询标签
-        $tagList = Tag::find()->where(['in','id' , $tagIdList])->select('id,name,img')->asArray()->all();
-        array_multisort($tagIdList, $tagList);
+        $resTagList = Tag::find()->where(['in','id' , $tagIdList])->select('id,name,img')->asArray()->all();
+        $tagList = [];
+        foreach ($tagIdList as $tmpid) {
+            foreach ($resTagList as $v) {
+                if ($v['id'] == $tmpid) {
+                    $tagList[] = $v;
+                }
+            }
+        }
         return $this->result($tagList);
     }
 }
