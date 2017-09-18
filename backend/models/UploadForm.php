@@ -59,6 +59,7 @@ class UploadForm extends Model {
                 $imageInfo['filename'] = $this->imageFile->name;
                 $imageInfo['size'] = $this->imageFile->size;
                 //获取图片 exif 信息
+                
                 $exif = $this->getExif($savePath);
                 if($exif){
                     $imageInfo['exif'] = json_encode($exif);
@@ -131,7 +132,10 @@ class UploadForm extends Model {
      */
     private function getExif($path){
         if (extension_loaded('exif') && extension_loaded('mbstring')) {
-            return exif_read_data($path, "EXIF");
+            getimagesize($path,$tempInfo);
+            if(function_exists('exif_read_data') && isset($tempInfo['APP1']) && substr($tempInfo['APP1'], 0, 4)=='Exif'){
+                return exif_read_data($path, "EXIF");
+            }
         }
         return ;
     }

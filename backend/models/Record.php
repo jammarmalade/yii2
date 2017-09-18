@@ -16,6 +16,7 @@ use backend\models\Tag;
  * @property integer $type
  * @property string $content
  * @property integer $imgstatus
+ * @property string $address
  * @property double $longitude
  * @property double $latitude
  * @property string $weather
@@ -46,7 +47,7 @@ class Record extends \yii\db\ActiveRecord
             [['uid', 'username', 'account', 'type'], 'required'],
             [['uid', 'type', 'imgstatus','status'], 'integer'],
             [['account', 'longitude', 'latitude'], 'number'],
-            [['content'], 'string'],
+            [['content','address'], 'string'],
             [['time_create','date'], 'safe'],
             [['username'], 'string', 'max' => 15],
             [['weather'], 'string', 'max' => 100],
@@ -67,6 +68,7 @@ class Record extends \yii\db\ActiveRecord
             'type' => '金额类型，0没有消费，1支出，2收入',
             'content' => '描述',
             'imgstatus' => '是否有图片',
+            'address' => '记录地点',
             'longitude' => '经度',
             'latitude' => '纬度',
             'weather' => '天气',

@@ -146,4 +146,25 @@ class TagController extends AdminController
 	echo json_encode($data);
 	exit();
     }
+    //新增标签
+    public function actionAdd(){
+        $tagname = Yii::$app->request->post('tagname');
+        //新增标签
+        if($info = Tag::findOne(['name'=>$tagname])){
+            return $this->ajaxReturn($tagname, '该标签已存在', false);
+        }
+        $model = new Tag();
+        $model->setAttribute('uid', Yii::$app->user->identity->id);
+        $model->setAttribute('name', $tagname);
+        $model->setAttribute('username', Yii::$app->user->identity->username);
+        $model->setAttribute('time_create', $this->formatTime );
+        $model->setAttribute('time_update', $this->formatTime );
+        $model->setAttribute('status', 1);
+        if($model->save(false)){
+            $tagid = $model->id;
+            return $this->ajaxReturn($tagid, '增加标签成功', true);
+        }else{
+            return $this->ajaxReturn($tagname, '增加标签失败', false);
+        }
+    }
 }

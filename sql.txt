@@ -1,0 +1,3 @@
+-- 记录表添加地址字段
+ALTER TABLE `t_record`
+ADD COLUMN `address`  varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '记录地址' AFTER `imgstatus`;

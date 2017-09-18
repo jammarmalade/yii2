@@ -190,7 +190,7 @@ class RecordController extends AdminController
         $startDate = "$chooseYear-$startMouth-01";
         $endDate = date("$chooseYear-$endMouth-t",strtotime("$chooseYear-$endMouth"));
         //记录信息
-        $recordData = Record::find()->where("uid=:uid AND date BETWEEN :startDate AND :endDate")
+        $recordData = Record::find()->where("uid=:uid AND type!=0 AND date BETWEEN :startDate AND :endDate")
             ->addParams([':uid'=>$uid,':startDate'=>$startDate,':endDate'=>$endDate])
             ->orderBy('time_create DESC')
             ->asArray()
