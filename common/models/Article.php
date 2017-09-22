@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "t_article".
  *
  * @property string $id
+ * @property string $sid
  * @property string $uid
  * @property string $username
  * @property string $subject
@@ -15,6 +16,7 @@ use Yii;
  * @property string $like
  * @property string $view
  * @property string $comment
+ * @property string $view_auth
  * @property string $image_id
  * @property integer $status
  * @property string $time_update
@@ -56,6 +58,7 @@ class Article extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'sid' => '加密ID',
             'uid' => '用户id',
             'username' => '用户名',
             'subject' => '文章标题',
@@ -63,6 +66,7 @@ class Article extends \yii\db\ActiveRecord
             'like' => '点赞数',
             'view' => '查看数',
             'comment' => '评论数',
+            'view_auth' => '查看密码',
             'image_id' => '内容第一张图片的id',
             'status' => '状态，1正常，2删除',
             'time_update' => '更新时间',

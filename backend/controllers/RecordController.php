@@ -205,7 +205,7 @@ class RecordController extends AdminController
                 ->asArray()
                 ->all();
             //按照记录分组
-            $tagids = '';
+            $tagids = [];
             foreach($tagRecordData as $k=>$v){
                 $tagids[] = $v['tid'];
                 $recordTag[$v['rid']][] = $v['tid'];

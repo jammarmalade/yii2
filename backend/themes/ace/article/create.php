@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = ['label' => '文章列表', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
-    #content_area,#tag_area{
+    #content_area,#tag_area,#submit_area,#auth_area{
         margin-top: 10px;
     }
     #tag_show_area{
@@ -47,27 +47,50 @@ $this->params['breadcrumbs'][] = $this->title;
     .input-icon{
         margin-bottom: 5px;
     }
+    #submit_area{
+        text-align: center;
+    }
+    #view_auth{
+        width:30%;
+    }
+    #old_content{
+        display: none;
+    }
 </style>
 <div class="article-create">
     <h1><?= Html::encode($this->title) ?></h1>
-    <input type="text" class="form-control" id="subject" placeholder="文章标题">
+    <input type="text" class="form-control" id="subject" placeholder="文章标题" value="<?=$articleInfo['subject']?>">
     <div id="content_area">
         <div id="editor"></div>
+        <div id="old_content"><?=$articleInfo['content']?></div>
     </div>
     <div id="tag_area" class="boot-input">
         <div id="tag_show_area">
-            <span class="tag"><m>上班</m><button type="button" class="close delete-tag" data-tagid="51">×</button></span>
+            <?php foreach($tagList as $k=>$v){?>
+                <span class="tag"><m><?=$v['tagname']?></m><button type="button" class="close delete-tag" data-tagid="<?=$v['tid']?>">×</button></span>
+            <?php }?>
         </div>
         <span class="input-icon">
             <input type="text" placeholder="搜索标签" class="nav-search-input" id="search_tag_input" autocomplete="off">
             <i class="icon-search nav-search-icon"></i>
         </span>
     </div>
+    <div id="auth_area">
+        <input type="text" class="form-control" id="view_auth" placeholder="查看密码" value="<?=$articleInfo['view_auth']?>">
+    </div>
+    <div id="submit_area">
+        <input type="hidden" value="<?=$articleInfo['id']?>" id="aid">
+        <button class="btn btn-success" id="submit">提交</button>
+    </div>
 </div>
 
 <?php $this->beginBlock("index") ?>
 jQuery(document).ready(function () {
-    //var ue = UE.getEditor('editor');
+    var ue = UE.getEditor('editor');
+    ue.ready(function() { 
+        ue.setContent($('#old_content').html()); 
+    });
+    
     //绑定搜索
     $('#search_tag_input').autocomplete({
         minLength: 1,
@@ -96,7 +119,7 @@ jQuery(document).ready(function () {
             }
             var length = mb_strlen(tagname);
             if (length > 30) {
-                alert('标签长度只能是20个字符或10个汉字');
+                showMsg('标签长度只能是20个字符或10个汉字');
                 return false;
             }
             var showTagArea = $('#tag_show_area');
@@ -107,29 +130,51 @@ jQuery(document).ready(function () {
                     return false;
                 }
             });
+            var tagCount = 0;
             showTagArea.find('button').each(function () {
+                ++tagCount;
                 if (tagid == $(this).attr('data-tagid')) {
                     errortitle = '该标签已存在';
                     return false;
                 }
             });
             if (errortitle != '') {
-                alert(errortitle);
+                showMsg(errortitle);
                 return false;
             }
-            $.post('<?php echo Url::to(['tag/add']);?>',{'tagname': tagname},function(d){
-                if(d.status){
-                    tagid = d.data;
-                    var html = '<span class="tag"><m>'+tagname+'</m><button type="button" class="close delete-tag" data-tagid="'+tagid+'">×</button></span>';
-                    showTagArea.append(html);
-                    //绑定删除
-                    $(".delete-tag").unbind('click').on('click', function(e) {
-                        deleteTag($(this),e);
-                    });
-                }else{
-                    alert(d.msg);
-                }
-            },'json')
+            if(tagCount >= 10){
+                showMsg('最多添加十个标签');
+                return false;
+            }
+            var addStatus = false;
+            if(tagid==0){
+                $.ajax({  
+                    type : "post",  
+                    url : "<?php echo Url::to(['tag/add']);?>",  
+                    data : {'tagname': tagname},  
+                    async : false,
+                    dataType : 'json',
+                    success : function(d){  
+                       if(d.status){
+                            addStatus = true;
+                            tagid = d.data;
+                        }else{
+                            showMsg(d.msg);
+                        }
+                    }  
+                }); 
+            }else{
+                addStatus = true;
+            }
+            if(!addStatus){
+                return false;
+            }
+            var html = '<span class="tag"><m>'+tagname+'</m><button type="button" class="close delete-tag" data-tagid="'+tagid+'">×</button></span>';
+            showTagArea.append(html);
+            //绑定删除
+            $(".delete-tag").unbind('click').on('click', function(e) {
+                deleteTag($(this),e);
+            });
             this.value = '';
             return false;
         }
@@ -151,6 +196,40 @@ jQuery(document).ready(function () {
         e.preventDefault();
         _this.parent().remove();
     }
+    $('#submit').click(function(){
+        var aid = $('#aid').val();
+        var subject = $('#subject').val();
+        var content = ue.getContent();
+        var tagIds = [];
+        var viewAuth = $('#view_auth').val();
+        $('#tag_show_area').find('button').each(function () {
+            tagIds.push($(this).attr('data-tagid'));
+        });
+        if($.trim(subject)==''){
+            showMsg('标题不能为空');
+            return false;
+        }
+        if($.trim(content)==''){
+            showMsg('内容不能为空');
+            return false;
+        }
+        var tagCount = tagIds.length;
+        if(tagCount == 0){
+            showMsg('请添加标签');
+            return false;
+        }
+        if(tagCount > 10){
+            showMsg('最多添加十个标签');
+            return false;
+        }
+        $.post("<?php echo Url::to(['article/create']);?>",{'aid': aid,'type': 'submit','subject': subject,'content': content,'tagIds': tagIds,'viewAuth': viewAuth},function(d){
+            if(d.status){
+                window.location.href = '<?php echo Url::to(['article/index']);?>';
+            }else{
+                showMsg(d.msg);
+            }
+        },'json')
+    })
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>

@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                        );
                     },
                     'update' => function($url, $model, $key){
-                       return Html::a('修改',['update', 'id' => $key], ['class' => 'btn btn-sm btn-success',]
+                       return Html::a('修改',['create', 'id' => $key], ['class' => 'btn btn-sm btn-success',]
                        );
                     },
                     'delete' => function($url, $model, $key){
