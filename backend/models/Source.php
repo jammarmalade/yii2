@@ -83,6 +83,9 @@ class Source extends \yii\db\ActiveRecord {
             'fuli.asia' => '宅福利2',
             'zhaofuli.in' => '宅福利3',
             'zhaofuli.mobi' => '宅福利4',
+            'zhaifuli.xyz' => '宅福利5',
+            'yxpjw.vip' => '宅福利6',
+            'yxpjw.me' => '宅福利7',
         ];
     }
 

@@ -14,7 +14,7 @@ use backend\models\SourceImage;
 
 class SourceController extends ApiactiveController {
 
-    public $nameZfl = 'zhaofuli.mobi';
+    public $nameZfl = 'yxpjw.me';
 
     /**
      * 获取列表
@@ -303,8 +303,8 @@ class SourceController extends ApiactiveController {
     public function actionAddpage(){
         include_once \Yii::getAlias("@app") . '/common/simple_html_dom.php';
         
-        $url = 'http://zhaofuli.biz/MiiTao/list_12_1.html';
-        $html = Functions::curlZFL($url);
+        $url = 'http://yxpjw.me/page/8.html';
+        $html = Functions::curlZFL($url,'http://'.$this->nameZfl.'/',$this->nameZfl);
         $dom = new \simple_html_dom();
         $dom->load($html);
         $list = $dom->find('article[class^=excerpt]');
@@ -314,16 +314,17 @@ class SourceController extends ApiactiveController {
             $tmp = [];
             $tmp['name'] = $this->nameZfl;
             $url = $item->find('h2 a')[0]->attr['href'];
+            //获取sid
+            preg_match('#/(\d+)\.html#', $url, $m);
+            $tmp['sid'] = $m[1];
             //判断是否存在
-            $count = Source::find()->where(['surl'=>'http://'.$this->nameZfl . $url])->count();
+            $count = Source::find()->where(['sid'=>$tmp['sid']])->count();
             if($count){
                 echo $count.'<br>';
                 continue; 
             }
             $subject = $item->find('h2 a')[0]->text();
-            //获取sid
-            preg_match('#/(\d+)\.html#', $url, $m);
-            $tmp['sid'] = $m[1];
+            
             $tmp['surl'] = 'http://'.$this->nameZfl . $url;
             $tmp['subject'] = iconv('gb2312', 'utf-8//IGNORE', $subject);
             $tmp['time_create'] = $formatTime;
