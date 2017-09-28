@@ -28,13 +28,13 @@ class SignupForm extends Model {
             ['username', 'unique', 'targetClass' => '\backend\models\UserBackend', 'message' => '用户名已存在.'],
             ['username', 'match','pattern'=>'/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})a-zA-Z_\d]*$/u','message'=>'用户名由字母，汉字，数字，下划线组成，且不能以数字和下划线开头。'],
             // string 字符串，这里我们限定的意思就是username至少包含 5 个字符，最多 15 个字符
-            ['username', 'string', 'min' => 6, 'max' => 16],
+            ['username', 'string', 'min' => 5, 'max' => 16,'tooShort'=>'用户名至少包含五个字符'],
             
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required', 'message' => '邮箱不可以为空'],
             ['email', 'email'],
             ['email', 'string', 'max' => 32],
-            ['email', 'unique', 'targetClass' => '\backend\models\UserBackend', 'message' => 'email已经被设置了.'],
+            ['email', 'unique', 'targetClass' => '\backend\models\UserBackend', 'message' => 'email已存在'],
             ['password', 'required', 'message' => '密码不可以为空'],
             ['password', 'string', 'min' => 6, 'tooShort' => '密码至少填写6位'],
         ];

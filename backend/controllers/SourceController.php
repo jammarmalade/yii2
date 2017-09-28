@@ -28,7 +28,10 @@ class SourceController extends AdminController {
         foreach($dataProvider->getModels() as $v){
             $psid[] = $v->id;
         }
-        $imageList = SourceImage::find()->select('psid,path')->where(['psid'=>$psid])->groupBy('psid')->indexBy('psid')->all();
+        $imageList = [];
+        if($psid){
+            $imageList = SourceImage::find()->select('psid,path')->where(['psid'=>$psid])->groupBy('psid')->indexBy('psid')->all();
+        }
 
         return $this->render('index', [
                     'searchModel' => $searchModel,

@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\components;
+use yii;
 
 class Functions {
 
@@ -105,5 +106,12 @@ class Functions {
         array_multisort($key_array, $sort, $multi_array);
         return $multi_array;
     }
-
+    /**
+     * 关闭yii 的toolbar
+     */
+    public static function DebugToolbarOff() {
+        if (class_exists('\yii\debug\Module')) {
+            Yii::$app->view->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
+        }
+    }
 }

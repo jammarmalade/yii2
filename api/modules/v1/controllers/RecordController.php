@@ -42,6 +42,7 @@ class RecordController extends ApiactiveController
         $model->type = $type;
         $model->content = $content;
         $model->imgstatus = 0;
+        $model->address = $this->input('post.address', null);
         $model->longitude = $this->input('post.longitude', 0);
         $model->latitude = $this->input('post.latitude', 0);
         $model->weather = '';

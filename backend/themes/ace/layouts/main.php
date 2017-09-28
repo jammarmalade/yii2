@@ -30,6 +30,7 @@ AppAsset::addScript($this, 'jquery.mobile.custom.min.js');
 //AppAsset::addScript($this, 'jquery.slimscroll.min.js');//滚动条插件
 AppAsset::addScript($this, 'ace-elements.min.js');
 AppAsset::addScript($this, 'ace.min.js');
+AppAsset::addScript($this, 'layui/layui.js');
 AppAsset::addScript($this, 'common.js');
 
 

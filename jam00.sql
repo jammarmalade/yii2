@@ -1,19 +1,71 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50617
-Source Host           : localhost:3306
+Source Server         : linux-136
+Source Server Version : 50542
+Source Host           : 192.168.1.136:3306
 Source Database       : jam00
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50542
 File Encoding         : 65001
 
-Date: 2017-07-27 18:12:36
+Date: 2017-09-28 18:05:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `t_article`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_article`;
+CREATE TABLE `t_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sid` varchar(32) DEFAULT NULL COMMENT '加密id',
+  `uid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `username` char(15) DEFAULT NULL COMMENT '用户名',
+  `subject` char(255) DEFAULT NULL COMMENT '文章标题',
+  `content` text COMMENT '文章内容',
+  `like` int(10) unsigned DEFAULT '0' COMMENT '点赞数',
+  `view` int(10) unsigned DEFAULT '0' COMMENT '查看数',
+  `comment` int(10) unsigned DEFAULT '0' COMMENT '评论数',
+  `view_auth` varchar(100) DEFAULT NULL COMMENT '查看密码，若有则需要输入查看密码才可查看',
+  `image_id` int(10) unsigned DEFAULT '0' COMMENT '内容第一张图片的id',
+  `status` tinyint(4) unsigned DEFAULT '1' COMMENT '状态，1正常，2删除',
+  `time_update` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `time_create` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `sid` (`sid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_article
+-- ----------------------------
+INSERT INTO `t_article` VALUES ('1', '0336012dceb183070fbb55102c875c98', '1', 'admin', '擦拭擦拭擦拭', '<p style=\"white-space: normal;\">完美那时的过去几</p><p style=\"white-space: normal;\">阿萨德拿到卡<span style=\"font-size: 18px;\"><em>死韩国</em></span>和法国</p><pre class=\"brush:php;toolbar:false\">&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;function&nbsp;addOrEdit(){\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\\backend\\components\\Functions::fput($_POST,1);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;ajaxReturn(&#39;&#39;,&nbsp;&#39;添加失败&#39;,&nbsp;false);\n&nbsp;&nbsp;&nbsp;&nbsp;}</pre><p style=\"white-space: normal;\">撒打扫打扫大<br/></p><p style=\"white-space: normal;\"><img src=\"http://img.baidu.com/hi/jx2/j_0063.gif\"/></p><p><br/></p>', '0', '0', '0', '123456', '0', '1', '2017-09-22 16:07:34', '2017-09-22 16:07:34');
+INSERT INTO `t_article` VALUES ('2', 'd2b3ebbcd72ed40749be44c7a4bbdf3f', '1', 'admin', '擦拭擦拭擦拭', '<p><br/></p><p style=\"white-space: normal;\">少时诵诗书xxxooooo<br/></p><p style=\"white-space: normal;\">少时诵诗书xxxooooo</p><p style=\"white-space: normal;\">[img]51[/img]</p><pre class=\"brush:php;toolbar:false\">public&nbsp;function&nbsp;actionCreate()&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$type&nbsp;=&nbsp;Yii::$app-&gt;request-&gt;post(&#39;type&#39;);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($type==&#39;submit&#39;)&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//执行修改或插入\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;addOrEdit();\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$id&nbsp;=&nbsp;Yii::$app-&gt;request-&gt;get(&#39;id&#39;);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$articleInfo&nbsp;=&nbsp;$tagList&nbsp;=&nbsp;[];\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if($id){\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$articleInfo&nbsp;=&nbsp;$this-&gt;findModel($id);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//查询标签\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$tagList&nbsp;=&nbsp;ArticleTag::find()-&gt;from(ArticleTag::tableName().&#39;&nbsp;as&nbsp;at&#39;)\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;join(&#39;LEFT&nbsp;JOIN&#39;,Tag::tableName().&#39;&nbsp;as&nbsp;t&#39;&nbsp;,&nbsp;&#39;t.id&nbsp;=&nbsp;at.tid&#39;)\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;where([&#39;at.aid&#39;=&gt;$id])-&gt;select(&#39;at.id,at.tid,t.name&nbsp;as&nbsp;tagname&#39;)-&gt;asArray()-&gt;all();\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;render(&#39;create&#39;,[\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;articleInfo&#39;&nbsp;=&gt;&nbsp;$articleInfo,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;tagList&#39;&nbsp;=&gt;&nbsp;$tagList,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]);\n&nbsp;&nbsp;&nbsp;&nbsp;}</pre><p><br/></p><p>[img]44[/img]</p><p>sdbashkdasda阿萨德百脑汇卡死</p><p>ad马上就可大叔大妈哪里吗</p><p>[img]42[/img]</p><p><br/></p><p><br/></p><p><img width=\"800\" height=\"340\" src=\"http://api.map.baidu.com/staticimage?center=116.40515,39.922526&zoom=14&width=800&height=340&markers=116.404,39.915\"/></p><p><br/></p><p>动态图测试</p><p><iframe src=\"http://test.jam00.com/static/js/ueditor/dialogs/map/show.html#center=116.403497,39.920492&zoom=16&width=800&height=340&markers=116.404,39.915&markerStyles=l,A\" frameborder=\"0\" width=\"804\" height=\"344\"></iframe></p>', '0', '0', '0', '123456', '51', '1', '2017-09-27 17:38:19', '2017-09-22 16:08:27');
+
+-- ----------------------------
+-- Table structure for `t_article_tag`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_article_tag`;
+CREATE TABLE `t_article_tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned DEFAULT NULL COMMENT '用户id',
+  `tid` int(10) unsigned DEFAULT NULL COMMENT '标签id',
+  `aid` int(10) unsigned DEFAULT NULL COMMENT '文章id',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `aid` (`aid`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='文章标签关系表';
+
+-- ----------------------------
+-- Records of t_article_tag
+-- ----------------------------
+INSERT INTO `t_article_tag` VALUES ('1', '1', '65', '1', '2017-09-22 16:07:34');
+INSERT INTO `t_article_tag` VALUES ('4', '1', '147', '2', '2017-09-22 16:08:27');
+INSERT INTO `t_article_tag` VALUES ('8', '1', '4', '2', '2017-09-22 18:01:18');
+INSERT INTO `t_article_tag` VALUES ('10', '1', '40', '2', '2017-09-25 09:44:36');
+INSERT INTO `t_article_tag` VALUES ('12', '1', '145', '2', '2017-09-25 09:57:09');
 
 -- ----------------------------
 -- Table structure for `t_auth_assignment`
@@ -30,8 +82,10 @@ CREATE TABLE `t_auth_assignment` (
 -- ----------------------------
 -- Records of t_auth_assignment
 -- ----------------------------
+INSERT INTO `t_auth_assignment` VALUES ('debug性能', '1', '1501578282');
 INSERT INTO `t_auth_assignment` VALUES ('图片管理员', '1', '1482287112');
 INSERT INTO `t_auth_assignment` VALUES ('收支记录管理员', '1', '1482220109');
+INSERT INTO `t_auth_assignment` VALUES ('文章管理员', '1', '1505457777');
 INSERT INTO `t_auth_assignment` VALUES ('普通用户', '2', '1481275395');
 INSERT INTO `t_auth_assignment` VALUES ('权限管理', '1', '1481088568');
 INSERT INTO `t_auth_assignment` VALUES ('标签管理员', '1', '1482131140');
@@ -111,6 +165,13 @@ INSERT INTO `t_auth_item` VALUES ('/admin/rule/error', '2', null, null, null, '1
 INSERT INTO `t_auth_item` VALUES ('/admin/rule/index', '2', null, null, null, '1481088228', '1481088228');
 INSERT INTO `t_auth_item` VALUES ('/admin/rule/update', '2', null, null, null, '1481088228', '1481088228');
 INSERT INTO `t_auth_item` VALUES ('/admin/rule/view', '2', null, null, null, '1481088228', '1481088228');
+INSERT INTO `t_auth_item` VALUES ('/article/*', '2', null, null, null, '1505455569', '1505455569');
+INSERT INTO `t_auth_item` VALUES ('/article/create', '2', null, null, null, '1505455569', '1505455569');
+INSERT INTO `t_auth_item` VALUES ('/article/delete', '2', null, null, null, '1505455569', '1505455569');
+INSERT INTO `t_auth_item` VALUES ('/article/error', '2', null, null, null, '1505455569', '1505455569');
+INSERT INTO `t_auth_item` VALUES ('/article/index', '2', null, null, null, '1505455569', '1505455569');
+INSERT INTO `t_auth_item` VALUES ('/article/update', '2', null, null, null, '1505455569', '1505455569');
+INSERT INTO `t_auth_item` VALUES ('/article/view', '2', null, null, null, '1505455569', '1505455569');
 INSERT INTO `t_auth_item` VALUES ('/debug/*', '2', null, null, null, '1480917614', '1480917614');
 INSERT INTO `t_auth_item` VALUES ('/gii/*', '2', null, null, null, '1480917242', '1480917242');
 INSERT INTO `t_auth_item` VALUES ('/image/*', '2', null, null, null, '1482287047', '1482287047');
@@ -125,6 +186,7 @@ INSERT INTO `t_auth_item` VALUES ('/record/create', '2', null, null, null, '1482
 INSERT INTO `t_auth_item` VALUES ('/record/delete', '2', null, null, null, '1482220031', '1482220031');
 INSERT INTO `t_auth_item` VALUES ('/record/error', '2', null, null, null, '1482220030', '1482220030');
 INSERT INTO `t_auth_item` VALUES ('/record/index', '2', null, null, null, '1482220031', '1482220031');
+INSERT INTO `t_auth_item` VALUES ('/record/statistics', '2', null, null, null, '1482220031', '1482220031');
 INSERT INTO `t_auth_item` VALUES ('/record/update', '2', null, null, null, '1482220031', '1482220031');
 INSERT INTO `t_auth_item` VALUES ('/record/view', '2', null, null, null, '1482220031', '1482220031');
 INSERT INTO `t_auth_item` VALUES ('/site/error', '2', null, null, null, '1481180469', '1481180469');
@@ -153,11 +215,14 @@ INSERT INTO `t_auth_item` VALUES ('/user-backend/signup', '2', null, null, null,
 INSERT INTO `t_auth_item` VALUES ('/user-backend/update', '2', null, null, null, '1481179458', '1481179458');
 INSERT INTO `t_auth_item` VALUES ('/user-backend/view', '2', null, null, null, '1481179458', '1481179458');
 INSERT INTO `t_auth_item` VALUES ('debug使用', '2', null, null, null, '1480917590', '1480917590');
+INSERT INTO `t_auth_item` VALUES ('debug性能', '1', null, null, null, '1501578243', '1501578243');
 INSERT INTO `t_auth_item` VALUES ('gii操作', '2', null, null, null, '1480917377', '1480917377');
 INSERT INTO `t_auth_item` VALUES ('图片管理', '2', null, null, null, '1482287061', '1482287061');
 INSERT INTO `t_auth_item` VALUES ('图片管理员', '1', null, null, null, '1482287090', '1482287090');
 INSERT INTO `t_auth_item` VALUES ('收支记录管理', '2', null, null, null, '1482220053', '1482220053');
 INSERT INTO `t_auth_item` VALUES ('收支记录管理员', '1', null, null, null, '1482220088', '1482220088');
+INSERT INTO `t_auth_item` VALUES ('文章管理', '2', null, null, null, '1505456227', '1505456227');
+INSERT INTO `t_auth_item` VALUES ('文章管理员', '1', '管理文章', null, null, '1505456591', '1505456591');
 INSERT INTO `t_auth_item` VALUES ('普通权限', '2', '只能登录退出和浏览首页', null, null, '1481180537', '1481180581');
 INSERT INTO `t_auth_item` VALUES ('普通用户', '1', null, null, null, '1481180508', '1481180508');
 INSERT INTO `t_auth_item` VALUES ('权限管理', '2', null, null, null, '1480904719', '1480904719');
@@ -187,6 +252,13 @@ CREATE TABLE `t_auth_item_child` (
 -- Records of t_auth_item_child
 -- ----------------------------
 INSERT INTO `t_auth_item_child` VALUES ('权限管理', '/admin/*');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/*');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/create');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/delete');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/error');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/index');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/update');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理', '/article/view');
 INSERT INTO `t_auth_item_child` VALUES ('debug使用', '/debug/*');
 INSERT INTO `t_auth_item_child` VALUES ('gii操作', '/gii/*');
 INSERT INTO `t_auth_item_child` VALUES ('图片管理', '/image/*');
@@ -222,10 +294,12 @@ INSERT INTO `t_auth_item_child` VALUES ('标签管理', '/tag/index');
 INSERT INTO `t_auth_item_child` VALUES ('标签管理', '/tag/update');
 INSERT INTO `t_auth_item_child` VALUES ('标签管理', '/tag/view');
 INSERT INTO `t_auth_item_child` VALUES ('用户管理', '/user-backend/*');
+INSERT INTO `t_auth_item_child` VALUES ('debug性能', 'debug使用');
 INSERT INTO `t_auth_item_child` VALUES ('超级管理员', 'debug使用');
 INSERT INTO `t_auth_item_child` VALUES ('超级管理员', 'gii操作');
 INSERT INTO `t_auth_item_child` VALUES ('图片管理员', '图片管理');
 INSERT INTO `t_auth_item_child` VALUES ('收支记录管理员', '收支记录管理');
+INSERT INTO `t_auth_item_child` VALUES ('文章管理员', '文章管理');
 INSERT INTO `t_auth_item_child` VALUES ('普通用户', '普通权限');
 INSERT INTO `t_auth_item_child` VALUES ('浏览用户', '普通用户');
 INSERT INTO `t_auth_item_child` VALUES ('超级管理员', '普通用户');
@@ -5313,25 +5387,45 @@ DROP TABLE IF EXISTS `t_image`;
 CREATE TABLE `t_image` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `sid` int(10) unsigned DEFAULT '0' COMMENT '使用id，如文章id，记录id...',
   `username` char(15) DEFAULT NULL COMMENT '用户名',
   `filename` varchar(255) DEFAULT NULL COMMENT '文件名称',
   `path` varchar(255) DEFAULT NULL COMMENT '相对存放路径',
-  `type` tinyint(2) unsigned DEFAULT '0' COMMENT '图片类型，0未使用，1收支记录',
+  `type` tinyint(2) unsigned DEFAULT '0' COMMENT '图片类型，0文章，1收支记录',
   `size` int(10) unsigned DEFAULT '0' COMMENT '图片大小',
   `width` smallint(6) unsigned DEFAULT '0' COMMENT '图片宽度',
   `height` smallint(6) unsigned DEFAULT '0' COMMENT '图片高度',
+  `thumb` tinyint(2) unsigned DEFAULT '0' COMMENT '是否有缩略图，0没有，1有',
   `width_thumb` smallint(5) unsigned DEFAULT '0' COMMENT '缩略图宽度',
   `height_thumb` smallint(6) unsigned DEFAULT '0' COMMENT '缩略图高度',
   `exif` text COMMENT '图片的exif信息',
   `status` tinyint(2) unsigned DEFAULT '1' COMMENT '标签状态，0删除，1正常，2未使用',
   `time_create` datetime DEFAULT NULL COMMENT '上传时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='图片';
+  PRIMARY KEY (`id`),
+  KEY `sid` (`type`,`sid`) USING BTREE,
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='图片';
 
 -- ----------------------------
 -- Records of t_image
 -- ----------------------------
-INSERT INTO `t_image` VALUES ('1', '1', 'admin', 't.jpg', 'image/201612/22/154207p29e2yyhfc8t6xgf.jpg', '0', '283723', '1366', '768', '600', '338', null, '2', '2016-12-22 15:42:07');
+INSERT INTO `t_image` VALUES ('34', '1', '0', 'admin', '41.jpg', 'article/201709/27/160310uw3pk1dssksskuak.jpg', '0', '33348', '450', '264', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('35', '1', '0', 'admin', '404.png', 'article/201709/27/160310f96264fbn2zs9vn6.jpg', '0', '47146', '199', '202', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('36', '1', '0', 'admin', '1453716196_861132.jpg', 'article/201709/27/160310clljaorr90eay1a2.jpg', '0', '91571', '700', '500', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('37', '1', '0', 'admin', '1453716344_419314.jpg_300x300.jpg', 'article/201709/27/160310hiaaccoabd5lyatf.jpg', '0', '13105', '300', '224', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('38', '1', '0', 'admin', '1920×1200.png', 'article/201709/27/160310bcgieroi99a5ukop.jpg', '0', '399699', '1920', '1200', '1', '800', '500', null, '2', '2017-09-27 16:03:11');
+INSERT INTO `t_image` VALUES ('39', '1', '0', 'admin', '1454465677_295964.jpg', 'article/201709/27/160311uqxsubouqt0qbqba.jpg', '0', '29513', '460', '279', '0', '0', '0', null, '2', '2017-09-27 16:03:11');
+INSERT INTO `t_image` VALUES ('41', '1', '0', 'admin', 'd2.jpg', 'article/201709/27/160311za9c72kcq21l3bdh.jpg', '0', '129008', '1600', '900', '1', '800', '450', null, '2', '2017-09-27 16:03:12');
+INSERT INTO `t_image` VALUES ('42', '1', '2', 'admin', 'd1.jpg', 'article/201709/27/160312e75my5mam4eyyeam.jpg', '0', '93006', '1600', '900', '1', '800', '450', null, '1', '2017-09-27 16:03:12');
+INSERT INTO `t_image` VALUES ('43', '1', '0', 'admin', 'ewmcode.jpg', 'article/201709/27/160312qz40n7x2ghv660h6.jpg', '0', '12710', '135', '135', '0', '0', '0', null, '2', '2017-09-27 16:03:12');
+INSERT INTO `t_image` VALUES ('44', '1', '2', 'admin', 'desk.jpg', 'article/201709/27/160312qgqnlgqcdgcr2rt7.jpg', '0', '413768', '1600', '900', '1', '800', '450', null, '1', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('46', '1', '0', 'admin', 'LOGO-200.jpg', 'article/201709/27/160313s81hje144hh3fjd1.jpg', '0', '16922', '200', '200', '0', '0', '0', null, '2', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('48', '1', '0', 'admin', 's1.jpg', 'article/201709/27/160313fmzp3cs7orxcn00b.jpg', '0', '33061', '511', '301', '0', '0', '0', null, '2', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('49', '1', '0', 'admin', 's3.jpg', 'article/201709/27/160313c4hg0tghogq50480.jpg', '0', '12806', '320', '185', '0', '0', '0', null, '2', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('50', '1', '0', 'admin', 's2.jpg', 'article/201709/27/160313dd6qxhhcpbozlcbj.jpg', '0', '81499', '1021', '406', '1', '800', '319', null, '2', '2017-09-27 16:03:14');
+INSERT INTO `t_image` VALUES ('51', '1', '2', 'admin', 'IMG_0772-y.JPG', 'article/201709/27/160314c8khk8fssgzikxhf.jpg', '0', '1482071', '6000', '4000', '1', '800', '534', '{\"FileName\":\"160314c8khk8fssgzikxhf.jpg\",\"FileDateTime\":1506499398,\"FileSize\":1482071,\"FileType\":2,\"MimeType\":\"image\\/jpeg\",\"SectionsFound\":\"ANY_TAG, IFD0, THUMBNAIL, EXIF, GPS, INTEROP, MAKERNOTE\",\"COMPUTED\":{\"html\":\"width=\\\"6000\\\" height=\\\"4000\\\"\",\"Height\":4000,\"Width\":6000,\"IsColor\":1,\"ByteOrderMotorola\":0,\"CCDWidth\":\"22mm\",\"ApertureFNumber\":\"f\\/10.0\",\"UserComment\":null,\"UserCommentEncoding\":\"UNDEFINED\",\"Thumbnail.FileType\":2,\"Thumbnail.MimeType\":\"image\\/jpeg\"},\"Make\":\"Canon\",\"Model\":\"Canon EOS 750D\",\"Orientation\":1,\"XResolution\":\"72\\/1\",\"YResolution\":\"72\\/1\",\"ResolutionUnit\":2,\"DateTime\":\"2017:08:08 16:54:13\",\"Artist\":null,\"YCbCrPositioning\":2,\"Copyright\":null,\"Exif_IFD_Pointer\":360,\"GPS_IFD_Pointer\":10036,\"THUMBNAIL\":{\"Compression\":6,\"XResolution\":\"72\\/1\",\"YResolution\":\"72\\/1\",\"ResolutionUnit\":2,\"JPEGInterchangeFormat\":11924,\"JPEGInterchangeFormatLength\":7625},\"ExposureTime\":\"1\\/250\",\"FNumber\":\"10\\/1\",\"ExposureProgram\":8,\"ISOSpeedRatings\":100,\"UndefinedTag:0x8830\":2,\"UndefinedTag:0x8832\":100,\"ExifVersion\":\"0230\",\"DateTimeOriginal\":\"2017:08:08 16:54:13\",\"DateTimeDigitized\":\"2017:08:08 16:54:13\",\"ComponentsConfiguration\":\"\\u0001\\u0002\\u0003\\u0000\",\"ShutterSpeedValue\":\"524288\\/65536\",\"ApertureValue\":\"434176\\/65536\",\"ExposureBiasValue\":\"0\\/1\",\"MeteringMode\":5,\"Flash\":16,\"FocalLength\":\"55\\/1\",\"UserComment\":\"\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"SubSecTime\":\"23\",\"SubSecTimeOriginal\":\"23\",\"SubSecTimeDigitized\":\"23\",\"FlashPixVersion\":\"0100\",\"ColorSpace\":1,\"ExifImageWidth\":6000,\"ExifImageLength\":4000,\"InteroperabilityOffset\":9808,\"FocalPlaneXResolution\":\"6000000\\/893\",\"FocalPlaneYResolution\":\"4000000\\/594\",\"FocalPlaneResolutionUnit\":2,\"CustomRendered\":0,\"ExposureMode\":0,\"WhiteBalance\":0,\"SceneCaptureType\":0,\"UndefinedTag:0xA430\":null,\"UndefinedTag:0xA431\":\"274032003847\",\"UndefinedTag:0xA432\":[\"18\\/1\",\"55\\/1\",\"0\\/1\",\"0\\/1\"],\"UndefinedTag:0xA434\":\"EF-S18-55mm f\\/3.5-5.6 IS STM\",\"UndefinedTag:0xA435\":\"000039466d\",\"InterOperabilityIndex\":\"R98\",\"InterOperabilityVersion\":\"0100\",\"UndefinedTag:0x0002\":[0,55,62259,18461],\"UndefinedTag:0x0003\":[0,0,0,0],\"ImageInfo\":[68,0,160,304,212,256,0,0,3,0,8,8,153,0,0,0,0,0,1,0,0,208,256,170,0,0,248,65535,65535,65535,65535,0,0,0],\"ImageType\":\"Canon EOS 750D\",\"FirmwareVersion\":\"Firmware Version 1.0.0\",\"OwnerName\":null,\"UndefinedTag:0x0010\":-2147482733,\"UndefinedTag:0x0013\":[0,159,7,112],\"UndefinedTag:0x0019\":1,\"UndefinedTag:0x0095\":\"EF-S18-55mm f\\/3.5-5.6 IS STM\",\"UndefinedTag:0x0096\":\"QA1709600\",\"UndefinedTag:0x00AA\":[12,387,1024,1024,744,0],\"UndefinedTag:0x00B4\":1,\"UndefinedTag:0x00D0\":0,\"UndefinedTag:0x4010\":null,\"UndefinedTag:0x4011\":\"\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"UndefinedTag:0x4012\":null,\"UndefinedTag:0x4019\":\"\\u0000\\u00009Fm\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"UndefinedTag:0x4020\":[28,0,0,0,2147483647,0,1],\"UndefinedTag:0x402A\":[12,0,0]}', '1', '2017-09-27 16:03:23');
+INSERT INTO `t_image` VALUES ('52', '1', '0', 'admin', 't.jpg', 'article/201709/27/160326jqnn4a8k8ck2kqfq.jpg', '0', '283723', '1366', '768', '1', '800', '450', null, '2', '2017-09-27 16:03:27');
+INSERT INTO `t_image` VALUES ('53', '1', '0', 'admin', 't-wb.jpg', 'article/201709/27/160327oovndmupvtzxcnut.jpg', '0', '273759', '1366', '768', '1', '800', '450', '{\"FileName\":\"160327oovndmupvtzxcnut.jpg\",\"FileDateTime\":1506499407,\"FileSize\":273759,\"FileType\":2,\"MimeType\":\"image\\/jpeg\",\"SectionsFound\":\"ANY_TAG, IFD0, THUMBNAIL, EXIF\",\"COMPUTED\":{\"html\":\"width=\\\"1366\\\" height=\\\"768\\\"\",\"Height\":768,\"Width\":1366,\"IsColor\":1,\"ByteOrderMotorola\":1,\"Thumbnail.FileType\":2,\"Thumbnail.MimeType\":\"image\\/jpeg\"},\"ImageWidth\":1366,\"ImageLength\":768,\"BitsPerSample\":[8,8,8],\"PhotometricInterpretation\":2,\"Orientation\":1,\"SamplesPerPixel\":3,\"XResolution\":\"720000\\/10000\",\"YResolution\":\"720000\\/10000\",\"ResolutionUnit\":2,\"Software\":\"Adobe Photoshop CC (Windows)\",\"DateTime\":\"2015:11:17 09:16:50\",\"Exif_IFD_Pointer\":232,\"THUMBNAIL\":{\"Compression\":6,\"XResolution\":\"72\\/1\",\"YResolution\":\"72\\/1\",\"ResolutionUnit\":2,\"JPEGInterchangeFormat\":382,\"JPEGInterchangeFormatLength\":3029},\"ExifVersion\":\"0221\",\"ColorSpace\":65535,\"ExifImageWidth\":1366,\"ExifImageLength\":768}', '2', '2017-09-27 16:03:27');
 
 -- ----------------------------
 -- Table structure for `t_menu`
@@ -5347,7 +5441,7 @@ CREATE TABLE `t_menu` (
   PRIMARY KEY (`id`),
   KEY `parent` (`parent`),
   CONSTRAINT `t_menu_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `t_menu` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_menu
@@ -5373,6 +5467,10 @@ INSERT INTO `t_menu` VALUES ('21', '上传图片', '19', '/image/create', null, 
 INSERT INTO `t_menu` VALUES ('22', '爬虫数据', null, null, null, 0x69636F6E2D7461736B73);
 INSERT INTO `t_menu` VALUES ('23', '数据列表', '22', '/source/index', null, null);
 INSERT INTO `t_menu` VALUES ('24', '新增数据', '22', '/source/create', null, null);
+INSERT INTO `t_menu` VALUES ('25', '记录统计', '17', '/record/statistics', null, null);
+INSERT INTO `t_menu` VALUES ('26', '文章管理', null, null, '50', 0x69636F6E2D66696C652D616C74);
+INSERT INTO `t_menu` VALUES ('27', '文章列表', '26', '/article/index', null, null);
+INSERT INTO `t_menu` VALUES ('28', '新增文章', '26', '/article/create', null, null);
 
 -- ----------------------------
 -- Table structure for `t_record`
@@ -5386,6 +5484,7 @@ CREATE TABLE `t_record` (
   `type` tinyint(2) unsigned NOT NULL COMMENT '金额类型，0没有消费，1支出，2收入',
   `content` text COMMENT '描述',
   `imgstatus` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '是否有图片',
+  `address` varchar(100) DEFAULT NULL COMMENT '记录地址',
   `longitude` double(14,10) DEFAULT NULL COMMENT '经度',
   `latitude` double(14,10) DEFAULT NULL COMMENT '纬度',
   `weather` varchar(100) DEFAULT NULL COMMENT '天气',
@@ -5395,21 +5494,138 @@ CREATE TABLE `t_record` (
   `status` tinyint(2) unsigned DEFAULT '1' COMMENT '记录状态，0删除，1正常',
   PRIMARY KEY (`id`),
   KEY `date` (`uid`,`date`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='收支记录';
+) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8 COMMENT='收支记录';
 
 -- ----------------------------
 -- Records of t_record
 -- ----------------------------
-INSERT INTO `t_record` VALUES ('1', '1', 'admin', '10.50', '1', '午饭', '0', null, null, null, null, null, '2016-12-20 15:53:37', '1');
-INSERT INTO `t_record` VALUES ('2', '2', 'test2', '10.25', '1', '午餐费', '0', null, null, null, null, null, '2016-12-20 17:36:09', '1');
-INSERT INTO `t_record` VALUES ('3', '1', 'admin', '8.00', '2', '红包', '0', null, null, null, null, null, '2016-12-20 17:42:16', '1');
-INSERT INTO `t_record` VALUES ('6', '1', 'admin', '50.00', '1', '一天的费用', '0', '0.0000000000', '0.0000000000', '', '', null, '2017-06-03 17:30:56', '1');
-INSERT INTO `t_record` VALUES ('7', '1', 'admin', '568.26', '1', '记录一下', '0', '0.0000000000', '0.0000000000', '', '', null, '2017-06-03 17:35:20', '1');
-INSERT INTO `t_record` VALUES ('8', '1', 'admin', '508.26', '1', '记录一下,hahahah', '0', '0.0000000000', '0.0000000000', '', '', null, '2017-06-03 17:52:07', '1');
-INSERT INTO `t_record` VALUES ('9', '1', 'admin', '2.80', '1', '呵呵定\n哦你在宿舍', '0', '106.5658010000', '29.5409900000', '', '', null, '2017-07-24 14:20:10', '1');
-INSERT INTO `t_record` VALUES ('10', '1', 'admin', '98.50', '1', '黑泥沟', '0', '106.5657790000', '29.5409980000', '', '', '2017-08-24', '2017-07-24 14:38:18', '1');
-INSERT INTO `t_record` VALUES ('11', '1', 'admin', '94.66', '1', '装备好啊', '0', '106.5657650000', '29.5410440000', '', '', '2017-07-24', '2017-07-24 14:57:34', '1');
-INSERT INTO `t_record` VALUES ('12', '1', 'admin', '16.66', '2', '三个人一起点的', '0', '106.5656740000', '29.5409740000', '', '', '2017-07-25', '2017-07-25 15:50:23', '1');
+INSERT INTO `t_record` VALUES ('13', '1', 'admin', '15.00', '0', '土豆牛肉盖饭，兰州拉面', '0', null, '106.5657650000', '29.5410140000', '', '', '2017-08-02', '2017-08-02 14:36:18', '1');
+INSERT INTO `t_record` VALUES ('14', '1', 'admin', '16.00', '1', '混沌大王里吃排骨饭', '0', null, '0.0000000000', '0.0000000000', '', '', '2017-08-02', '2017-08-02 20:57:52', '1');
+INSERT INTO `t_record` VALUES ('15', '1', 'admin', '4.00', '1', '太热了', '0', null, '0.0000000000', '0.0000000000', '', '', '2017-08-03', '2017-08-03 09:36:19', '1');
+INSERT INTO `t_record` VALUES ('16', '1', 'admin', '2.00', '1', '', '0', null, '106.5658280000', '29.5410190000', '', '', '2017-08-03', '2017-08-03 09:57:22', '1');
+INSERT INTO `t_record` VALUES ('17', '1', 'admin', '14.00', '1', '兰州拉面吃的', '0', null, '106.5657730000', '29.5410520000', '', '', '2017-08-03', '2017-08-03 13:01:34', '1');
+INSERT INTO `t_record` VALUES ('18', '1', 'admin', '18.00', '1', '', '0', null, '106.5599890000', '29.5649130000', '', '', '2017-08-03', '2017-08-03 18:05:15', '1');
+INSERT INTO `t_record` VALUES ('19', '1', 'admin', '2.00', '1', '', '0', null, '106.5619760000', '29.5642760000', '', '', '2017-08-03', '2017-08-03 18:06:38', '1');
+INSERT INTO `t_record` VALUES ('20', '1', 'admin', '4.00', '1', '', '0', null, '106.5657250000', '29.5410360000', '', '', '2017-08-04', '2017-08-04 11:02:52', '1');
+INSERT INTO `t_record` VALUES ('21', '1', 'admin', '2.00', '1', '', '0', null, '106.5657250000', '29.5410360000', '', '', '2017-08-04', '2017-08-04 11:03:07', '1');
+INSERT INTO `t_record` VALUES ('22', '1', 'admin', '14.00', '1', '', '0', null, '106.5657710000', '29.5410130000', '', '', '2017-08-04', '2017-08-04 14:04:27', '1');
+INSERT INTO `t_record` VALUES ('23', '1', 'admin', '2.00', '1', '', '0', null, '106.5406350000', '29.5876940000', '', '', '2017-08-04', '2017-08-04 22:20:08', '1');
+INSERT INTO `t_record` VALUES ('24', '1', 'admin', '90.00', '1', '给同事买的', '0', null, '104.6378530000', '35.5872780000', '', '', '2017-08-10', '2017-08-10 21:29:42', '1');
+INSERT INTO `t_record` VALUES ('25', '1', 'admin', '70.00', '1', '两个帽子', '0', null, '104.6353760000', '35.5907940000', '', '', '2017-08-10', '2017-08-10 21:33:57', '1');
+INSERT INTO `t_record` VALUES ('26', '1', 'admin', '7.00', '1', '', '0', null, '104.6356680000', '35.5901090000', '', '', '2017-08-10', '2017-08-10 21:34:34', '1');
+INSERT INTO `t_record` VALUES ('27', '1', 'admin', '28.00', '1', '汉堡18，可乐10', '0', null, '104.6357290000', '35.5901460000', '', '', '2017-08-10', '2017-08-10 21:35:37', '1');
+INSERT INTO `t_record` VALUES ('28', '1', 'admin', '2.00', '1', '左脚脚踝内侧受伤', '0', null, '106.5615550000', '29.5648200000', '', '', '2017-08-12', '2017-08-12 10:44:46', '1');
+INSERT INTO `t_record` VALUES ('29', '1', 'admin', '7.00', '1', '豌豆面打包', '0', null, '106.5615520000', '29.5648190000', '', '', '2017-08-12', '2017-08-12 10:45:31', '1');
+INSERT INTO `t_record` VALUES ('30', '1', 'admin', '16.00', '1', '晚上打车回家', '0', null, '106.5613170000', '29.5648600000', '', '', '2017-08-11', '2017-08-12 10:46:33', '1');
+INSERT INTO `t_record` VALUES ('31', '1', 'admin', '13.00', '1', '', '0', null, '106.5653140000', '29.4650290000', '', '', '2017-08-12', '2017-08-12 15:05:11', '1');
+INSERT INTO `t_record` VALUES ('32', '1', 'admin', '3.60', '1', '去陈浩家装电脑', '0', null, '106.5651160000', '29.4655050000', '', '', '2017-08-12', '2017-08-12 15:06:07', '1');
+INSERT INTO `t_record` VALUES ('33', '1', 'admin', '22.00', '1', '去陈浩家，薯片，可乐', '0', null, '106.5614900000', '29.4676940000', '', '', '2017-08-12', '2017-08-12 15:16:29', '1');
+INSERT INTO `t_record` VALUES ('34', '1', 'admin', '10.00', '1', '陈浩电脑显卡转接口', '0', null, '106.5614720000', '29.4681510000', '', '', '2017-08-12', '2017-08-12 17:44:36', '1');
+INSERT INTO `t_record` VALUES ('35', '1', 'admin', '120.60', '1', '阳光保险', '0', null, '106.5617500000', '29.4674120000', '', '', '2017-08-12', '2017-08-12 17:46:14', '1');
+INSERT INTO `t_record` VALUES ('37', '1', 'admin', '2655.60', '1', '', '0', null, '106.5629460000', '29.4668220000', '', '', '2017-08-11', '2017-08-12 17:49:12', '1');
+INSERT INTO `t_record` VALUES ('38', '1', 'admin', '7771.66', '2', '', '0', null, '106.5634840000', '29.4662350000', '', '', '2017-08-12', '2017-08-12 17:51:39', '1');
+INSERT INTO `t_record` VALUES ('39', '1', 'admin', '3.60', '1', '从陈浩家回来', '0', null, '106.5557080000', '29.5590470000', '', '', '2017-08-12', '2017-08-12 18:22:01', '1');
+INSERT INTO `t_record` VALUES ('40', '1', 'admin', '16.00', '1', '', '0', null, '106.5572960000', '29.5615670000', '', '', '2017-08-12', '2017-08-12 18:28:24', '1');
+INSERT INTO `t_record` VALUES ('41', '1', 'admin', '20.00', '1', '', '0', null, '106.5590200000', '29.5641770000', '', '', '2017-08-12', '2017-08-12 18:57:32', '1');
+INSERT INTO `t_record` VALUES ('42', '1', 'admin', '10.00', '1', '', '0', null, '106.5600340000', '29.5648890000', '', '', '2017-08-12', '2017-08-12 20:07:03', '1');
+INSERT INTO `t_record` VALUES ('43', '1', 'admin', '11.00', '1', '晚上吃宵夜', '0', null, '106.5587910000', '29.5641370000', '', '', '2017-08-12', '2017-08-12 22:53:20', '1');
+INSERT INTO `t_record` VALUES ('44', '1', 'admin', '24.90', '1', '各种雪糕……', '0', null, '106.5588210000', '29.5640070000', '', '', '2017-08-12', '2017-08-12 22:56:57', '1');
+INSERT INTO `t_record` VALUES ('45', '1', 'admin', '15.00', '1', '', '0', null, '106.5617550000', '29.5645350000', '', '', '2017-08-13', '2017-08-13 11:57:05', '1');
+INSERT INTO `t_record` VALUES ('46', '1', 'admin', '7.50', '1', '', '0', null, '106.5599820000', '29.5648770000', '', '', '2017-08-13', '2017-08-13 12:05:00', '1');
+INSERT INTO `t_record` VALUES ('47', '1', 'admin', '48.00', '1', '', '0', null, '106.5555710000', '29.5603620000', '', '', '2017-08-13', '2017-08-13 18:50:10', '1');
+INSERT INTO `t_record` VALUES ('48', '1', 'admin', '2.00', '1', '', '0', null, '106.5555810000', '29.5603440000', '', '', '2017-08-13', '2017-08-13 18:52:31', '1');
+INSERT INTO `t_record` VALUES ('49', '1', 'admin', '6.70', '1', '', '0', null, '106.5588480000', '29.5640310000', '', '', '2017-08-13', '2017-08-13 19:28:49', '1');
+INSERT INTO `t_record` VALUES ('50', '1', 'admin', '4.77', '1', '', '0', null, '106.5589910000', '29.5641940000', '', '', '2017-08-13', '2017-08-13 19:30:01', '1');
+INSERT INTO `t_record` VALUES ('51', '1', 'admin', '1.80', '1', '', '0', null, '106.5678280000', '29.5420610000', '', '', '2017-08-14', '2017-08-14 09:04:56', '1');
+INSERT INTO `t_record` VALUES ('52', '1', 'admin', '4.00', '1', '', '0', null, '106.5663580000', '29.5414630000', '', '', '2017-08-14', '2017-08-14 09:06:35', '1');
+INSERT INTO `t_record` VALUES ('53', '1', 'admin', '14.00', '1', '', '0', null, '106.5658280000', '29.5410740000', '', '', '2017-08-14', '2017-08-14 15:29:19', '1');
+INSERT INTO `t_record` VALUES ('54', '1', 'admin', '1.80', '1', '', '0', null, '106.5695910000', '29.5380830000', '', '', '2017-08-14', '2017-08-14 18:21:47', '1');
+INSERT INTO `t_record` VALUES ('55', '1', 'admin', '1.80', '1', '', '0', null, '106.5660890000', '29.5410540000', '', '', '2017-08-15', '2017-08-15 09:04:30', '1');
+INSERT INTO `t_record` VALUES ('56', '1', 'admin', '4.00', '1', '', '0', null, '106.5657850000', '29.5409820000', '', '', '2017-08-15', '2017-08-15 09:16:29', '1');
+INSERT INTO `t_record` VALUES ('57', '1', 'admin', '16.17', '1', '', '0', null, '106.5657500000', '29.5410520000', '', '', '2017-08-15', '2017-08-15 13:38:03', '1');
+INSERT INTO `t_record` VALUES ('58', '1', 'admin', '1.80', '1', '', '0', null, '106.5555280000', '29.5592500000', '', '', '2017-08-15', '2017-08-15 18:48:11', '1');
+INSERT INTO `t_record` VALUES ('59', '1', 'admin', '15.00', '1', '', '0', null, '106.5590790000', '29.5641690000', '', '', '2017-08-15', '2017-08-15 22:39:55', '1');
+INSERT INTO `t_record` VALUES ('60', '1', 'admin', '1.80', '1', '', '0', null, '106.5608380000', '29.5692260000', '', '', '2017-08-16', '2017-08-16 08:45:59', '1');
+INSERT INTO `t_record` VALUES ('61', '1', 'admin', '4.00', '1', '', '0', null, '106.5657430000', '29.5410240000', '', '', '2017-08-16', '2017-08-16 09:14:41', '1');
+INSERT INTO `t_record` VALUES ('62', '1', 'admin', '16.00', '1', '', '0', null, '106.5657060000', '29.5410090000', '', '', '2017-08-16', '2017-08-16 12:29:45', '1');
+INSERT INTO `t_record` VALUES ('63', '1', 'admin', '1.80', '1', '', '0', null, '106.5688960000', '29.5380850000', '', '', '2017-08-16', '2017-08-16 18:31:06', '1');
+INSERT INTO `t_record` VALUES ('64', '1', 'admin', '16.00', '1', '', '0', null, '106.5570350000', '29.5614950000', '', '', '2017-08-16', '2017-08-16 18:46:33', '1');
+INSERT INTO `t_record` VALUES ('65', '1', 'admin', '2.00', '1', '', '0', null, '106.5608920000', '29.5692190000', '', '', '2017-08-17', '2017-08-17 08:55:25', '1');
+INSERT INTO `t_record` VALUES ('66', '1', 'admin', '1.80', '1', '', '0', null, '106.5658110000', '29.5409870000', '', '', '2017-08-17', '2017-08-17 09:31:56', '1');
+INSERT INTO `t_record` VALUES ('67', '1', 'admin', '17.24', '1', '', '0', null, '106.5658090000', '29.5410520000', '', '', '2017-08-17', '2017-08-17 11:44:34', '1');
+INSERT INTO `t_record` VALUES ('68', '1', 'admin', '1.80', '1', '', '0', null, '106.5558180000', '29.5592310000', '', '', '2017-08-17', '2017-08-17 18:44:53', '1');
+INSERT INTO `t_record` VALUES ('69', '1', 'admin', '16.00', '1', '', '0', null, '106.5570810000', '29.5616320000', '', '', '2017-08-17', '2017-08-17 18:51:33', '1');
+INSERT INTO `t_record` VALUES ('70', '1', 'admin', '34.20', '1', '', '0', null, '106.5600040000', '29.5649120000', '', '', '2017-08-18', '2017-08-18 03:00:18', '1');
+INSERT INTO `t_record` VALUES ('71', '1', 'admin', '1.80', '1', '', '0', null, '106.5699000000', '29.5430460000', '', '', '2017-08-18', '2017-08-18 09:13:17', '1');
+INSERT INTO `t_record` VALUES ('72', '1', 'admin', '28.00', '1', '', '0', null, '106.5657870000', '29.5410090000', '', '', '2017-08-18', '2017-08-18 11:27:13', '1');
+INSERT INTO `t_record` VALUES ('73', '1', 'admin', '27.52', '1', '', '0', null, '106.5658070000', '29.5410790000', '', '', '2017-08-18', '2017-08-18 11:28:25', '1');
+INSERT INTO `t_record` VALUES ('74', '1', 'admin', '3000.00', '1', '青海湖游玩费用', '0', null, '106.5657780000', '29.5410470000', '', '', '2017-08-18', '2017-08-18 14:20:22', '1');
+INSERT INTO `t_record` VALUES ('75', '1', 'admin', '9.50', '1', '', '0', null, '106.5657760000', '29.5409960000', '', '', '2017-08-18', '2017-08-18 14:22:19', '1');
+INSERT INTO `t_record` VALUES ('76', '1', 'admin', '4.00', '1', '', '0', null, '106.5657450000', '29.5410450000', '', '', '2017-08-18', '2017-08-18 17:02:20', '1');
+INSERT INTO `t_record` VALUES ('77', '1', 'admin', '1.80', '1', '', '0', null, '106.5691890000', '29.5383400000', '', '', '2017-08-18', '2017-08-18 18:55:41', '1');
+INSERT INTO `t_record` VALUES ('78', '1', 'admin', '15.00', '1', '', '0', null, '106.5569910000', '29.5615070000', '', '', '2017-08-18', '2017-08-18 19:29:05', '1');
+INSERT INTO `t_record` VALUES ('79', '1', 'admin', '64.60', '1', '', '0', null, '106.5600010000', '29.5648960000', '', '', '2017-08-19', '2017-08-19 01:02:00', '1');
+INSERT INTO `t_record` VALUES ('80', '1', 'admin', '127.70', '1', '', '0', null, '106.5600050000', '29.5649010000', '', '', '2017-08-19', '2017-08-19 12:03:25', '1');
+INSERT INTO `t_record` VALUES ('81', '1', 'admin', '2.70', '1', '接小玉下班', '0', null, '106.5203390000', '29.5139350000', '', '', '2017-08-19', '2017-08-19 17:50:33', '1');
+INSERT INTO `t_record` VALUES ('82', '1', 'admin', '9.00', '1', '', '0', null, '106.5208570000', '29.5147530000', '', '', '2017-08-19', '2017-08-19 17:52:06', '1');
+INSERT INTO `t_record` VALUES ('83', '1', 'admin', '2.70', '1', '', '0', null, '106.5204120000', '29.5134630000', '', '', '2017-08-19', '2017-08-19 18:13:54', '1');
+INSERT INTO `t_record` VALUES ('84', '1', 'admin', '71.00', '1', '', '0', null, '106.5556900000', '29.5655680000', '', '', '2017-08-19', '2017-08-19 19:28:12', '1');
+INSERT INTO `t_record` VALUES ('85', '1', 'admin', '4.00', '1', '', '0', null, '106.5589350000', '29.5644030000', '', '', '2017-08-19', '2017-08-19 19:35:12', '1');
+INSERT INTO `t_record` VALUES ('86', '1', 'admin', '2.00', '1', '', '0', null, '106.5595200000', '29.5642270000', '', '', '2017-08-19', '2017-08-19 19:38:55', '1');
+INSERT INTO `t_record` VALUES ('87', '1', 'admin', '5.00', '1', '', '0', null, '106.5600020000', '29.5648870000', '', '', '2017-08-20', '2017-08-20 11:16:41', '1');
+INSERT INTO `t_record` VALUES ('88', '1', 'admin', '200.00', '1', '', '0', null, '106.5612780000', '29.5692540000', '', '', '2017-08-20', '2017-08-20 20:09:25', '1');
+INSERT INTO `t_record` VALUES ('89', '1', 'admin', '2.00', '1', '', '0', null, '106.5614750000', '29.5648050000', '', '', '2017-08-20', '2017-08-20 20:22:40', '1');
+INSERT INTO `t_record` VALUES ('90', '1', 'admin', '1.80', '1', '', '0', null, '106.5613340000', '29.5692330000', '', '', '2017-08-21', '2017-08-21 08:51:28', '1');
+INSERT INTO `t_record` VALUES ('91', '1', 'admin', '4.00', '1', '', '0', null, '106.5657690000', '29.5410270000', '', '', '2017-08-21', '2017-08-21 09:14:45', '1');
+INSERT INTO `t_record` VALUES ('92', '1', 'admin', '13.00', '1', '', '0', null, '106.5657380000', '29.5409930000', '', '', '2017-08-21', '2017-08-21 12:33:10', '1');
+INSERT INTO `t_record` VALUES ('93', '1', 'admin', '1.80', '1', '', '0', null, '106.5667690000', '29.5411160000', '', '', '2017-08-21', '2017-08-21 18:45:05', '1');
+INSERT INTO `t_record` VALUES ('94', '1', 'admin', '16.00', '1', '', '0', null, '106.5571040000', '29.5615810000', '', '', '2017-08-21', '2017-08-21 19:21:04', '1');
+INSERT INTO `t_record` VALUES ('95', '1', 'admin', '1.80', '1', '', '0', null, '106.5682130000', '29.5417930000', '', '', '2017-08-22', '2017-08-22 09:08:38', '1');
+INSERT INTO `t_record` VALUES ('96', '1', 'admin', '11.91', '1', '香菇猪肉馅儿', '0', null, '106.5657960000', '29.5409850000', '', '', '2017-08-22', '2017-08-22 13:26:34', '1');
+INSERT INTO `t_record` VALUES ('97', '1', 'admin', '42.00', '1', '', '0', null, '106.5570230000', '29.5623960000', '', '', '2017-08-22', '2017-08-22 18:44:49', '1');
+INSERT INTO `t_record` VALUES ('98', '1', 'admin', '5.50', '1', '', '0', null, '106.5593830000', '29.5642100000', '', '', '2017-08-22', '2017-08-22 19:27:07', '1');
+INSERT INTO `t_record` VALUES ('99', '1', 'admin', '1.80', '1', '', '0', null, '106.5595270000', '29.5644660000', '', '', '2017-08-22', '2017-08-22 19:28:23', '1');
+INSERT INTO `t_record` VALUES ('100', '1', 'admin', '1.80', '1', '', '0', null, '106.5670510000', '29.5418050000', '', '', '2017-08-23', '2017-08-23 09:04:00', '1');
+INSERT INTO `t_record` VALUES ('101', '1', 'admin', '4.00', '1', '', '0', null, '106.5664780000', '29.5414840000', '', '', '2017-08-23', '2017-08-23 09:04:50', '1');
+INSERT INTO `t_record` VALUES ('102', '1', 'admin', '15.04', '1', '', '0', null, '106.5657840000', '29.5410040000', '', '', '2017-08-23', '2017-08-23 15:20:01', '1');
+INSERT INTO `t_record` VALUES ('103', '1', 'admin', '1.80', '1', '', '0', null, '106.5700840000', '29.5380010000', '', '', '2017-08-23', '2017-08-23 18:27:08', '1');
+INSERT INTO `t_record` VALUES ('104', '1', 'admin', '16.00', '1', '', '0', null, '106.5576130000', '29.5625800000', '', '', '2017-08-23', '2017-08-23 19:04:44', '1');
+INSERT INTO `t_record` VALUES ('105', '1', 'admin', '2.00', '1', '', '0', null, '106.5595350000', '29.5642020000', '', '', '2017-08-23', '2017-08-23 19:10:01', '1');
+INSERT INTO `t_record` VALUES ('106', '1', 'admin', '1.80', '1', '', '0', null, '106.5658430000', '29.5409920000', '', '', '2017-08-24', '2017-08-24 17:44:30', '1');
+INSERT INTO `t_record` VALUES ('107', '1', 'admin', '17.83', '1', '三个人一起点的', '0', null, '106.5657940000', '29.5409580000', '', '', '2017-08-24', '2017-08-24 17:46:29', '1');
+INSERT INTO `t_record` VALUES ('108', '1', 'admin', '1.80', '1', '', '0', null, '106.5763690000', '29.5315160000', '', '', '2017-08-24', '2017-08-24 18:38:43', '1');
+INSERT INTO `t_record` VALUES ('109', '1', 'admin', '22.00', '1', '', '0', null, '106.5611600000', '29.5647470000', '', '', '2017-08-24', '2017-08-25 08:35:21', '1');
+INSERT INTO `t_record` VALUES ('110', '1', 'admin', '927.40', '1', '', '0', null, '106.5619520000', '29.5664300000', '', '', '2017-08-25', '2017-08-25 08:38:55', '1');
+INSERT INTO `t_record` VALUES ('111', '1', 'admin', '1.80', '1', '', '0', null, '106.5615440000', '29.5681720000', '', '', '2017-08-25', '2017-08-25 08:42:29', '1');
+INSERT INTO `t_record` VALUES ('112', '1', 'admin', '15.00', '1', '', '0', null, '106.5658380000', '29.5409890000', '', '', '2017-08-25', '2017-08-25 14:23:20', '1');
+INSERT INTO `t_record` VALUES ('113', '1', 'admin', '1.80', '1', '', '0', null, '106.5693800000', '29.5381030000', '', '', '2017-08-25', '2017-08-25 19:00:08', '1');
+INSERT INTO `t_record` VALUES ('115', '1', 'admin', '20.00', '1', '', '0', null, '106.5570070000', '29.5623440000', '', '', '2017-08-25', '2017-08-25 19:19:12', '1');
+INSERT INTO `t_record` VALUES ('116', '1', 'admin', '9.00', '1', '', '0', null, '106.5613950000', '29.5661410000', '', '', '2017-08-25', '2017-08-25 20:51:38', '1');
+INSERT INTO `t_record` VALUES ('117', '1', 'admin', '19.00', '1', '', '0', null, '106.5612290000', '29.5655500000', '', '', '2017-08-25', '2017-08-25 20:53:28', '1');
+INSERT INTO `t_record` VALUES ('118', '1', 'admin', '12.00', '1', '', '0', null, '106.5617230000', '29.5645520000', '', '', '2017-08-26', '2017-08-26 14:31:28', '1');
+INSERT INTO `t_record` VALUES ('119', '1', 'admin', '10.00', '1', '域名备案，快递费', '0', null, '106.5617230000', '29.5645520000', '', '', '2017-08-26', '2017-08-26 14:32:38', '1');
+INSERT INTO `t_record` VALUES ('120', '1', 'admin', '39.00', '1', '', '0', null, '106.5598200000', '29.5639170000', '', '', '2017-08-26', '2017-08-26 15:15:32', '1');
+INSERT INTO `t_record` VALUES ('121', '1', 'admin', '45.00', '1', '域名转入', '0', null, '106.5600440000', '29.5648840000', '', '', '2017-08-26', '2017-08-26 16:02:37', '1');
+INSERT INTO `t_record` VALUES ('122', '1', 'admin', '38.00', '1', '', '0', null, '106.5570020000', '29.5623660000', '', '', '2017-08-26', '2017-08-26 19:34:45', '1');
+INSERT INTO `t_record` VALUES ('123', '1', 'admin', '64.64', '1', '', '0', null, '106.5584880000', '29.5651930000', '', '', '2017-08-27', '2017-08-27 11:20:27', '1');
+INSERT INTO `t_record` VALUES ('124', '1', 'admin', '1.80', '1', '', '0', null, '106.5723330000', '29.5669280000', '', '', '2017-08-28', '2017-08-28 09:02:01', '1');
+INSERT INTO `t_record` VALUES ('125', '1', 'admin', '4.00', '1', null, '0', null, '106.5658090000', '29.5410110000', '', '', '2017-08-28', '2017-08-28 10:15:35', '1');
+INSERT INTO `t_record` VALUES ('126', '1', 'admin', '15.50', '1', '土豆鸡+藕片', '0', null, '106.5657090000', '29.5410890000', '', '', '2017-08-28', '2017-08-28 16:38:25', '1');
+INSERT INTO `t_record` VALUES ('127', '1', 'admin', '118.00', '1', '打包', '0', null, '106.5585380000', '29.5651840000', '', '', '2017-08-28', '2017-08-28 19:50:52', '1');
+INSERT INTO `t_record` VALUES ('128', '1', 'admin', '3.60', '1', '上下班', '0', null, '106.5600200000', '29.5649240000', '', '', '2017-08-29', '2017-08-29 00:28:11', '1');
+INSERT INTO `t_record` VALUES ('129', '1', 'admin', '1.80', '1', '', '0', null, '106.5671060000', '29.5417610000', '', '', '2017-08-29', '2017-08-29 09:08:55', '1');
+INSERT INTO `t_record` VALUES ('130', '1', 'admin', '4.00', '1', '', '0', null, '106.5657830000', '29.5410560000', '', '', '2017-08-29', '2017-08-29 09:14:34', '1');
+INSERT INTO `t_record` VALUES ('131', '1', 'admin', '14.00', '1', '三两豆花面，去店里吃的，热啊', '0', null, '106.5657970000', '29.5410190000', '', '', '2017-08-29', '2017-08-31 15:31:37', '1');
+INSERT INTO `t_record` VALUES ('132', '1', 'admin', '1.80', '1', '', '0', null, '106.5657970000', '29.5410190000', '', '', '2017-08-29', '2017-08-31 15:32:03', '1');
+INSERT INTO `t_record` VALUES ('133', '1', 'admin', '1.80', '1', '', '0', null, '106.5657970000', '29.5410190000', '', '', '2017-08-30', '2017-08-31 15:32:35', '1');
+INSERT INTO `t_record` VALUES ('134', '1', 'admin', '15.59', '1', '三个人一起点的', '0', null, '106.5653830000', '29.5410910000', '', '', '2017-08-30', '2017-08-31 15:33:26', '1');
+INSERT INTO `t_record` VALUES ('135', '1', 'admin', '1.80', '1', '', '0', null, '106.5653830000', '29.5410910000', '', '', '2017-08-30', '2017-08-31 15:33:36', '1');
+INSERT INTO `t_record` VALUES ('136', '1', 'admin', '28.00', '1', '七寸的披萨，小的可怜', '0', null, '106.5653820000', '29.5410920000', '', '', '2017-08-30', '2017-08-31 15:34:51', '1');
+INSERT INTO `t_record` VALUES ('137', '1', 'admin', '8.00', '1', '没吃饱，接小玉的时候加餐', '0', null, '106.5653820000', '29.5410920000', '', '', '2017-08-30', '2017-08-31 15:35:47', '1');
+INSERT INTO `t_record` VALUES ('138', '1', 'admin', '20.00', '1', '和小玉买鲜花，20支', '0', null, '106.5653820000', '29.5410920000', '', '', '2017-08-30', '2017-08-31 15:36:28', '1');
+INSERT INTO `t_record` VALUES ('139', '1', 'admin', '10.00', '1', '接小玉下班的时候买的，4个火龙果，哈哈', '0', null, '106.5653820000', '29.5410920000', '', '', '2017-08-30', '2017-08-31 15:37:20', '1');
+INSERT INTO `t_record` VALUES ('140', '1', 'admin', '1.80', '1', '', '0', null, '106.5653820000', '29.5410920000', '', '', '2017-08-31', '2017-08-31 15:37:36', '1');
+INSERT INTO `t_record` VALUES ('141', '1', 'admin', '14.00', '1', '三个人一起点的，不好吃，邻家小厨，只送了一份餐', '0', null, '106.5653820000', '29.5410920000', '', '', '2017-08-31', '2017-08-31 15:41:03', '1');
 
 -- ----------------------------
 -- Table structure for `t_source`
@@ -5487,7 +5703,7 @@ CREATE TABLE `t_tag` (
   `time_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `record_count` (`record_count`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_tag
@@ -5535,6 +5751,110 @@ INSERT INTO `t_tag` VALUES ('40', '天猫', '1', 'admin', null, null, '1', '0', 
 INSERT INTO `t_tag` VALUES ('41', '淘宝', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 13:37:14', '2017-07-24 13:37:14');
 INSERT INTO `t_tag` VALUES ('42', '小孩', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 14:38:08', '2017-07-24 14:38:08');
 INSERT INTO `t_tag` VALUES ('43', '游戏', '1', 'admin', null, null, '1', '0', '1', '2017-07-24 14:57:21', '2017-07-24 14:57:21');
+INSERT INTO `t_tag` VALUES ('44', '土豆', '1', 'admin', null, null, '1', '0', '1', '2017-08-02 14:34:38', '2017-08-02 14:34:38');
+INSERT INTO `t_tag` VALUES ('45', '晚餐', '1', 'admin', null, null, '1', '0', '1', '2017-08-02 20:55:53', '2017-08-02 20:55:53');
+INSERT INTO `t_tag` VALUES ('46', '混沌大王', '1', 'admin', null, null, '1', '0', '1', '2017-08-02 20:56:45', '2017-08-02 20:56:45');
+INSERT INTO `t_tag` VALUES ('47', '排骨饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-02 20:57:39', '2017-08-02 20:57:39');
+INSERT INTO `t_tag` VALUES ('48', '脉动', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 09:35:10', '2017-08-03 09:35:10');
+INSERT INTO `t_tag` VALUES ('49', '饮料', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 09:35:22', '2017-08-03 09:35:22');
+INSERT INTO `t_tag` VALUES ('50', '公交', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 09:57:00', '2017-08-03 09:57:00');
+INSERT INTO `t_tag` VALUES ('51', '上班', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 09:57:09', '2017-08-03 09:57:09');
+INSERT INTO `t_tag` VALUES ('52', '蘑菇牛肉盖饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 13:01:09', '2017-08-03 13:01:09');
+INSERT INTO `t_tag` VALUES ('53', '乡村基', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 18:04:51', '2017-08-03 18:04:51');
+INSERT INTO `t_tag` VALUES ('54', '儿童套餐', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 18:05:04', '2017-08-03 18:05:04');
+INSERT INTO `t_tag` VALUES ('55', '轻轨', '1', 'admin', null, null, '1', '0', '1', '2017-08-03 18:06:32', '2017-08-03 18:06:32');
+INSERT INTO `t_tag` VALUES ('56', '青椒牛肉盖饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-04 14:04:02', '2017-08-04 14:04:02');
+INSERT INTO `t_tag` VALUES ('57', '兰州拉面', '1', 'admin', null, null, '1', '0', '1', '2017-08-04 14:04:10', '2017-08-04 14:04:10');
+INSERT INTO `t_tag` VALUES ('58', '地铁', '1', 'admin', null, null, '1', '0', '1', '2017-08-04 22:20:04', '2017-08-04 22:20:04');
+INSERT INTO `t_tag` VALUES ('59', '牦牛肉', '1', 'admin', null, null, '1', '0', '1', '2017-08-10 21:29:17', '2017-08-10 21:29:17');
+INSERT INTO `t_tag` VALUES ('60', '帽子', '1', 'admin', null, null, '1', '0', '1', '2017-08-10 21:32:45', '2017-08-10 21:32:45');
+INSERT INTO `t_tag` VALUES ('61', '旅游', '1', 'admin', null, null, '1', '0', '1', '2017-08-10 21:32:52', '2017-08-10 21:32:52');
+INSERT INTO `t_tag` VALUES ('62', '汉堡', '1', 'admin', null, null, '1', '0', '1', '2017-08-10 21:35:05', '2017-08-10 21:35:05');
+INSERT INTO `t_tag` VALUES ('63', '可乐', '1', 'admin', null, null, '1', '0', '1', '2017-08-10 21:35:18', '2017-08-10 21:35:18');
+INSERT INTO `t_tag` VALUES ('64', '邦迪', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 10:44:10', '2017-08-12 10:44:10');
+INSERT INTO `t_tag` VALUES ('65', '早餐', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 10:45:02', '2017-08-12 10:45:02');
+INSERT INTO `t_tag` VALUES ('66', '面条', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 10:45:09', '2017-08-12 10:45:09');
+INSERT INTO `t_tag` VALUES ('67', '打车', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 10:45:55', '2017-08-12 10:45:55');
+INSERT INTO `t_tag` VALUES ('68', '鸡柳', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 15:04:50', '2017-08-12 15:04:50');
+INSERT INTO `t_tag` VALUES ('69', '薯片', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 15:15:45', '2017-08-12 15:15:45');
+INSERT INTO `t_tag` VALUES ('70', '电脑', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 17:44:18', '2017-08-12 17:44:18');
+INSERT INTO `t_tag` VALUES ('71', '保险', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 17:45:44', '2017-08-12 17:45:44');
+INSERT INTO `t_tag` VALUES ('72', '房贷', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 17:48:32', '2017-08-12 17:48:32');
+INSERT INTO `t_tag` VALUES ('73', '红烧肉饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 18:28:09', '2017-08-12 18:28:09');
+INSERT INTO `t_tag` VALUES ('74', '插线板', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 18:57:29', '2017-08-12 18:57:29');
+INSERT INTO `t_tag` VALUES ('75', '战神三十六计', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 20:07:01', '2017-08-12 20:07:01');
+INSERT INTO `t_tag` VALUES ('76', '麻辣烫', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 22:52:48', '2017-08-12 22:52:48');
+INSERT INTO `t_tag` VALUES ('77', '小玉', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 22:53:05', '2017-08-12 22:53:05');
+INSERT INTO `t_tag` VALUES ('78', '雪糕', '1', 'admin', null, null, '1', '0', '1', '2017-08-12 22:56:34', '2017-08-12 22:56:34');
+INSERT INTO `t_tag` VALUES ('79', '馄饨大王', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 11:56:51', '2017-08-13 11:56:51');
+INSERT INTO `t_tag` VALUES ('80', '卤肉饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 11:57:02', '2017-08-13 11:57:02');
+INSERT INTO `t_tag` VALUES ('81', '微信', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 12:00:19', '2017-08-13 12:00:19');
+INSERT INTO `t_tag` VALUES ('82', '花生', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 12:00:45', '2017-08-13 12:00:45');
+INSERT INTO `t_tag` VALUES ('83', '老灶煮花生', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 12:02:11', '2017-08-13 12:02:11');
+INSERT INTO `t_tag` VALUES ('84', '鸡堡香豆', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 12:04:35', '2017-08-13 12:04:35');
+INSERT INTO `t_tag` VALUES ('85', '怡宝', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 18:52:20', '2017-08-13 18:52:20');
+INSERT INTO `t_tag` VALUES ('86', '现金', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 18:52:26', '2017-08-13 18:52:26');
+INSERT INTO `t_tag` VALUES ('87', '蔬菜', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 19:28:27', '2017-08-13 19:28:27');
+INSERT INTO `t_tag` VALUES ('88', '黄瓜', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 19:28:47', '2017-08-13 19:28:47');
+INSERT INTO `t_tag` VALUES ('89', '西瓜', '1', 'admin', null, null, '1', '0', '1', '2017-08-13 19:29:47', '2017-08-13 19:29:47');
+INSERT INTO `t_tag` VALUES ('90', '支付宝', '1', 'admin', null, null, '1', '0', '1', '2017-08-14 09:06:30', '2017-08-14 09:06:30');
+INSERT INTO `t_tag` VALUES ('91', '蘑菇牛肉', '1', 'admin', null, null, '1', '0', '1', '2017-08-14 15:28:29', '2017-08-14 15:28:29');
+INSERT INTO `t_tag` VALUES ('92', '下班', '1', 'admin', null, null, '1', '0', '1', '2017-08-14 18:21:31', '2017-08-14 18:21:31');
+INSERT INTO `t_tag` VALUES ('93', '冒菜', '1', 'admin', null, null, '1', '0', '1', '2017-08-15 13:37:45', '2017-08-15 13:37:45');
+INSERT INTO `t_tag` VALUES ('94', '饿了么', '1', 'admin', null, null, '1', '0', '1', '2017-08-15 13:38:00', '2017-08-15 13:38:00');
+INSERT INTO `t_tag` VALUES ('95', '牙膏', '1', 'admin', null, null, '1', '0', '1', '2017-08-15 22:39:26', '2017-08-15 22:39:26');
+INSERT INTO `t_tag` VALUES ('96', '云南白药', '1', 'admin', null, null, '1', '0', '1', '2017-08-15 22:39:39', '2017-08-15 22:39:39');
+INSERT INTO `t_tag` VALUES ('97', '包子', '1', 'admin', null, null, '1', '0', '1', '2017-08-16 09:14:23', '2017-08-16 09:14:23');
+INSERT INTO `t_tag` VALUES ('98', '豆浆', '1', 'admin', null, null, '1', '0', '1', '2017-08-16 09:14:29', '2017-08-16 09:14:29');
+INSERT INTO `t_tag` VALUES ('99', '午饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-16 12:28:49', '2017-08-16 12:28:49');
+INSERT INTO `t_tag` VALUES ('100', '酸菜肉丝炒饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-16 12:29:11', '2017-08-16 12:29:11');
+INSERT INTO `t_tag` VALUES ('101', '三三米线', '1', 'admin', null, null, '1', '0', '1', '2017-08-16 12:29:39', '2017-08-16 12:29:39');
+INSERT INTO `t_tag` VALUES ('102', '大米先生', '1', 'admin', null, null, '1', '0', '1', '2017-08-17 11:42:49', '2017-08-17 11:42:49');
+INSERT INTO `t_tag` VALUES ('103', '土豆肉丝', '1', 'admin', null, null, '1', '0', '1', '2017-08-17 11:44:28', '2017-08-17 11:44:28');
+INSERT INTO `t_tag` VALUES ('104', '红烧肉', '1', 'admin', null, null, '1', '0', '1', '2017-08-17 18:51:10', '2017-08-17 18:51:10');
+INSERT INTO `t_tag` VALUES ('105', '乱世王者', '1', 'admin', null, null, '1', '0', '1', '2017-08-18 02:59:46', '2017-08-18 02:59:46');
+INSERT INTO `t_tag` VALUES ('106', '腾讯', '1', 'admin', null, null, '1', '0', '1', '2017-08-18 02:59:56', '2017-08-18 02:59:56');
+INSERT INTO `t_tag` VALUES ('107', '水费', '1', 'admin', null, null, '1', '0', '1', '2017-08-18 11:26:41', '2017-08-18 11:26:41');
+INSERT INTO `t_tag` VALUES ('108', '天然气', '1', 'admin', null, null, '1', '0', '1', '2017-08-18 11:28:09', '2017-08-18 11:28:09');
+INSERT INTO `t_tag` VALUES ('109', '青海湖', '1', 'admin', null, null, '1', '0', '1', '2017-08-18 14:19:43', '2017-08-18 14:19:43');
+INSERT INTO `t_tag` VALUES ('110', '鸡米饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-18 19:28:48', '2017-08-18 19:28:48');
+INSERT INTO `t_tag` VALUES ('111', '嫩红素', '1', 'admin', null, null, '1', '0', '1', '2017-08-19 12:01:41', '2017-08-19 12:01:41');
+INSERT INTO `t_tag` VALUES ('112', '脱毛膏', '1', 'admin', null, null, '1', '0', '1', '2017-08-19 12:02:12', '2017-08-19 12:02:12');
+INSERT INTO `t_tag` VALUES ('113', '豌杂面', '1', 'admin', null, null, '1', '0', '1', '2017-08-19 17:51:50', '2017-08-19 17:51:50');
+INSERT INTO `t_tag` VALUES ('114', '廖记老砂锅', '1', 'admin', null, null, '1', '0', '1', '2017-08-19 19:27:30', '2017-08-19 19:27:30');
+INSERT INTO `t_tag` VALUES ('115', '桃子', '1', 'admin', null, null, '1', '0', '1', '2017-08-19 19:35:06', '2017-08-19 19:35:06');
+INSERT INTO `t_tag` VALUES ('116', '藤藤菜', '1', 'admin', null, null, '1', '0', '1', '2017-08-20 11:13:28', '2017-08-20 11:13:28');
+INSERT INTO `t_tag` VALUES ('117', '酒鬼花生', '1', 'admin', null, null, '1', '0', '1', '2017-08-20 11:13:50', '2017-08-20 11:13:50');
+INSERT INTO `t_tag` VALUES ('118', '龙虾', '1', 'admin', null, null, '1', '0', '1', '2017-08-20 20:08:50', '2017-08-20 20:08:50');
+INSERT INTO `t_tag` VALUES ('119', '鱼', '1', 'admin', null, null, '1', '0', '1', '2017-08-20 20:09:00', '2017-08-20 20:09:00');
+INSERT INTO `t_tag` VALUES ('120', '饺子', '1', 'admin', null, null, '1', '0', '1', '2017-08-22 13:26:03', '2017-08-22 13:26:03');
+INSERT INTO `t_tag` VALUES ('121', '鸡腿饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-22 18:43:56', '2017-08-22 18:43:56');
+INSERT INTO `t_tag` VALUES ('122', '黑椒鸡扒', '1', 'admin', null, null, '1', '0', '1', '2017-08-22 18:44:23', '2017-08-22 18:44:23');
+INSERT INTO `t_tag` VALUES ('123', '豆花面', '1', 'admin', null, null, '1', '0', '1', '2017-08-23 15:19:46', '2017-08-23 15:19:46');
+INSERT INTO `t_tag` VALUES ('124', '每味每客', '1', 'admin', null, null, '1', '0', '1', '2017-08-24 17:45:37', '2017-08-24 17:45:37');
+INSERT INTO `t_tag` VALUES ('125', '土豆牛肉盖饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-25 14:23:06', '2017-08-25 14:23:06');
+INSERT INTO `t_tag` VALUES ('126', '七娃子烧烤', '1', 'admin', null, null, '1', '0', '1', '2017-08-25 20:53:12', '2017-08-25 20:53:12');
+INSERT INTO `t_tag` VALUES ('127', '牛肉面', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 14:30:53', '2017-08-26 14:30:53');
+INSERT INTO `t_tag` VALUES ('128', '快递', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 14:31:55', '2017-08-26 14:31:55');
+INSERT INTO `t_tag` VALUES ('129', '阿里云', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 14:32:06', '2017-08-26 14:32:06');
+INSERT INTO `t_tag` VALUES ('130', '理发', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 15:15:03', '2017-08-26 15:15:03');
+INSERT INTO `t_tag` VALUES ('131', '发之源', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 15:15:10', '2017-08-26 15:15:10');
+INSERT INTO `t_tag` VALUES ('132', '域名', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 16:02:22', '2017-08-26 16:02:22');
+INSERT INTO `t_tag` VALUES ('133', '儿童餐', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 19:33:38', '2017-08-26 19:33:38');
+INSERT INTO `t_tag` VALUES ('134', '咖喱猪排饭', '1', 'admin', null, null, '1', '0', '1', '2017-08-26 19:34:03', '2017-08-26 19:34:03');
+INSERT INTO `t_tag` VALUES ('135', '超市', '1', 'admin', null, null, '1', '0', '1', '2017-08-27 11:19:09', '2017-08-27 11:19:09');
+INSERT INTO `t_tag` VALUES ('136', '重百新世纪超市', '1', 'admin', null, null, '1', '0', '1', '2017-08-27 11:19:47', '2017-08-27 11:19:47');
+INSERT INTO `t_tag` VALUES ('137', '腊排骨', '1', 'admin', null, null, '1', '0', '1', '2017-08-28 19:49:31', '2017-08-28 19:49:31');
+INSERT INTO `t_tag` VALUES ('138', '钵钵鸡', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:32:56', '2017-08-31 15:32:56');
+INSERT INTO `t_tag` VALUES ('139', '麦乐滋汉堡', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:34:10', '2017-08-31 15:34:10');
+INSERT INTO `t_tag` VALUES ('140', '披萨', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:34:20', '2017-08-31 15:34:20');
+INSERT INTO `t_tag` VALUES ('141', '香辣鸡腿堡', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:35:20', '2017-08-31 15:35:20');
+INSERT INTO `t_tag` VALUES ('142', '鲜花', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:35:55', '2017-08-31 15:35:55');
+INSERT INTO `t_tag` VALUES ('143', '火龙果', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:36:40', '2017-08-31 15:36:40');
+INSERT INTO `t_tag` VALUES ('144', '盐煎肉', '1', 'admin', null, null, '1', '0', '1', '2017-08-31 15:40:11', '2017-08-31 15:40:11');
+INSERT INTO `t_tag` VALUES ('145', '完美世界', '1', 'admin', null, null, '1', '0', '1', '2017-09-15 17:40:48', '2017-09-15 17:40:48');
+INSERT INTO `t_tag` VALUES ('146', '高级', '1', 'admin', null, null, '1', '0', '1', '2017-09-21 14:31:16', '2017-09-21 14:31:16');
+INSERT INTO `t_tag` VALUES ('147', '中餐', '1', 'admin', null, null, '1', '0', '1', '2017-09-22 16:08:25', '2017-09-22 16:08:25');
 
 -- ----------------------------
 -- Table structure for `t_tag_record`
@@ -5549,7 +5869,7 @@ CREATE TABLE `t_tag_record` (
   PRIMARY KEY (`id`),
   KEY `rid` (`rid`),
   KEY `lastuse` (`uid`,`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='标签和收支记录关系';
+) ENGINE=InnoDB AUTO_INCREMENT=414 DEFAULT CHARSET=utf8 COMMENT='标签和收支记录关系';
 
 -- ----------------------------
 -- Records of t_tag_record
@@ -5574,7 +5894,393 @@ INSERT INTO `t_tag_record` VALUES ('17', '1', '12', '10', '2017-07-24 14:38:18')
 INSERT INTO `t_tag_record` VALUES ('18', '1', '5', '11', '2017-07-24 14:57:34');
 INSERT INTO `t_tag_record` VALUES ('19', '1', '12', '11', '2017-07-24 14:57:34');
 INSERT INTO `t_tag_record` VALUES ('20', '1', '43', '11', '2017-07-24 14:57:34');
-INSERT INTO `t_tag_record` VALUES ('21', '1', '2', '12', '2017-07-25 15:50:23');
+INSERT INTO `t_tag_record` VALUES ('22', '1', '2', '13', '2017-08-02 14:36:18');
+INSERT INTO `t_tag_record` VALUES ('23', '1', '45', '14', '2017-08-02 20:57:52');
+INSERT INTO `t_tag_record` VALUES ('24', '1', '46', '14', '2017-08-02 20:57:52');
+INSERT INTO `t_tag_record` VALUES ('25', '1', '47', '14', '2017-08-02 20:57:52');
+INSERT INTO `t_tag_record` VALUES ('26', '1', '48', '15', '2017-08-03 09:36:19');
+INSERT INTO `t_tag_record` VALUES ('27', '1', '49', '15', '2017-08-03 09:36:19');
+INSERT INTO `t_tag_record` VALUES ('28', '1', '50', '16', '2017-08-03 09:57:22');
+INSERT INTO `t_tag_record` VALUES ('29', '1', '51', '16', '2017-08-03 09:57:22');
+INSERT INTO `t_tag_record` VALUES ('30', '1', '4', '16', '2017-08-03 09:57:22');
+INSERT INTO `t_tag_record` VALUES ('31', '1', '2', '17', '2017-08-03 13:01:34');
+INSERT INTO `t_tag_record` VALUES ('32', '1', '52', '17', '2017-08-03 13:01:34');
+INSERT INTO `t_tag_record` VALUES ('33', '1', '45', '18', '2017-08-03 18:05:15');
+INSERT INTO `t_tag_record` VALUES ('34', '1', '53', '18', '2017-08-03 18:05:15');
+INSERT INTO `t_tag_record` VALUES ('35', '1', '54', '18', '2017-08-03 18:05:15');
+INSERT INTO `t_tag_record` VALUES ('36', '1', '4', '19', '2017-08-03 18:06:38');
+INSERT INTO `t_tag_record` VALUES ('37', '1', '55', '19', '2017-08-03 18:06:38');
+INSERT INTO `t_tag_record` VALUES ('38', '1', '48', '20', '2017-08-04 11:02:52');
+INSERT INTO `t_tag_record` VALUES ('39', '1', '49', '20', '2017-08-04 11:02:52');
+INSERT INTO `t_tag_record` VALUES ('40', '1', '50', '21', '2017-08-04 11:03:07');
+INSERT INTO `t_tag_record` VALUES ('41', '1', '4', '21', '2017-08-04 11:03:07');
+INSERT INTO `t_tag_record` VALUES ('42', '1', '56', '22', '2017-08-04 14:04:27');
+INSERT INTO `t_tag_record` VALUES ('43', '1', '57', '22', '2017-08-04 14:04:27');
+INSERT INTO `t_tag_record` VALUES ('44', '1', '2', '22', '2017-08-04 14:04:27');
+INSERT INTO `t_tag_record` VALUES ('45', '1', '4', '23', '2017-08-04 22:20:08');
+INSERT INTO `t_tag_record` VALUES ('46', '1', '58', '23', '2017-08-04 22:20:08');
+INSERT INTO `t_tag_record` VALUES ('47', '1', '59', '24', '2017-08-10 21:29:42');
+INSERT INTO `t_tag_record` VALUES ('48', '1', '60', '25', '2017-08-10 21:33:57');
+INSERT INTO `t_tag_record` VALUES ('49', '1', '61', '25', '2017-08-10 21:33:57');
+INSERT INTO `t_tag_record` VALUES ('50', '1', '61', '26', '2017-08-10 21:34:34');
+INSERT INTO `t_tag_record` VALUES ('51', '1', '48', '26', '2017-08-10 21:34:34');
+INSERT INTO `t_tag_record` VALUES ('52', '1', '49', '26', '2017-08-10 21:34:34');
+INSERT INTO `t_tag_record` VALUES ('53', '1', '61', '27', '2017-08-10 21:35:37');
+INSERT INTO `t_tag_record` VALUES ('54', '1', '62', '27', '2017-08-10 21:35:37');
+INSERT INTO `t_tag_record` VALUES ('55', '1', '63', '27', '2017-08-10 21:35:37');
+INSERT INTO `t_tag_record` VALUES ('56', '1', '32', '28', '2017-08-12 10:44:46');
+INSERT INTO `t_tag_record` VALUES ('57', '1', '64', '28', '2017-08-12 10:44:46');
+INSERT INTO `t_tag_record` VALUES ('58', '1', '65', '29', '2017-08-12 10:45:31');
+INSERT INTO `t_tag_record` VALUES ('59', '1', '66', '29', '2017-08-12 10:45:31');
+INSERT INTO `t_tag_record` VALUES ('60', '1', '4', '30', '2017-08-12 10:46:33');
+INSERT INTO `t_tag_record` VALUES ('61', '1', '67', '30', '2017-08-12 10:46:33');
+INSERT INTO `t_tag_record` VALUES ('62', '1', '2', '31', '2017-08-12 15:05:11');
+INSERT INTO `t_tag_record` VALUES ('63', '1', '62', '31', '2017-08-12 15:05:11');
+INSERT INTO `t_tag_record` VALUES ('64', '1', '68', '31', '2017-08-12 15:05:11');
+INSERT INTO `t_tag_record` VALUES ('65', '1', '63', '31', '2017-08-12 15:05:11');
+INSERT INTO `t_tag_record` VALUES ('66', '1', '4', '32', '2017-08-12 15:06:07');
+INSERT INTO `t_tag_record` VALUES ('67', '1', '55', '32', '2017-08-12 15:06:07');
+INSERT INTO `t_tag_record` VALUES ('68', '1', '10', '33', '2017-08-12 15:16:29');
+INSERT INTO `t_tag_record` VALUES ('69', '1', '49', '33', '2017-08-12 15:16:29');
+INSERT INTO `t_tag_record` VALUES ('70', '1', '48', '33', '2017-08-12 15:16:29');
+INSERT INTO `t_tag_record` VALUES ('71', '1', '69', '33', '2017-08-12 15:16:29');
+INSERT INTO `t_tag_record` VALUES ('72', '1', '63', '33', '2017-08-12 15:16:29');
+INSERT INTO `t_tag_record` VALUES ('73', '1', '70', '34', '2017-08-12 17:44:36');
+INSERT INTO `t_tag_record` VALUES ('74', '1', '71', '35', '2017-08-12 17:46:14');
+INSERT INTO `t_tag_record` VALUES ('76', '1', '72', '37', '2017-08-12 17:49:12');
+INSERT INTO `t_tag_record` VALUES ('77', '1', '38', '38', '2017-08-12 17:51:39');
+INSERT INTO `t_tag_record` VALUES ('78', '1', '4', '39', '2017-08-12 18:22:01');
+INSERT INTO `t_tag_record` VALUES ('79', '1', '55', '39', '2017-08-12 18:22:01');
+INSERT INTO `t_tag_record` VALUES ('80', '1', '45', '40', '2017-08-12 18:28:24');
+INSERT INTO `t_tag_record` VALUES ('81', '1', '73', '40', '2017-08-12 18:28:24');
+INSERT INTO `t_tag_record` VALUES ('82', '1', '46', '40', '2017-08-12 18:28:24');
+INSERT INTO `t_tag_record` VALUES ('83', '1', '74', '41', '2017-08-12 18:57:32');
+INSERT INTO `t_tag_record` VALUES ('84', '1', '43', '42', '2017-08-12 20:07:03');
+INSERT INTO `t_tag_record` VALUES ('85', '1', '75', '42', '2017-08-12 20:07:03');
+INSERT INTO `t_tag_record` VALUES ('86', '1', '76', '43', '2017-08-12 22:53:20');
+INSERT INTO `t_tag_record` VALUES ('87', '1', '77', '43', '2017-08-12 22:53:20');
+INSERT INTO `t_tag_record` VALUES ('88', '1', '10', '44', '2017-08-12 22:56:57');
+INSERT INTO `t_tag_record` VALUES ('89', '1', '78', '44', '2017-08-12 22:56:57');
+INSERT INTO `t_tag_record` VALUES ('90', '1', '2', '45', '2017-08-13 11:57:05');
+INSERT INTO `t_tag_record` VALUES ('91', '1', '79', '45', '2017-08-13 11:57:05');
+INSERT INTO `t_tag_record` VALUES ('92', '1', '80', '45', '2017-08-13 11:57:05');
+INSERT INTO `t_tag_record` VALUES ('93', '1', '10', '46', '2017-08-13 12:05:00');
+INSERT INTO `t_tag_record` VALUES ('94', '1', '83', '46', '2017-08-13 12:05:00');
+INSERT INTO `t_tag_record` VALUES ('95', '1', '81', '46', '2017-08-13 12:05:00');
+INSERT INTO `t_tag_record` VALUES ('96', '1', '84', '46', '2017-08-13 12:05:00');
+INSERT INTO `t_tag_record` VALUES ('97', '1', '45', '47', '2017-08-13 18:50:10');
+INSERT INTO `t_tag_record` VALUES ('98', '1', '76', '47', '2017-08-13 18:50:10');
+INSERT INTO `t_tag_record` VALUES ('99', '1', '77', '47', '2017-08-13 18:50:10');
+INSERT INTO `t_tag_record` VALUES ('100', '1', '49', '48', '2017-08-13 18:52:31');
+INSERT INTO `t_tag_record` VALUES ('101', '1', '85', '48', '2017-08-13 18:52:31');
+INSERT INTO `t_tag_record` VALUES ('102', '1', '86', '48', '2017-08-13 18:52:31');
+INSERT INTO `t_tag_record` VALUES ('103', '1', '87', '49', '2017-08-13 19:28:49');
+INSERT INTO `t_tag_record` VALUES ('104', '1', '81', '49', '2017-08-13 19:28:49');
+INSERT INTO `t_tag_record` VALUES ('105', '1', '82', '49', '2017-08-13 19:28:49');
+INSERT INTO `t_tag_record` VALUES ('106', '1', '88', '49', '2017-08-13 19:28:49');
+INSERT INTO `t_tag_record` VALUES ('107', '1', '9', '50', '2017-08-13 19:30:01');
+INSERT INTO `t_tag_record` VALUES ('108', '1', '89', '50', '2017-08-13 19:30:01');
+INSERT INTO `t_tag_record` VALUES ('109', '1', '81', '50', '2017-08-13 19:30:01');
+INSERT INTO `t_tag_record` VALUES ('110', '1', '50', '51', '2017-08-14 09:04:56');
+INSERT INTO `t_tag_record` VALUES ('111', '1', '4', '51', '2017-08-14 09:04:56');
+INSERT INTO `t_tag_record` VALUES ('112', '1', '51', '51', '2017-08-14 09:04:56');
+INSERT INTO `t_tag_record` VALUES ('113', '1', '49', '52', '2017-08-14 09:06:35');
+INSERT INTO `t_tag_record` VALUES ('114', '1', '48', '52', '2017-08-14 09:06:35');
+INSERT INTO `t_tag_record` VALUES ('115', '1', '90', '52', '2017-08-14 09:06:35');
+INSERT INTO `t_tag_record` VALUES ('116', '1', '2', '53', '2017-08-14 15:29:19');
+INSERT INTO `t_tag_record` VALUES ('117', '1', '52', '53', '2017-08-14 15:29:19');
+INSERT INTO `t_tag_record` VALUES ('118', '1', '57', '53', '2017-08-14 15:29:19');
+INSERT INTO `t_tag_record` VALUES ('119', '1', '90', '53', '2017-08-14 15:29:19');
+INSERT INTO `t_tag_record` VALUES ('120', '1', '4', '54', '2017-08-14 18:21:47');
+INSERT INTO `t_tag_record` VALUES ('121', '1', '92', '54', '2017-08-14 18:21:47');
+INSERT INTO `t_tag_record` VALUES ('122', '1', '55', '54', '2017-08-14 18:21:47');
+INSERT INTO `t_tag_record` VALUES ('123', '1', '4', '55', '2017-08-15 09:04:30');
+INSERT INTO `t_tag_record` VALUES ('124', '1', '50', '55', '2017-08-15 09:04:30');
+INSERT INTO `t_tag_record` VALUES ('125', '1', '51', '55', '2017-08-15 09:04:30');
+INSERT INTO `t_tag_record` VALUES ('126', '1', '49', '56', '2017-08-15 09:16:29');
+INSERT INTO `t_tag_record` VALUES ('127', '1', '48', '56', '2017-08-15 09:16:29');
+INSERT INTO `t_tag_record` VALUES ('128', '1', '2', '57', '2017-08-15 13:38:03');
+INSERT INTO `t_tag_record` VALUES ('129', '1', '93', '57', '2017-08-15 13:38:03');
+INSERT INTO `t_tag_record` VALUES ('130', '1', '90', '57', '2017-08-15 13:38:03');
+INSERT INTO `t_tag_record` VALUES ('131', '1', '94', '57', '2017-08-15 13:38:03');
+INSERT INTO `t_tag_record` VALUES ('132', '1', '4', '58', '2017-08-15 18:48:11');
+INSERT INTO `t_tag_record` VALUES ('133', '1', '55', '58', '2017-08-15 18:48:11');
+INSERT INTO `t_tag_record` VALUES ('134', '1', '92', '58', '2017-08-15 18:48:11');
+INSERT INTO `t_tag_record` VALUES ('135', '1', '95', '59', '2017-08-15 22:39:55');
+INSERT INTO `t_tag_record` VALUES ('136', '1', '96', '59', '2017-08-15 22:39:55');
+INSERT INTO `t_tag_record` VALUES ('137', '1', '86', '59', '2017-08-15 22:39:55');
+INSERT INTO `t_tag_record` VALUES ('138', '1', '4', '60', '2017-08-16 08:45:59');
+INSERT INTO `t_tag_record` VALUES ('139', '1', '50', '60', '2017-08-16 08:45:59');
+INSERT INTO `t_tag_record` VALUES ('140', '1', '51', '60', '2017-08-16 08:45:59');
+INSERT INTO `t_tag_record` VALUES ('141', '1', '65', '61', '2017-08-16 09:14:41');
+INSERT INTO `t_tag_record` VALUES ('142', '1', '97', '61', '2017-08-16 09:14:41');
+INSERT INTO `t_tag_record` VALUES ('143', '1', '98', '61', '2017-08-16 09:14:41');
+INSERT INTO `t_tag_record` VALUES ('144', '1', '90', '61', '2017-08-16 09:14:41');
+INSERT INTO `t_tag_record` VALUES ('145', '1', '2', '62', '2017-08-16 12:29:45');
+INSERT INTO `t_tag_record` VALUES ('146', '1', '100', '62', '2017-08-16 12:29:45');
+INSERT INTO `t_tag_record` VALUES ('147', '1', '81', '62', '2017-08-16 12:29:45');
+INSERT INTO `t_tag_record` VALUES ('148', '1', '101', '62', '2017-08-16 12:29:45');
+INSERT INTO `t_tag_record` VALUES ('149', '1', '4', '63', '2017-08-16 18:31:06');
+INSERT INTO `t_tag_record` VALUES ('150', '1', '55', '63', '2017-08-16 18:31:06');
+INSERT INTO `t_tag_record` VALUES ('151', '1', '92', '63', '2017-08-16 18:31:06');
+INSERT INTO `t_tag_record` VALUES ('152', '1', '45', '64', '2017-08-16 18:46:33');
+INSERT INTO `t_tag_record` VALUES ('153', '1', '47', '64', '2017-08-16 18:46:33');
+INSERT INTO `t_tag_record` VALUES ('154', '1', '90', '64', '2017-08-16 18:46:33');
+INSERT INTO `t_tag_record` VALUES ('155', '1', '79', '64', '2017-08-16 18:46:33');
+INSERT INTO `t_tag_record` VALUES ('156', '1', '65', '65', '2017-08-17 08:55:25');
+INSERT INTO `t_tag_record` VALUES ('157', '1', '97', '65', '2017-08-17 08:55:25');
+INSERT INTO `t_tag_record` VALUES ('158', '1', '86', '65', '2017-08-17 08:55:25');
+INSERT INTO `t_tag_record` VALUES ('159', '1', '4', '66', '2017-08-17 09:31:56');
+INSERT INTO `t_tag_record` VALUES ('160', '1', '50', '66', '2017-08-17 09:31:56');
+INSERT INTO `t_tag_record` VALUES ('161', '1', '51', '66', '2017-08-17 09:31:56');
+INSERT INTO `t_tag_record` VALUES ('162', '1', '102', '67', '2017-08-17 11:44:34');
+INSERT INTO `t_tag_record` VALUES ('163', '1', '2', '67', '2017-08-17 11:44:34');
+INSERT INTO `t_tag_record` VALUES ('164', '1', '81', '67', '2017-08-17 11:44:34');
+INSERT INTO `t_tag_record` VALUES ('165', '1', '103', '67', '2017-08-17 11:44:34');
+INSERT INTO `t_tag_record` VALUES ('166', '1', '4', '68', '2017-08-17 18:44:53');
+INSERT INTO `t_tag_record` VALUES ('167', '1', '55', '68', '2017-08-17 18:44:53');
+INSERT INTO `t_tag_record` VALUES ('168', '1', '92', '68', '2017-08-17 18:44:53');
+INSERT INTO `t_tag_record` VALUES ('169', '1', '104', '69', '2017-08-17 18:51:33');
+INSERT INTO `t_tag_record` VALUES ('170', '1', '45', '69', '2017-08-17 18:51:33');
+INSERT INTO `t_tag_record` VALUES ('171', '1', '79', '69', '2017-08-17 18:51:33');
+INSERT INTO `t_tag_record` VALUES ('172', '1', '43', '70', '2017-08-18 03:00:18');
+INSERT INTO `t_tag_record` VALUES ('173', '1', '105', '70', '2017-08-18 03:00:18');
+INSERT INTO `t_tag_record` VALUES ('174', '1', '106', '70', '2017-08-18 03:00:18');
+INSERT INTO `t_tag_record` VALUES ('175', '1', '81', '70', '2017-08-18 03:00:18');
+INSERT INTO `t_tag_record` VALUES ('176', '1', '50', '71', '2017-08-18 09:13:17');
+INSERT INTO `t_tag_record` VALUES ('177', '1', '51', '71', '2017-08-18 09:13:17');
+INSERT INTO `t_tag_record` VALUES ('178', '1', '4', '71', '2017-08-18 09:13:17');
+INSERT INTO `t_tag_record` VALUES ('179', '1', '107', '72', '2017-08-18 11:27:13');
+INSERT INTO `t_tag_record` VALUES ('180', '1', '20', '72', '2017-08-18 11:27:13');
+INSERT INTO `t_tag_record` VALUES ('181', '1', '90', '72', '2017-08-18 11:27:13');
+INSERT INTO `t_tag_record` VALUES ('182', '1', '20', '73', '2017-08-18 11:28:25');
+INSERT INTO `t_tag_record` VALUES ('183', '1', '108', '73', '2017-08-18 11:28:25');
+INSERT INTO `t_tag_record` VALUES ('184', '1', '90', '73', '2017-08-18 11:28:25');
+INSERT INTO `t_tag_record` VALUES ('185', '1', '61', '74', '2017-08-18 14:20:22');
+INSERT INTO `t_tag_record` VALUES ('186', '1', '109', '74', '2017-08-18 14:20:22');
+INSERT INTO `t_tag_record` VALUES ('187', '1', '77', '74', '2017-08-18 14:20:22');
+INSERT INTO `t_tag_record` VALUES ('188', '1', '90', '74', '2017-08-18 14:20:22');
+INSERT INTO `t_tag_record` VALUES ('189', '1', '105', '75', '2017-08-18 14:22:19');
+INSERT INTO `t_tag_record` VALUES ('190', '1', '106', '75', '2017-08-18 14:22:19');
+INSERT INTO `t_tag_record` VALUES ('191', '1', '81', '75', '2017-08-18 14:22:19');
+INSERT INTO `t_tag_record` VALUES ('192', '1', '43', '75', '2017-08-18 14:22:19');
+INSERT INTO `t_tag_record` VALUES ('193', '1', '49', '76', '2017-08-18 17:02:20');
+INSERT INTO `t_tag_record` VALUES ('194', '1', '48', '76', '2017-08-18 17:02:20');
+INSERT INTO `t_tag_record` VALUES ('195', '1', '90', '76', '2017-08-18 17:02:20');
+INSERT INTO `t_tag_record` VALUES ('196', '1', '4', '77', '2017-08-18 18:55:41');
+INSERT INTO `t_tag_record` VALUES ('197', '1', '55', '77', '2017-08-18 18:55:41');
+INSERT INTO `t_tag_record` VALUES ('198', '1', '92', '77', '2017-08-18 18:55:41');
+INSERT INTO `t_tag_record` VALUES ('199', '1', '79', '78', '2017-08-18 19:29:05');
+INSERT INTO `t_tag_record` VALUES ('200', '1', '90', '78', '2017-08-18 19:29:05');
+INSERT INTO `t_tag_record` VALUES ('201', '1', '110', '78', '2017-08-18 19:29:05');
+INSERT INTO `t_tag_record` VALUES ('202', '1', '45', '78', '2017-08-18 19:29:05');
+INSERT INTO `t_tag_record` VALUES ('203', '1', '105', '79', '2017-08-19 01:02:00');
+INSERT INTO `t_tag_record` VALUES ('204', '1', '106', '79', '2017-08-19 01:02:00');
+INSERT INTO `t_tag_record` VALUES ('205', '1', '81', '79', '2017-08-19 01:02:00');
+INSERT INTO `t_tag_record` VALUES ('206', '1', '43', '79', '2017-08-19 01:02:00');
+INSERT INTO `t_tag_record` VALUES ('207', '1', '111', '80', '2017-08-19 12:03:25');
+INSERT INTO `t_tag_record` VALUES ('208', '1', '112', '80', '2017-08-19 12:03:25');
+INSERT INTO `t_tag_record` VALUES ('209', '1', '77', '80', '2017-08-19 12:03:25');
+INSERT INTO `t_tag_record` VALUES ('210', '1', '5', '80', '2017-08-19 12:03:25');
+INSERT INTO `t_tag_record` VALUES ('211', '1', '90', '80', '2017-08-19 12:03:25');
+INSERT INTO `t_tag_record` VALUES ('212', '1', '4', '81', '2017-08-19 17:50:33');
+INSERT INTO `t_tag_record` VALUES ('213', '1', '55', '81', '2017-08-19 17:50:33');
+INSERT INTO `t_tag_record` VALUES ('214', '1', '77', '81', '2017-08-19 17:50:33');
+INSERT INTO `t_tag_record` VALUES ('215', '1', '2', '82', '2017-08-19 17:52:06');
+INSERT INTO `t_tag_record` VALUES ('216', '1', '113', '82', '2017-08-19 17:52:06');
+INSERT INTO `t_tag_record` VALUES ('217', '1', '90', '82', '2017-08-19 17:52:06');
+INSERT INTO `t_tag_record` VALUES ('218', '1', '55', '83', '2017-08-19 18:13:54');
+INSERT INTO `t_tag_record` VALUES ('219', '1', '4', '83', '2017-08-19 18:13:54');
+INSERT INTO `t_tag_record` VALUES ('220', '1', '77', '83', '2017-08-19 18:13:54');
+INSERT INTO `t_tag_record` VALUES ('221', '1', '45', '84', '2017-08-19 19:28:12');
+INSERT INTO `t_tag_record` VALUES ('222', '1', '114', '84', '2017-08-19 19:28:12');
+INSERT INTO `t_tag_record` VALUES ('223', '1', '86', '84', '2017-08-19 19:28:12');
+INSERT INTO `t_tag_record` VALUES ('224', '1', '77', '84', '2017-08-19 19:28:12');
+INSERT INTO `t_tag_record` VALUES ('225', '1', '9', '85', '2017-08-19 19:35:12');
+INSERT INTO `t_tag_record` VALUES ('226', '1', '77', '85', '2017-08-19 19:35:12');
+INSERT INTO `t_tag_record` VALUES ('227', '1', '115', '85', '2017-08-19 19:35:12');
+INSERT INTO `t_tag_record` VALUES ('228', '1', '49', '86', '2017-08-19 19:38:55');
+INSERT INTO `t_tag_record` VALUES ('229', '1', '85', '86', '2017-08-19 19:38:55');
+INSERT INTO `t_tag_record` VALUES ('230', '1', '81', '86', '2017-08-19 19:38:55');
+INSERT INTO `t_tag_record` VALUES ('231', '1', '85', '87', '2017-08-20 11:16:41');
+INSERT INTO `t_tag_record` VALUES ('232', '1', '117', '87', '2017-08-20 11:16:41');
+INSERT INTO `t_tag_record` VALUES ('233', '1', '116', '87', '2017-08-20 11:16:41');
+INSERT INTO `t_tag_record` VALUES ('234', '1', '86', '87', '2017-08-20 11:16:41');
+INSERT INTO `t_tag_record` VALUES ('235', '1', '118', '88', '2017-08-20 20:09:25');
+INSERT INTO `t_tag_record` VALUES ('236', '1', '119', '88', '2017-08-20 20:09:25');
+INSERT INTO `t_tag_record` VALUES ('237', '1', '45', '88', '2017-08-20 20:09:25');
+INSERT INTO `t_tag_record` VALUES ('238', '1', '77', '88', '2017-08-20 20:09:25');
+INSERT INTO `t_tag_record` VALUES ('239', '1', '90', '88', '2017-08-20 20:09:25');
+INSERT INTO `t_tag_record` VALUES ('240', '1', '49', '89', '2017-08-20 20:22:40');
+INSERT INTO `t_tag_record` VALUES ('241', '1', '85', '89', '2017-08-20 20:22:40');
+INSERT INTO `t_tag_record` VALUES ('242', '1', '81', '89', '2017-08-20 20:22:40');
+INSERT INTO `t_tag_record` VALUES ('243', '1', '4', '90', '2017-08-21 08:51:28');
+INSERT INTO `t_tag_record` VALUES ('244', '1', '50', '90', '2017-08-21 08:51:28');
+INSERT INTO `t_tag_record` VALUES ('245', '1', '51', '90', '2017-08-21 08:51:28');
+INSERT INTO `t_tag_record` VALUES ('246', '1', '49', '91', '2017-08-21 09:14:45');
+INSERT INTO `t_tag_record` VALUES ('247', '1', '48', '91', '2017-08-21 09:14:45');
+INSERT INTO `t_tag_record` VALUES ('248', '1', '100', '92', '2017-08-21 12:33:10');
+INSERT INTO `t_tag_record` VALUES ('249', '1', '101', '92', '2017-08-21 12:33:10');
+INSERT INTO `t_tag_record` VALUES ('250', '1', '2', '92', '2017-08-21 12:33:10');
+INSERT INTO `t_tag_record` VALUES ('251', '1', '4', '93', '2017-08-21 18:45:05');
+INSERT INTO `t_tag_record` VALUES ('252', '1', '55', '93', '2017-08-21 18:45:05');
+INSERT INTO `t_tag_record` VALUES ('253', '1', '92', '93', '2017-08-21 18:45:05');
+INSERT INTO `t_tag_record` VALUES ('254', '1', '79', '94', '2017-08-21 19:21:04');
+INSERT INTO `t_tag_record` VALUES ('255', '1', '47', '94', '2017-08-21 19:21:04');
+INSERT INTO `t_tag_record` VALUES ('256', '1', '90', '94', '2017-08-21 19:21:04');
+INSERT INTO `t_tag_record` VALUES ('257', '1', '45', '94', '2017-08-21 19:21:04');
+INSERT INTO `t_tag_record` VALUES ('258', '1', '50', '95', '2017-08-22 09:08:38');
+INSERT INTO `t_tag_record` VALUES ('259', '1', '51', '95', '2017-08-22 09:08:38');
+INSERT INTO `t_tag_record` VALUES ('260', '1', '4', '95', '2017-08-22 09:08:38');
+INSERT INTO `t_tag_record` VALUES ('261', '1', '2', '96', '2017-08-22 13:26:34');
+INSERT INTO `t_tag_record` VALUES ('262', '1', '120', '96', '2017-08-22 13:26:34');
+INSERT INTO `t_tag_record` VALUES ('263', '1', '53', '97', '2017-08-22 18:44:49');
+INSERT INTO `t_tag_record` VALUES ('264', '1', '121', '97', '2017-08-22 18:44:49');
+INSERT INTO `t_tag_record` VALUES ('265', '1', '122', '97', '2017-08-22 18:44:49');
+INSERT INTO `t_tag_record` VALUES ('266', '1', '77', '97', '2017-08-22 18:44:49');
+INSERT INTO `t_tag_record` VALUES ('267', '1', '90', '97', '2017-08-22 18:44:49');
+INSERT INTO `t_tag_record` VALUES ('268', '1', '9', '98', '2017-08-22 19:27:07');
+INSERT INTO `t_tag_record` VALUES ('269', '1', '115', '98', '2017-08-22 19:27:07');
+INSERT INTO `t_tag_record` VALUES ('270', '1', '77', '98', '2017-08-22 19:27:07');
+INSERT INTO `t_tag_record` VALUES ('271', '1', '4', '99', '2017-08-22 19:28:23');
+INSERT INTO `t_tag_record` VALUES ('272', '1', '92', '99', '2017-08-22 19:28:23');
+INSERT INTO `t_tag_record` VALUES ('273', '1', '55', '99', '2017-08-22 19:28:23');
+INSERT INTO `t_tag_record` VALUES ('274', '1', '4', '100', '2017-08-23 09:04:00');
+INSERT INTO `t_tag_record` VALUES ('275', '1', '50', '100', '2017-08-23 09:04:00');
+INSERT INTO `t_tag_record` VALUES ('276', '1', '51', '100', '2017-08-23 09:04:00');
+INSERT INTO `t_tag_record` VALUES ('277', '1', '48', '101', '2017-08-23 09:04:50');
+INSERT INTO `t_tag_record` VALUES ('278', '1', '49', '101', '2017-08-23 09:04:50');
+INSERT INTO `t_tag_record` VALUES ('279', '1', '90', '101', '2017-08-23 09:04:50');
+INSERT INTO `t_tag_record` VALUES ('280', '1', '2', '102', '2017-08-23 15:20:01');
+INSERT INTO `t_tag_record` VALUES ('281', '1', '123', '102', '2017-08-23 15:20:01');
+INSERT INTO `t_tag_record` VALUES ('282', '1', '81', '102', '2017-08-23 15:20:01');
+INSERT INTO `t_tag_record` VALUES ('283', '1', '4', '103', '2017-08-23 18:27:08');
+INSERT INTO `t_tag_record` VALUES ('284', '1', '92', '103', '2017-08-23 18:27:08');
+INSERT INTO `t_tag_record` VALUES ('285', '1', '55', '103', '2017-08-23 18:27:08');
+INSERT INTO `t_tag_record` VALUES ('286', '1', '46', '104', '2017-08-23 19:04:44');
+INSERT INTO `t_tag_record` VALUES ('287', '1', '45', '104', '2017-08-23 19:04:44');
+INSERT INTO `t_tag_record` VALUES ('288', '1', '90', '104', '2017-08-23 19:04:44');
+INSERT INTO `t_tag_record` VALUES ('289', '1', '73', '104', '2017-08-23 19:04:44');
+INSERT INTO `t_tag_record` VALUES ('290', '1', '49', '105', '2017-08-23 19:10:01');
+INSERT INTO `t_tag_record` VALUES ('291', '1', '81', '105', '2017-08-23 19:10:01');
+INSERT INTO `t_tag_record` VALUES ('292', '1', '85', '105', '2017-08-23 19:10:01');
+INSERT INTO `t_tag_record` VALUES ('293', '1', '51', '106', '2017-08-24 17:44:30');
+INSERT INTO `t_tag_record` VALUES ('294', '1', '4', '106', '2017-08-24 17:44:30');
+INSERT INTO `t_tag_record` VALUES ('295', '1', '50', '106', '2017-08-24 17:44:30');
+INSERT INTO `t_tag_record` VALUES ('297', '1', '124', '107', '2017-08-24 17:46:29');
+INSERT INTO `t_tag_record` VALUES ('298', '1', '93', '107', '2017-08-24 17:46:29');
+INSERT INTO `t_tag_record` VALUES ('299', '1', '90', '107', '2017-08-24 17:46:29');
+INSERT INTO `t_tag_record` VALUES ('300', '1', '94', '107', '2017-08-24 17:46:29');
+INSERT INTO `t_tag_record` VALUES ('301', '1', '4', '108', '2017-08-24 18:38:43');
+INSERT INTO `t_tag_record` VALUES ('302', '1', '55', '108', '2017-08-24 18:38:43');
+INSERT INTO `t_tag_record` VALUES ('303', '1', '92', '108', '2017-08-24 18:38:43');
+INSERT INTO `t_tag_record` VALUES ('304', '1', '45', '109', '2017-08-25 08:35:21');
+INSERT INTO `t_tag_record` VALUES ('305', '1', '90', '109', '2017-08-25 08:35:21');
+INSERT INTO `t_tag_record` VALUES ('306', '1', '53', '109', '2017-08-25 08:35:21');
+INSERT INTO `t_tag_record` VALUES ('307', '1', '121', '109', '2017-08-25 08:35:21');
+INSERT INTO `t_tag_record` VALUES ('308', '1', '105', '110', '2017-08-25 08:38:55');
+INSERT INTO `t_tag_record` VALUES ('309', '1', '81', '110', '2017-08-25 08:38:55');
+INSERT INTO `t_tag_record` VALUES ('310', '1', '43', '110', '2017-08-25 08:38:55');
+INSERT INTO `t_tag_record` VALUES ('311', '1', '106', '110', '2017-08-25 08:38:55');
+INSERT INTO `t_tag_record` VALUES ('312', '1', '51', '111', '2017-08-25 08:42:29');
+INSERT INTO `t_tag_record` VALUES ('313', '1', '50', '111', '2017-08-25 08:42:29');
+INSERT INTO `t_tag_record` VALUES ('314', '1', '4', '111', '2017-08-25 08:42:29');
+INSERT INTO `t_tag_record` VALUES ('315', '1', '2', '107', '2017-08-25 10:33:57');
+INSERT INTO `t_tag_record` VALUES ('316', '1', '2', '112', '2017-08-25 14:23:20');
+INSERT INTO `t_tag_record` VALUES ('317', '1', '90', '112', '2017-08-25 14:23:20');
+INSERT INTO `t_tag_record` VALUES ('318', '1', '125', '112', '2017-08-25 14:23:20');
+INSERT INTO `t_tag_record` VALUES ('319', '1', '57', '112', '2017-08-25 14:23:20');
+INSERT INTO `t_tag_record` VALUES ('320', '1', '55', '113', '2017-08-25 19:00:08');
+INSERT INTO `t_tag_record` VALUES ('321', '1', '92', '113', '2017-08-25 19:00:08');
+INSERT INTO `t_tag_record` VALUES ('322', '1', '4', '113', '2017-08-25 19:00:08');
+INSERT INTO `t_tag_record` VALUES ('326', '1', '45', '115', '2017-08-25 19:19:12');
+INSERT INTO `t_tag_record` VALUES ('327', '1', '53', '115', '2017-08-25 19:19:12');
+INSERT INTO `t_tag_record` VALUES ('328', '1', '90', '115', '2017-08-25 19:19:12');
+INSERT INTO `t_tag_record` VALUES ('329', '1', '122', '115', '2017-08-25 19:19:12');
+INSERT INTO `t_tag_record` VALUES ('330', '1', '9', '116', '2017-08-25 20:51:38');
+INSERT INTO `t_tag_record` VALUES ('331', '1', '77', '116', '2017-08-25 20:51:38');
+INSERT INTO `t_tag_record` VALUES ('332', '1', '89', '116', '2017-08-25 20:51:38');
+INSERT INTO `t_tag_record` VALUES ('333', '1', '39', '117', '2017-08-25 20:53:28');
+INSERT INTO `t_tag_record` VALUES ('334', '1', '77', '117', '2017-08-25 20:53:28');
+INSERT INTO `t_tag_record` VALUES ('335', '1', '126', '117', '2017-08-25 20:53:28');
+INSERT INTO `t_tag_record` VALUES ('336', '1', '86', '117', '2017-08-25 20:53:28');
+INSERT INTO `t_tag_record` VALUES ('337', '1', '127', '118', '2017-08-26 14:31:28');
+INSERT INTO `t_tag_record` VALUES ('338', '1', '2', '118', '2017-08-26 14:31:28');
+INSERT INTO `t_tag_record` VALUES ('339', '1', '90', '119', '2017-08-26 14:32:38');
+INSERT INTO `t_tag_record` VALUES ('340', '1', '128', '119', '2017-08-26 14:32:38');
+INSERT INTO `t_tag_record` VALUES ('341', '1', '129', '119', '2017-08-26 14:32:38');
+INSERT INTO `t_tag_record` VALUES ('342', '1', '130', '120', '2017-08-26 15:15:32');
+INSERT INTO `t_tag_record` VALUES ('343', '1', '131', '120', '2017-08-26 15:15:32');
+INSERT INTO `t_tag_record` VALUES ('344', '1', '81', '120', '2017-08-26 15:15:32');
+INSERT INTO `t_tag_record` VALUES ('345', '1', '129', '121', '2017-08-26 16:02:37');
+INSERT INTO `t_tag_record` VALUES ('346', '1', '132', '121', '2017-08-26 16:02:37');
+INSERT INTO `t_tag_record` VALUES ('347', '1', '90', '121', '2017-08-26 16:02:37');
+INSERT INTO `t_tag_record` VALUES ('348', '1', '53', '122', '2017-08-26 19:34:45');
+INSERT INTO `t_tag_record` VALUES ('349', '1', '77', '122', '2017-08-26 19:34:45');
+INSERT INTO `t_tag_record` VALUES ('350', '1', '133', '122', '2017-08-26 19:34:45');
+INSERT INTO `t_tag_record` VALUES ('351', '1', '134', '122', '2017-08-26 19:34:45');
+INSERT INTO `t_tag_record` VALUES ('352', '1', '90', '122', '2017-08-26 19:34:45');
+INSERT INTO `t_tag_record` VALUES ('353', '1', '135', '123', '2017-08-27 11:20:27');
+INSERT INTO `t_tag_record` VALUES ('354', '1', '136', '123', '2017-08-27 11:20:27');
+INSERT INTO `t_tag_record` VALUES ('355', '1', '8', '123', '2017-08-27 11:20:27');
+INSERT INTO `t_tag_record` VALUES ('356', '1', '81', '123', '2017-08-27 11:20:27');
+INSERT INTO `t_tag_record` VALUES ('357', '1', '51', '124', '2017-08-28 09:02:01');
+INSERT INTO `t_tag_record` VALUES ('358', '1', '50', '124', '2017-08-28 09:02:01');
+INSERT INTO `t_tag_record` VALUES ('359', '1', '4', '124', '2017-08-28 09:02:01');
+INSERT INTO `t_tag_record` VALUES ('360', '1', '49', '125', '2017-08-28 10:15:35');
+INSERT INTO `t_tag_record` VALUES ('361', '1', '48', '125', '2017-08-28 10:15:35');
+INSERT INTO `t_tag_record` VALUES ('362', '1', '90', '125', '2017-08-28 10:15:35');
+INSERT INTO `t_tag_record` VALUES ('363', '1', '2', '126', '2017-08-28 16:38:25');
+INSERT INTO `t_tag_record` VALUES ('364', '1', '94', '126', '2017-08-28 16:38:25');
+INSERT INTO `t_tag_record` VALUES ('365', '1', '90', '126', '2017-08-28 16:38:25');
+INSERT INTO `t_tag_record` VALUES ('366', '1', '137', '127', '2017-08-28 19:50:52');
+INSERT INTO `t_tag_record` VALUES ('367', '1', '77', '127', '2017-08-28 19:50:52');
+INSERT INTO `t_tag_record` VALUES ('368', '1', '90', '127', '2017-08-28 19:50:52');
+INSERT INTO `t_tag_record` VALUES ('369', '1', '51', '128', '2017-08-29 00:28:11');
+INSERT INTO `t_tag_record` VALUES ('370', '1', '4', '128', '2017-08-29 00:28:11');
+INSERT INTO `t_tag_record` VALUES ('371', '1', '50', '128', '2017-08-29 00:28:11');
+INSERT INTO `t_tag_record` VALUES ('372', '1', '92', '128', '2017-08-29 00:28:11');
+INSERT INTO `t_tag_record` VALUES ('373', '1', '55', '128', '2017-08-29 00:28:11');
+INSERT INTO `t_tag_record` VALUES ('374', '1', '51', '129', '2017-08-29 09:08:55');
+INSERT INTO `t_tag_record` VALUES ('375', '1', '50', '129', '2017-08-29 09:08:55');
+INSERT INTO `t_tag_record` VALUES ('376', '1', '4', '129', '2017-08-29 09:08:55');
+INSERT INTO `t_tag_record` VALUES ('377', '1', '65', '130', '2017-08-29 09:14:34');
+INSERT INTO `t_tag_record` VALUES ('378', '1', '97', '130', '2017-08-29 09:14:34');
+INSERT INTO `t_tag_record` VALUES ('379', '1', '98', '130', '2017-08-29 09:14:34');
+INSERT INTO `t_tag_record` VALUES ('380', '1', '90', '130', '2017-08-29 09:14:34');
+INSERT INTO `t_tag_record` VALUES ('381', '1', '123', '131', '2017-08-31 15:31:37');
+INSERT INTO `t_tag_record` VALUES ('382', '1', '90', '131', '2017-08-31 15:31:37');
+INSERT INTO `t_tag_record` VALUES ('383', '1', '92', '132', '2017-08-31 15:32:03');
+INSERT INTO `t_tag_record` VALUES ('384', '1', '55', '132', '2017-08-31 15:32:03');
+INSERT INTO `t_tag_record` VALUES ('385', '1', '4', '132', '2017-08-31 15:32:03');
+INSERT INTO `t_tag_record` VALUES ('386', '1', '50', '133', '2017-08-31 15:32:35');
+INSERT INTO `t_tag_record` VALUES ('387', '1', '51', '133', '2017-08-31 15:32:35');
+INSERT INTO `t_tag_record` VALUES ('388', '1', '4', '133', '2017-08-31 15:32:35');
+INSERT INTO `t_tag_record` VALUES ('389', '1', '138', '134', '2017-08-31 15:33:26');
+INSERT INTO `t_tag_record` VALUES ('390', '1', '90', '134', '2017-08-31 15:33:26');
+INSERT INTO `t_tag_record` VALUES ('391', '1', '94', '134', '2017-08-31 15:33:26');
+INSERT INTO `t_tag_record` VALUES ('392', '1', '92', '135', '2017-08-31 15:33:36');
+INSERT INTO `t_tag_record` VALUES ('393', '1', '55', '135', '2017-08-31 15:33:36');
+INSERT INTO `t_tag_record` VALUES ('394', '1', '4', '135', '2017-08-31 15:33:36');
+INSERT INTO `t_tag_record` VALUES ('395', '1', '139', '136', '2017-08-31 15:34:51');
+INSERT INTO `t_tag_record` VALUES ('396', '1', '140', '136', '2017-08-31 15:34:51');
+INSERT INTO `t_tag_record` VALUES ('397', '1', '90', '136', '2017-08-31 15:34:51');
+INSERT INTO `t_tag_record` VALUES ('398', '1', '45', '136', '2017-08-31 15:34:51');
+INSERT INTO `t_tag_record` VALUES ('399', '1', '139', '137', '2017-08-31 15:35:47');
+INSERT INTO `t_tag_record` VALUES ('400', '1', '141', '137', '2017-08-31 15:35:47');
+INSERT INTO `t_tag_record` VALUES ('401', '1', '90', '137', '2017-08-31 15:35:47');
+INSERT INTO `t_tag_record` VALUES ('402', '1', '142', '138', '2017-08-31 15:36:28');
+INSERT INTO `t_tag_record` VALUES ('403', '1', '77', '138', '2017-08-31 15:36:28');
+INSERT INTO `t_tag_record` VALUES ('404', '1', '86', '138', '2017-08-31 15:36:28');
+INSERT INTO `t_tag_record` VALUES ('405', '1', '9', '139', '2017-08-31 15:37:20');
+INSERT INTO `t_tag_record` VALUES ('406', '1', '143', '139', '2017-08-31 15:37:20');
+INSERT INTO `t_tag_record` VALUES ('407', '1', '51', '140', '2017-08-31 15:37:36');
+INSERT INTO `t_tag_record` VALUES ('408', '1', '50', '140', '2017-08-31 15:37:36');
+INSERT INTO `t_tag_record` VALUES ('409', '1', '4', '140', '2017-08-31 15:37:36');
+INSERT INTO `t_tag_record` VALUES ('410', '1', '144', '141', '2017-08-31 15:41:03');
+INSERT INTO `t_tag_record` VALUES ('411', '1', '2', '141', '2017-08-31 15:41:03');
+INSERT INTO `t_tag_record` VALUES ('412', '1', '94', '141', '2017-08-31 15:41:03');
+INSERT INTO `t_tag_record` VALUES ('413', '1', '90', '141', '2017-08-31 15:41:03');
 
 -- ----------------------------
 -- Table structure for `t_user`
@@ -5595,10 +6301,11 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`id`),
   KEY `username` (`username`),
   KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES ('1', 'admin', '$2y$13$fuL2xOXfc.croDwz3SAW/.YdrvQ27otEH41zfdm7iiGDels.L3yOW', 'jam00@vip.qq.com', 'dZ-aW3VXWlmfioF7IZqm_NXmgz0TQBLg', '0', '0', '0', '0000-00-00 00:00:00', '2016-12-01 15:22:58', '1');
+INSERT INTO `t_user` VALUES ('1', 'admin', '$2y$13$7/lp9txLXAgub/z.Mdp4l.H8UGwfF.x7yLB8ypsTs4lLRneSf3KlW', 'jam00@vip.qq.com', 'brgrPsKmG3XzeBhiU-ktyV54PCjr3duo', '2', '0', '0', '2017-08-01 10:09:28', '2016-12-01 15:22:58', '1');
 INSERT INTO `t_user` VALUES ('2', 'test1', '$2y$13$uFklrEDNChkY4ZyyVLurmubFfRkoOfGOvnQw4qc3WcHapkWz5kYiW', 'test1@qq.com', 'nw__At9MMUx6OUczkZLDZaRPj-HheVHL', '0', '0', '0', '0000-00-00 00:00:00', '2016-12-09 13:39:41', '1');
+INSERT INTO `t_user` VALUES ('3', 'test2', '$2y$13$nx9lOlj063fO9dSfAdp9ZeLJEBH7m1ekhG2tXmIqkPafz4HgUP9f6', 'test2@qq.com', 'CUzlLM99UxXyLgb4D4YZSHR63DNWQ9JY', '0', '0', '0', '0000-00-00 00:00:00', '2017-09-28 10:57:10', '1');

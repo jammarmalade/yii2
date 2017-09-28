@@ -11,9 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'language' => 'zh-CN',
+    'timeZone' => 'Asia/Shanghai',
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\UserBackend',
             'enableAutoLogin' => true,
         ],
         'log' => [
@@ -34,8 +36,24 @@ return [
             'tablePrefix' => 't_',
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'layouts/error',
         ],
+        //配置主题
+//        'view' => [
+//            'theme' => [
+//                'basePath' => '@webroot/static/themes/xbt',//资源目录
+//                'baseUrl' => '@web/static/themes/xbt',//资源url
+//                'pathMap' => [
+//                    '@app/views' => [
+//                        '@app/themes/xbt',
+//                    ]
+//                ],
+//            ],
+//        ],
+    ],
+    //多主题设置
+    'as theme' => [
+        'class' => 'frontend\components\ThemeController',
     ],
     'params' => $params,
 ];

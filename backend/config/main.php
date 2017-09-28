@@ -81,6 +81,7 @@ return [
             //controller/action
 //            '*',//测试时开启
             'site/logout',
+            'upload/*',
         ],
     ],
     'params' => $params,
