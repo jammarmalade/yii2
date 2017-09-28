@@ -11,6 +11,7 @@ use Yii;
  * @property string $uid
  * @property string $tid
  * @property string $rid
+ * @property string $create_time
  */
 class TagRecord extends \yii\db\ActiveRecord
 {
@@ -47,6 +48,7 @@ class TagRecord extends \yii\db\ActiveRecord
             'uid' => '用户id',
             'tid' => '标签id',
             'rid' => '记录id',
+            'create_time' => '添加时间',
         ];
     }
 }
