@@ -59,10 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </style>
 <div class="article-create">
     <h1><?= Html::encode($this->title) ?></h1>
-    <input type="text" class="form-control" id="subject" placeholder="文章标题" value="<?=$articleInfo['subject']?>">
+    <input type="text" class="form-control" id="subject" placeholder="文章标题" value="<?=isset($articleInfo['subject']) ? $articleInfo['subject'] : ''?>">
     <div id="content_area">
         <div id="editor"></div>
-        <div id="old_content"><?=$articleInfo['content']?></div>
+        <div id="old_content"><?=isset($articleInfo['content']) ? $articleInfo['content'] : ''?></div>
     </div>
     <div id="tag_area" class="boot-input">
         <div id="tag_show_area">
@@ -76,10 +76,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </span>
     </div>
     <div id="auth_area">
-        <input type="text" class="form-control" id="view_auth" placeholder="查看密码" value="<?=$articleInfo['view_auth']?>">
+        <input type="text" class="form-control" id="view_auth" placeholder="查看密码" value="<?=isset($articleInfo['view_auth']) ? $articleInfo['view_auth'] : ''?>">
     </div>
     <div id="submit_area">
-        <input type="hidden" value="<?=$articleInfo['id']?>" id="aid">
+        <input type="hidden" value="<?=isset($articleInfo['id']) ? $articleInfo['id'] : ''?>" id="aid">
         <button class="btn btn-success" id="submit">提交</button>
     </div>
 </div>
@@ -224,7 +224,7 @@ jQuery(document).ready(function () {
         }
         $.post("<?php echo Url::to(['article/create']);?>",{'aid': aid,'type': 'submit','subject': subject,'content': content,'tagIds': tagIds,'viewAuth': viewAuth},function(d){
             if(d.status){
-                window.location.href = '<?php echo Url::to(['article/index']);?>';
+                window.location.href = '/index.php?r=article/view&id='+d.data;
             }else{
                 showMsg(d.msg);
             }
@@ -233,3 +233,9 @@ jQuery(document).ready(function () {
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>
+
+<?php $this->beginBlock("ueditor") ?>
+window.UEDITOR_BACKEDN = '<?php echo Url::to(['upload/index','type'=>'article']);?>';
+window.UEDITOR_AID = '<?=isset($articleInfo['id']) ? $articleInfo['id'] : ''?>';
+<?php $this->endBlock() ?>
+<?php $this->registerJs($this->blocks["ueditor"], \yii\web\View::POS_HEAD); ?>

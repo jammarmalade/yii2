@@ -95,7 +95,7 @@
                     }
                     break;
                 case 'online':
-                    list = onlineImage.getInsertList();
+                    //list = onlineImage.getInsertList();
                     break;
                 case 'search':
                     list = searchImage.getInsertList();
@@ -370,7 +370,7 @@
                 accept: {
                     title: 'Images',
                     extensions: acceptExtensions,
-                    mimeTypes: 'image/*'
+                    mimeTypes: "image/jpeg,image/jpg,image/png,image/gif"
                 },
                 swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
@@ -825,12 +825,26 @@
             domUtils.on(this.container, 'click', function (e) {
                 var target = e.target || e.srcElement,
                     li = target.parentNode;
-
+				
                 if (li.tagName.toLowerCase() == 'li') {
                     if (domUtils.hasClass(li, 'selected')) {
                         domUtils.removeClasses(li, 'selected');
                     } else {
                         domUtils.addClass(li, 'selected');
+						//插入编辑器
+						var list = [];
+						var img = li.firstChild;
+                        var src = img.getAttribute('_src');
+						var title = img.getAttribute('title');
+						var align = getAlign();
+						list.push({
+							src: src,
+							_src: src,
+							alt: src.substr(src.lastIndexOf('/') + 1),
+							title: title,
+							floatStyle: align
+						});
+						editor.execCommand('insertimage', list);
                     }
                 }
             });
@@ -860,6 +874,7 @@
                 this.isLoadingData = true;
                 var url = editor.getActionUrl(editor.getOpt('imageManagerActionName')),
                     isJsonp = utils.isCrossDomainUrl(url);
+				url += '&aid='+editor.getOpt('aid');
                 ajax.request(url, {
                     'timeout': 100000,
                     'dataType': isJsonp ? 'jsonp':'',
@@ -873,6 +888,21 @@
                             var json = isJsonp ? r:eval('(' + r.responseText + ')');
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
+								//绑定删除事件
+								$('.uedel').click(function(e){
+									var id = $(this).attr('data-id');
+									if(confirm('确认删除！')){
+										var url = editor.getOpt('imageDelUrl');
+										$.post(url,{'id':id},function(data){
+											if (data.state == 'success') {
+												$("#imagelist_"+id).parent("li").remove();                   
+											}else{
+												alert(data.state);
+											}
+										},'json');
+									}
+									e.stopPropagation();
+								})
                                 _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
                                 if(_this.listIndex >= json.total) {
                                     _this.listEnd = true;
@@ -897,26 +927,41 @@
         },
         /* 添加图片到列表界面上 */
         pushData: function (list) {
-            var i, item, img, icon, _this = this,
+            var i, item, img, icon, del, _this = this,
                 urlPrefix = editor.getOpt('imageManagerUrlPrefix');
             for (i = 0; i < list.length; i++) {
                 if(list[i] && list[i].url) {
                     item = document.createElement('li');
                     img = document.createElement('img');
                     icon = document.createElement('span');
-
                     domUtils.on(img, 'load', (function(image){
                         return function(){
                             _this.scale(image, image.parentNode.offsetWidth, image.parentNode.offsetHeight);
                         }
                     })(img));
                     img.width = 113;
-                    img.setAttribute('src', urlPrefix + list[i].url + (list[i].url.indexOf('?') == -1 ? '?noCache=':'&noCache=') + (+new Date()).toString(36) );
+                    //img.setAttribute('src', urlPrefix + list[i].url + (list[i].url.indexOf('?') == -1 ? '?noCache=':'&noCache=') + (+new Date()).toString(36) );
+                    img.setAttribute('src', urlPrefix + list[i].url);
                     img.setAttribute('_src', urlPrefix + list[i].url);
+                    img.setAttribute('title', list[i].title);
                     domUtils.addClass(icon, 'icon');
+
+					//删除
+					del = document.createElement('a');    
+					del.innerHTML = '删除';
+					domUtils.addClass(del, 'uedel');
+					var delid='imagelist_'+list[i]['id'];
+					del.setAttribute('id',delid);
+					del.setAttribute('data-id',list[i]['id']);
+					del.setAttribute('href','javascript:;');
 
                     item.appendChild(img);
                     item.appendChild(icon);
+                    item.appendChild(del);
+					//若是有sid 则标记已选中
+					if(list[i].sid!=0){
+						domUtils.addClass(item, 'selected');
+					}
                     this.list.insertBefore(item, this.clearFloat);
                 }
             }

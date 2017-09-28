@@ -10,6 +10,8 @@ use backend\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\Tag;
+use backend\components\Functions as tools;
+use backend\models\Image;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -47,8 +49,13 @@ class ArticleController extends AdminController {
      * @return mixed
      */
     public function actionView($id) {
+        $articleInfo = $this->findModel($id);
+        //替换图片bbcode
+        if($articleInfo['image_id']){
+            $articleInfo->content = Image::replaceImgCode($articleInfo,'show');
+        }
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'articleInfo' => $articleInfo,
         ]);
     }
 
@@ -65,9 +72,13 @@ class ArticleController extends AdminController {
             return $this->addOrEdit();
         }
         $id = Yii::$app->request->get('id');
-        $articleInfo = [];
+        $articleInfo = $tagList = [];
         if($id){
             $articleInfo = $this->findModel($id);
+            //替换图片bbcode
+            if($articleInfo['image_id']){
+                $articleInfo->content = Image::replaceImgCode($articleInfo);
+            }
             //查询标签
             $tagList = ArticleTag::find()->from(ArticleTag::tableName().' as at')
                 ->join('LEFT JOIN',Tag::tableName().' as t' , 't.id = at.tid')
@@ -78,6 +89,7 @@ class ArticleController extends AdminController {
             'tagList' => $tagList,
         ]);
     }
+
     private function addOrEdit(){
         $aid = Yii::$app->request->post('aid');
         $subject = Yii::$app->request->post('subject');
@@ -96,35 +108,58 @@ class ArticleController extends AdminController {
         if($tagCount>10){
             return $this->ajaxReturn('', '最多添加十个标签', false);
         }
+        //提取本站图片，并替换为bbcode
+        $content = preg_replace('#<img[^>]+?title="(\d+)\_[a-z0-9]+\.jpg"[^>]+?/>#i','[img]$1[/img]',$content);
+        preg_match_all('#\[img\](\d+)\[/img\]#',$content,$m);
+        $imageIds = $m[1];
         $imageId = 0;
+        //若有图片
+        if($imageIds){
+            $imageId = $imageIds[0];
+        }
         $articleModel = new Article();
         $articleTagModel = new ArticleTag();
         //要添加关系的tagid，和要删除关系的tagid
         $saveTagIds = $delTagIds = [];
         $uid = Yii::$app->user->identity->id;
         if(!$aid){
-            $articleModel->sid = md5($subject.time());
-            $articleModel->uid = $uid;
-            $articleModel->username = Yii::$app->user->identity->username;
             $articleModel->subject = htmlspecialchars($subject);
             $articleModel->content = $content;
             $articleModel->view_auth = Yii::$app->request->post('viewAuth');
             $articleModel->image_id = $imageId;
-            $articleModel->status = 1;
             $articleModel->time_update = $this->formatTime;
+        
+            $articleModel->sid = md5($subject.time());
+            $articleModel->uid = $uid;
+            $articleModel->username = Yii::$app->user->identity->username;
+            $articleModel->status = 1;
             $articleModel->time_create = $this->formatTime;
-            //新增
             if($articleModel->save(false)){
                 $aid = $articleModel->id;
             }else{
-                return $this->ajaxReturn('', '添加文章失败', false);
+                return $this->ajaxReturn('', '添加失败', false);
             }
             $saveTagIds = $tagIds;
         }else{
+            $result = $articleModel::find()->where(['id'=>$aid])->one();
+            $result->subject = htmlspecialchars($subject);
+            $result->content = $content;
+            $result->view_auth = Yii::$app->request->post('viewAuth');
+            $result->image_id = $imageId;
+            $result->time_update = $this->formatTime;
+            if(!$result->save()){
+                return $this->ajaxReturn('', '修改失败', false);
+            }
             $tagList = ArticleTag::find()->where(['aid'=>$aid])->select('id,tid')->asArray()->all();
             $oldTagIds = array_column($tagList, 'tid');
             $delTagIds = array_diff($oldTagIds,$tagIds);
             $saveTagIds = array_diff($tagIds,$oldTagIds);
+            //先将本文章的图片全部置为未使用
+            Image::updateAll(['sid'=>0,'status'=>2], "sid = :sid AND uid = :uid", [':sid'=>$aid,':uid'=>$uid]);
+        }
+        //若有图片id ,将图片的sid置为 文章id
+        if($imageIds){
+            Image::updateAll(['sid'=>$aid,'status'=>1], "uid = $uid AND id IN(".join(',', $imageIds).")");
         }
         //删除 tag 关系
         if($delTagIds){
@@ -143,8 +178,7 @@ class ArticleController extends AdminController {
             }
             Yii::$app->db->createCommand()->batchInsert(ArticleTag::tableName(), ['uid', 'tid', 'aid', 'create_time'], $insertData)->execute();
         }
-        
-        return $this->ajaxReturn('', '添加失败', false);
+        return $this->ajaxReturn($aid, '操作成功', true);
     }
 
     /**
@@ -174,7 +208,7 @@ class ArticleController extends AdminController {
     public function actionDelete($id) {
         //$this->findModel($id)->delete();
         $status = Yii::$app->request->get('status');
-        if (!in_array($status, [0, 1])) {
+        if (!in_array($status, [1, 2])) {
             return $this->message(['msg' => '数据错误']);
         }
         $this->findModel($id)->updateAll(['status' => $status], ['id' => $id]);

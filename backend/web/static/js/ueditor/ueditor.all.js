@@ -13174,8 +13174,8 @@ UE.plugins['insertcode'] = function() {
         utils.cssRule('pre','pre{margin:.5em 0;padding:.4em .6em;border-radius:8px;background:#f8f8f8;}',
             me.document)
     });
-    me.setOpt('insertcode',{
-            'as3':'ActionScript3',
+    me.setOpt('insertcode',{            
+'php':'Php',            'as3':'ActionScript3',
             'bash':'Bash/Shell',
             'cpp':'C/C++',
             'css':'Css',
@@ -13190,7 +13190,7 @@ UE.plugins['insertcode'] = function() {
             'jfx':'JavaFx',
             'js':'Javascript',
             'pl':'Perl',
-            'php':'Php',
+
             'plain':'Plain Text',
             'ps':'PowerShell',
             'python':'Python',
@@ -24483,7 +24483,7 @@ UE.plugin.register('simpleupload', function (){
 
             wrapper.innerHTML = '<form id="edui_form_' + timestrap + '" target="edui_iframe_' + timestrap + '" method="POST" enctype="multipart/form-data" action="' + me.getOpt('serverUrl') + '" ' +
             'style="' + btnStyle + '">' +
-            '<input id="edui_input_' + timestrap + '" type="file" accept="image/*" name="' + me.options.imageFieldName + '" ' +
+            '<input id="edui_input_' + timestrap + '" type="file" accept="image/jpeg,image/jpg,image/png,image/gif" name="' + me.options.imageFieldName + '" ' +
             'style="' + btnStyle + '">' +
             '</form>' +
             '<iframe id="edui_iframe_' + timestrap + '" name="edui_iframe_' + timestrap + '" style="display:none;width:0;height:0;border:0;margin:0;padding:0;position:absolute;"></iframe>';

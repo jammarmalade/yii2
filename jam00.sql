@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50617
-Source Host           : localhost:3306
+Source Server         : linux-136
+Source Server Version : 50542
+Source Host           : 192.168.1.136:3306
 Source Database       : jam00
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50542
 File Encoding         : 65001
 
-Date: 2017-09-22 18:19:24
+Date: 2017-09-28 18:05:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,7 @@ CREATE TABLE `t_article` (
 -- Records of t_article
 -- ----------------------------
 INSERT INTO `t_article` VALUES ('1', '0336012dceb183070fbb55102c875c98', '1', 'admin', '擦拭擦拭擦拭', '<p style=\"white-space: normal;\">完美那时的过去几</p><p style=\"white-space: normal;\">阿萨德拿到卡<span style=\"font-size: 18px;\"><em>死韩国</em></span>和法国</p><pre class=\"brush:php;toolbar:false\">&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;function&nbsp;addOrEdit(){\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\\backend\\components\\Functions::fput($_POST,1);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;ajaxReturn(&#39;&#39;,&nbsp;&#39;添加失败&#39;,&nbsp;false);\n&nbsp;&nbsp;&nbsp;&nbsp;}</pre><p style=\"white-space: normal;\">撒打扫打扫大<br/></p><p style=\"white-space: normal;\"><img src=\"http://img.baidu.com/hi/jx2/j_0063.gif\"/></p><p><br/></p>', '0', '0', '0', '123456', '0', '1', '2017-09-22 16:07:34', '2017-09-22 16:07:34');
-INSERT INTO `t_article` VALUES ('2', 'd2b3ebbcd72ed40749be44c7a4bbdf3f', '1', 'admin', '擦拭擦拭擦拭', '<p style=\"white-space: normal;\">完美那时的过去几</p><p style=\"white-space: normal;\">阿萨德拿到卡<span style=\"font-size: 18px;\"><em>死韩国</em></span>和法国</p><pre class=\"brush:php;toolbar:false\">&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;function&nbsp;addOrEdit(){\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\\backend\\components\\Functions::fput($_POST,1);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;ajaxReturn(&#39;&#39;,&nbsp;&#39;添加失败&#39;,&nbsp;false);\n&nbsp;&nbsp;&nbsp;&nbsp;}</pre><p style=\"white-space: normal;\">撒打扫打扫大<br/></p><p style=\"white-space: normal;\"><img src=\"http://img.baidu.com/hi/jx2/j_0063.gif\"/></p><p><br/></p>', '0', '0', '0', '123456', '0', '1', '2017-09-22 16:08:27', '2017-09-22 16:08:27');
+INSERT INTO `t_article` VALUES ('2', 'd2b3ebbcd72ed40749be44c7a4bbdf3f', '1', 'admin', '擦拭擦拭擦拭', '<p><br/></p><p style=\"white-space: normal;\">少时诵诗书xxxooooo<br/></p><p style=\"white-space: normal;\">少时诵诗书xxxooooo</p><p style=\"white-space: normal;\">[img]51[/img]</p><pre class=\"brush:php;toolbar:false\">public&nbsp;function&nbsp;actionCreate()&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$type&nbsp;=&nbsp;Yii::$app-&gt;request-&gt;post(&#39;type&#39;);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;($type==&#39;submit&#39;)&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//执行修改或插入\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;addOrEdit();\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$id&nbsp;=&nbsp;Yii::$app-&gt;request-&gt;get(&#39;id&#39;);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$articleInfo&nbsp;=&nbsp;$tagList&nbsp;=&nbsp;[];\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if($id){\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$articleInfo&nbsp;=&nbsp;$this-&gt;findModel($id);\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//查询标签\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$tagList&nbsp;=&nbsp;ArticleTag::find()-&gt;from(ArticleTag::tableName().&#39;&nbsp;as&nbsp;at&#39;)\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;join(&#39;LEFT&nbsp;JOIN&#39;,Tag::tableName().&#39;&nbsp;as&nbsp;t&#39;&nbsp;,&nbsp;&#39;t.id&nbsp;=&nbsp;at.tid&#39;)\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&gt;where([&#39;at.aid&#39;=&gt;$id])-&gt;select(&#39;at.id,at.tid,t.name&nbsp;as&nbsp;tagname&#39;)-&gt;asArray()-&gt;all();\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;$this-&gt;render(&#39;create&#39;,[\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;articleInfo&#39;&nbsp;=&gt;&nbsp;$articleInfo,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;tagList&#39;&nbsp;=&gt;&nbsp;$tagList,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]);\n&nbsp;&nbsp;&nbsp;&nbsp;}</pre><p><br/></p><p>[img]44[/img]</p><p>sdbashkdasda阿萨德百脑汇卡死</p><p>ad马上就可大叔大妈哪里吗</p><p>[img]42[/img]</p><p><br/></p><p><br/></p><p><img width=\"800\" height=\"340\" src=\"http://api.map.baidu.com/staticimage?center=116.40515,39.922526&zoom=14&width=800&height=340&markers=116.404,39.915\"/></p><p><br/></p><p>动态图测试</p><p><iframe src=\"http://test.jam00.com/static/js/ueditor/dialogs/map/show.html#center=116.403497,39.920492&zoom=16&width=800&height=340&markers=116.404,39.915&markerStyles=l,A\" frameborder=\"0\" width=\"804\" height=\"344\"></iframe></p>', '0', '0', '0', '123456', '51', '1', '2017-09-27 17:38:19', '2017-09-22 16:08:27');
 
 -- ----------------------------
 -- Table structure for `t_article_tag`
@@ -56,7 +56,7 @@ CREATE TABLE `t_article_tag` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `aid` (`aid`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='文章标签关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='文章标签关系表';
 
 -- ----------------------------
 -- Records of t_article_tag
@@ -64,6 +64,8 @@ CREATE TABLE `t_article_tag` (
 INSERT INTO `t_article_tag` VALUES ('1', '1', '65', '1', '2017-09-22 16:07:34');
 INSERT INTO `t_article_tag` VALUES ('4', '1', '147', '2', '2017-09-22 16:08:27');
 INSERT INTO `t_article_tag` VALUES ('8', '1', '4', '2', '2017-09-22 18:01:18');
+INSERT INTO `t_article_tag` VALUES ('10', '1', '40', '2', '2017-09-25 09:44:36');
+INSERT INTO `t_article_tag` VALUES ('12', '1', '145', '2', '2017-09-25 09:57:09');
 
 -- ----------------------------
 -- Table structure for `t_auth_assignment`
@@ -5385,27 +5387,45 @@ DROP TABLE IF EXISTS `t_image`;
 CREATE TABLE `t_image` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `sid` int(10) unsigned DEFAULT '0' COMMENT '使用id，如文章id，记录id...',
   `username` char(15) DEFAULT NULL COMMENT '用户名',
   `filename` varchar(255) DEFAULT NULL COMMENT '文件名称',
   `path` varchar(255) DEFAULT NULL COMMENT '相对存放路径',
-  `type` tinyint(2) unsigned DEFAULT '0' COMMENT '图片类型，0未使用，1收支记录',
+  `type` tinyint(2) unsigned DEFAULT '0' COMMENT '图片类型，0文章，1收支记录',
   `size` int(10) unsigned DEFAULT '0' COMMENT '图片大小',
   `width` smallint(6) unsigned DEFAULT '0' COMMENT '图片宽度',
   `height` smallint(6) unsigned DEFAULT '0' COMMENT '图片高度',
+  `thumb` tinyint(2) unsigned DEFAULT '0' COMMENT '是否有缩略图，0没有，1有',
   `width_thumb` smallint(5) unsigned DEFAULT '0' COMMENT '缩略图宽度',
   `height_thumb` smallint(6) unsigned DEFAULT '0' COMMENT '缩略图高度',
   `exif` text COMMENT '图片的exif信息',
   `status` tinyint(2) unsigned DEFAULT '1' COMMENT '标签状态，0删除，1正常，2未使用',
   `time_create` datetime DEFAULT NULL COMMENT '上传时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='图片';
+  PRIMARY KEY (`id`),
+  KEY `sid` (`type`,`sid`) USING BTREE,
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='图片';
 
 -- ----------------------------
 -- Records of t_image
 -- ----------------------------
-INSERT INTO `t_image` VALUES ('1', '1', 'admin', 't.jpg', 'image/201612/22/154207p29e2yyhfc8t6xgf.jpg', '0', '283723', '1366', '768', '600', '338', null, '2', '2016-12-22 15:42:07');
-INSERT INTO `t_image` VALUES ('2', '1', 'admin', '41.jpg', 'image/201709/15/110742clfeihkiiy3vzfn3.jpg', '0', '33348', '450', '264', '600', '352', null, '2', '2017-09-15 11:07:42');
-INSERT INTO `t_image` VALUES ('3', '1', 'admin', '41.jpg', 'image/201709/15/110749tb7f99k1wekvv9k1.jpg', '0', '33348', '450', '264', '600', '352', null, '2', '2017-09-15 11:07:49');
+INSERT INTO `t_image` VALUES ('34', '1', '0', 'admin', '41.jpg', 'article/201709/27/160310uw3pk1dssksskuak.jpg', '0', '33348', '450', '264', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('35', '1', '0', 'admin', '404.png', 'article/201709/27/160310f96264fbn2zs9vn6.jpg', '0', '47146', '199', '202', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('36', '1', '0', 'admin', '1453716196_861132.jpg', 'article/201709/27/160310clljaorr90eay1a2.jpg', '0', '91571', '700', '500', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('37', '1', '0', 'admin', '1453716344_419314.jpg_300x300.jpg', 'article/201709/27/160310hiaaccoabd5lyatf.jpg', '0', '13105', '300', '224', '0', '0', '0', null, '2', '2017-09-27 16:03:10');
+INSERT INTO `t_image` VALUES ('38', '1', '0', 'admin', '1920×1200.png', 'article/201709/27/160310bcgieroi99a5ukop.jpg', '0', '399699', '1920', '1200', '1', '800', '500', null, '2', '2017-09-27 16:03:11');
+INSERT INTO `t_image` VALUES ('39', '1', '0', 'admin', '1454465677_295964.jpg', 'article/201709/27/160311uqxsubouqt0qbqba.jpg', '0', '29513', '460', '279', '0', '0', '0', null, '2', '2017-09-27 16:03:11');
+INSERT INTO `t_image` VALUES ('41', '1', '0', 'admin', 'd2.jpg', 'article/201709/27/160311za9c72kcq21l3bdh.jpg', '0', '129008', '1600', '900', '1', '800', '450', null, '2', '2017-09-27 16:03:12');
+INSERT INTO `t_image` VALUES ('42', '1', '2', 'admin', 'd1.jpg', 'article/201709/27/160312e75my5mam4eyyeam.jpg', '0', '93006', '1600', '900', '1', '800', '450', null, '1', '2017-09-27 16:03:12');
+INSERT INTO `t_image` VALUES ('43', '1', '0', 'admin', 'ewmcode.jpg', 'article/201709/27/160312qz40n7x2ghv660h6.jpg', '0', '12710', '135', '135', '0', '0', '0', null, '2', '2017-09-27 16:03:12');
+INSERT INTO `t_image` VALUES ('44', '1', '2', 'admin', 'desk.jpg', 'article/201709/27/160312qgqnlgqcdgcr2rt7.jpg', '0', '413768', '1600', '900', '1', '800', '450', null, '1', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('46', '1', '0', 'admin', 'LOGO-200.jpg', 'article/201709/27/160313s81hje144hh3fjd1.jpg', '0', '16922', '200', '200', '0', '0', '0', null, '2', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('48', '1', '0', 'admin', 's1.jpg', 'article/201709/27/160313fmzp3cs7orxcn00b.jpg', '0', '33061', '511', '301', '0', '0', '0', null, '2', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('49', '1', '0', 'admin', 's3.jpg', 'article/201709/27/160313c4hg0tghogq50480.jpg', '0', '12806', '320', '185', '0', '0', '0', null, '2', '2017-09-27 16:03:13');
+INSERT INTO `t_image` VALUES ('50', '1', '0', 'admin', 's2.jpg', 'article/201709/27/160313dd6qxhhcpbozlcbj.jpg', '0', '81499', '1021', '406', '1', '800', '319', null, '2', '2017-09-27 16:03:14');
+INSERT INTO `t_image` VALUES ('51', '1', '2', 'admin', 'IMG_0772-y.JPG', 'article/201709/27/160314c8khk8fssgzikxhf.jpg', '0', '1482071', '6000', '4000', '1', '800', '534', '{\"FileName\":\"160314c8khk8fssgzikxhf.jpg\",\"FileDateTime\":1506499398,\"FileSize\":1482071,\"FileType\":2,\"MimeType\":\"image\\/jpeg\",\"SectionsFound\":\"ANY_TAG, IFD0, THUMBNAIL, EXIF, GPS, INTEROP, MAKERNOTE\",\"COMPUTED\":{\"html\":\"width=\\\"6000\\\" height=\\\"4000\\\"\",\"Height\":4000,\"Width\":6000,\"IsColor\":1,\"ByteOrderMotorola\":0,\"CCDWidth\":\"22mm\",\"ApertureFNumber\":\"f\\/10.0\",\"UserComment\":null,\"UserCommentEncoding\":\"UNDEFINED\",\"Thumbnail.FileType\":2,\"Thumbnail.MimeType\":\"image\\/jpeg\"},\"Make\":\"Canon\",\"Model\":\"Canon EOS 750D\",\"Orientation\":1,\"XResolution\":\"72\\/1\",\"YResolution\":\"72\\/1\",\"ResolutionUnit\":2,\"DateTime\":\"2017:08:08 16:54:13\",\"Artist\":null,\"YCbCrPositioning\":2,\"Copyright\":null,\"Exif_IFD_Pointer\":360,\"GPS_IFD_Pointer\":10036,\"THUMBNAIL\":{\"Compression\":6,\"XResolution\":\"72\\/1\",\"YResolution\":\"72\\/1\",\"ResolutionUnit\":2,\"JPEGInterchangeFormat\":11924,\"JPEGInterchangeFormatLength\":7625},\"ExposureTime\":\"1\\/250\",\"FNumber\":\"10\\/1\",\"ExposureProgram\":8,\"ISOSpeedRatings\":100,\"UndefinedTag:0x8830\":2,\"UndefinedTag:0x8832\":100,\"ExifVersion\":\"0230\",\"DateTimeOriginal\":\"2017:08:08 16:54:13\",\"DateTimeDigitized\":\"2017:08:08 16:54:13\",\"ComponentsConfiguration\":\"\\u0001\\u0002\\u0003\\u0000\",\"ShutterSpeedValue\":\"524288\\/65536\",\"ApertureValue\":\"434176\\/65536\",\"ExposureBiasValue\":\"0\\/1\",\"MeteringMode\":5,\"Flash\":16,\"FocalLength\":\"55\\/1\",\"UserComment\":\"\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"SubSecTime\":\"23\",\"SubSecTimeOriginal\":\"23\",\"SubSecTimeDigitized\":\"23\",\"FlashPixVersion\":\"0100\",\"ColorSpace\":1,\"ExifImageWidth\":6000,\"ExifImageLength\":4000,\"InteroperabilityOffset\":9808,\"FocalPlaneXResolution\":\"6000000\\/893\",\"FocalPlaneYResolution\":\"4000000\\/594\",\"FocalPlaneResolutionUnit\":2,\"CustomRendered\":0,\"ExposureMode\":0,\"WhiteBalance\":0,\"SceneCaptureType\":0,\"UndefinedTag:0xA430\":null,\"UndefinedTag:0xA431\":\"274032003847\",\"UndefinedTag:0xA432\":[\"18\\/1\",\"55\\/1\",\"0\\/1\",\"0\\/1\"],\"UndefinedTag:0xA434\":\"EF-S18-55mm f\\/3.5-5.6 IS STM\",\"UndefinedTag:0xA435\":\"000039466d\",\"InterOperabilityIndex\":\"R98\",\"InterOperabilityVersion\":\"0100\",\"UndefinedTag:0x0002\":[0,55,62259,18461],\"UndefinedTag:0x0003\":[0,0,0,0],\"ImageInfo\":[68,0,160,304,212,256,0,0,3,0,8,8,153,0,0,0,0,0,1,0,0,208,256,170,0,0,248,65535,65535,65535,65535,0,0,0],\"ImageType\":\"Canon EOS 750D\",\"FirmwareVersion\":\"Firmware Version 1.0.0\",\"OwnerName\":null,\"UndefinedTag:0x0010\":-2147482733,\"UndefinedTag:0x0013\":[0,159,7,112],\"UndefinedTag:0x0019\":1,\"UndefinedTag:0x0095\":\"EF-S18-55mm f\\/3.5-5.6 IS STM\",\"UndefinedTag:0x0096\":\"QA1709600\",\"UndefinedTag:0x00AA\":[12,387,1024,1024,744,0],\"UndefinedTag:0x00B4\":1,\"UndefinedTag:0x00D0\":0,\"UndefinedTag:0x4010\":null,\"UndefinedTag:0x4011\":\"\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"UndefinedTag:0x4012\":null,\"UndefinedTag:0x4019\":\"\\u0000\\u00009Fm\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\\u0000\",\"UndefinedTag:0x4020\":[28,0,0,0,2147483647,0,1],\"UndefinedTag:0x402A\":[12,0,0]}', '1', '2017-09-27 16:03:23');
+INSERT INTO `t_image` VALUES ('52', '1', '0', 'admin', 't.jpg', 'article/201709/27/160326jqnn4a8k8ck2kqfq.jpg', '0', '283723', '1366', '768', '1', '800', '450', null, '2', '2017-09-27 16:03:27');
+INSERT INTO `t_image` VALUES ('53', '1', '0', 'admin', 't-wb.jpg', 'article/201709/27/160327oovndmupvtzxcnut.jpg', '0', '273759', '1366', '768', '1', '800', '450', '{\"FileName\":\"160327oovndmupvtzxcnut.jpg\",\"FileDateTime\":1506499407,\"FileSize\":273759,\"FileType\":2,\"MimeType\":\"image\\/jpeg\",\"SectionsFound\":\"ANY_TAG, IFD0, THUMBNAIL, EXIF\",\"COMPUTED\":{\"html\":\"width=\\\"1366\\\" height=\\\"768\\\"\",\"Height\":768,\"Width\":1366,\"IsColor\":1,\"ByteOrderMotorola\":1,\"Thumbnail.FileType\":2,\"Thumbnail.MimeType\":\"image\\/jpeg\"},\"ImageWidth\":1366,\"ImageLength\":768,\"BitsPerSample\":[8,8,8],\"PhotometricInterpretation\":2,\"Orientation\":1,\"SamplesPerPixel\":3,\"XResolution\":\"720000\\/10000\",\"YResolution\":\"720000\\/10000\",\"ResolutionUnit\":2,\"Software\":\"Adobe Photoshop CC (Windows)\",\"DateTime\":\"2015:11:17 09:16:50\",\"Exif_IFD_Pointer\":232,\"THUMBNAIL\":{\"Compression\":6,\"XResolution\":\"72\\/1\",\"YResolution\":\"72\\/1\",\"ResolutionUnit\":2,\"JPEGInterchangeFormat\":382,\"JPEGInterchangeFormatLength\":3029},\"ExifVersion\":\"0221\",\"ColorSpace\":65535,\"ExifImageWidth\":1366,\"ExifImageLength\":768}', '2', '2017-09-27 16:03:27');
 
 -- ----------------------------
 -- Table structure for `t_menu`
@@ -6281,10 +6301,11 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`id`),
   KEY `username` (`username`),
   KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
 INSERT INTO `t_user` VALUES ('1', 'admin', '$2y$13$7/lp9txLXAgub/z.Mdp4l.H8UGwfF.x7yLB8ypsTs4lLRneSf3KlW', 'jam00@vip.qq.com', 'brgrPsKmG3XzeBhiU-ktyV54PCjr3duo', '2', '0', '0', '2017-08-01 10:09:28', '2016-12-01 15:22:58', '1');
 INSERT INTO `t_user` VALUES ('2', 'test1', '$2y$13$uFklrEDNChkY4ZyyVLurmubFfRkoOfGOvnQw4qc3WcHapkWz5kYiW', 'test1@qq.com', 'nw__At9MMUx6OUczkZLDZaRPj-HheVHL', '0', '0', '0', '0000-00-00 00:00:00', '2016-12-09 13:39:41', '1');
+INSERT INTO `t_user` VALUES ('3', 'test2', '$2y$13$nx9lOlj063fO9dSfAdp9ZeLJEBH7m1ekhG2tXmIqkPafz4HgUP9f6', 'test2@qq.com', 'CUzlLM99UxXyLgb4D4YZSHR63DNWQ9JY', '0', '0', '0', '0000-00-00 00:00:00', '2017-09-28 10:57:10', '1');

@@ -30,8 +30,9 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        , serverUrl: URL + "php/controller.php"
-
+        , serverUrl: window.UEDITOR_BACKEDN
+		//若是编辑，就是文章的id
+		, aid: window.UEDITOR_AID
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
         //, toolbars: [[
         //    'fullscreen', 'source', '|', 'undo', 'redo', '|',

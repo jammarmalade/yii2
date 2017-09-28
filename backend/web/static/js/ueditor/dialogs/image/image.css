@@ -892,3 +892,18 @@
 #search .searchList .clearFloat{
     clear: both;
 }
+/* 新增在线管理删除图片样式*/
+#online li a.uedel {      
+    width: auto;    
+    position: absolute;
+    top: 0;
+    right: 0;
+    color:#F00;
+    background-color:rgb(255, 247, 5);
+    opacity:0.8;
+    filter:alpha(80);
+    border: 0;   
+    z-index:3;
+    text-align:right;
+    text-decoration:none;    
+}
