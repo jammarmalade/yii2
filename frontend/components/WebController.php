@@ -12,6 +12,8 @@ class WebController extends Controller {
     
     protected $formatTime ;
     protected $time ;
+    //图片
+    public $imageUrl = '';
     /**
      * 初始化一些变量
      * @inheritdoc
@@ -32,7 +34,7 @@ class WebController extends Controller {
             ],
         ];
     }
-    
+
     public function message($data){
         if(!isset($data['title'])){
             $data['title'] = '错误提示';

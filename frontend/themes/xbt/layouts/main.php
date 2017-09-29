@@ -7,7 +7,8 @@ use yii\helpers\Url;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::addCss($this, 'common.css?v=1.1');
+AppAsset::addCss($this, 'common.css');
+AppAsset::addScript($this, 'common.js');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -59,11 +60,11 @@ AppAsset::addCss($this, 'common.css?v=1.1');
         <?= $content ?>
         </div>
     </div>
-
+    
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; 果酱 <?= date('Y') ?></p>
-        <p class="pull-right"><a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备17011886号</a></p>
+        <p class="pull-left"><a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备17011886号</a></p>
+        <p class="pull-right">Copyright &copy; <a href="/">jam00.com</a> 2017</p>
         </div>
     </footer>
 

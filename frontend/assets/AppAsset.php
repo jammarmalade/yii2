@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-//        'css/site.css',
+//        'css/common.css',
     ];
     public $js = [
     ];
@@ -44,12 +44,12 @@ class AppAsset extends AssetBundle
     }
 
     //定义按需加载css方法，注意加载顺序在最后  
-    public static function addCss($view, $cssfile,$fullPath = false) {
+    public static function addCss($view, $cssfile,$fullPath = false,$position = \yii\web\View::POS_HEAD) {
         $baseUrl = Yii::$app->view->theme->baseUrl;
         if(strpos($cssfile, 'http')===false){
             $tmpPath = $fullPath ? '' : '/css/';
             $cssfile = $baseUrl.$tmpPath.$cssfile;
         }
-        $view->registerCssFile($cssfile, [AppAsset::className(), "depends" => "frontend\assets\AppAsset"]);
+        $view->registerCssFile($cssfile, [AppAsset::className(), "depends" => "frontend\assets\AppAsset",'position'=>$position]);
     }
 }

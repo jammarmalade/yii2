@@ -36,7 +36,7 @@ return [
             'tablePrefix' => 't_',
         ],
         'errorHandler' => [
-            'errorAction' => 'layouts/error',
+            'errorAction' => 'site/error',
         ],
         //配置主题
 //        'view' => [

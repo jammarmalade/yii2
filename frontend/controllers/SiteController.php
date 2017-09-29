@@ -2,13 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use frontend\components\WebController;
 
 /**
@@ -37,13 +31,6 @@ class SiteController extends WebController
     {
         Yii::$app->language = 'zh-CN';
         return $this->render('index');
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
     }
 
     public function actionContact()
