@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?= Html::a('修改', ['create', 'id' => $articleInfo->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('新增', ['create'], ['class' => 'btn btn-success']) ?>
         <?php
         if($articleInfo['status']==1){
             Html::a('删除', ['delete', 'id' => $articleInfo->id,'status'=>2], [
@@ -48,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'uid',
             'username',
             'subject',
+            'description',
             'like',
             'view',
             'comment',

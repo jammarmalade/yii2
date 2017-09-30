@@ -9,12 +9,10 @@ $this->title = '登录';
 ?>
 
 <div class="site-login box">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>请填写登录信息</p>
+    <div class="login-title"><?= Html::encode($this->title) ?></div>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-12">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
                 <?= $form->field($model, 'username')->label('用户名') ?>
                 <?= $form->field($model, 'password')->passwordInput()->label('密码') ?>

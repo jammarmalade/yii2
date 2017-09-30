@@ -12,6 +12,7 @@ use Yii;
  * @property string $uid
  * @property string $username
  * @property string $subject
+ * @property string $description
  * @property string $content
  * @property string $like
  * @property string $view
@@ -62,6 +63,7 @@ class Article extends \yii\db\ActiveRecord
             'uid' => '用户id',
             'username' => '用户名',
             'subject' => '文章标题',
+            'description' => '文章摘要',
             'content' => '文章内容',
             'like' => '点赞数',
             'view' => '查看数',

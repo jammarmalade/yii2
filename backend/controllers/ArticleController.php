@@ -100,6 +100,7 @@ class ArticleController extends AdminController {
         if(!trim($content)){
             return $this->ajaxReturn('', '内容不能为空', false);
         }
+        $description = Yii::$app->request->post('description');
         $tagIds = Yii::$app->request->post('tagIds');
         $tagCount = count($tagIds);
         if($tagCount==0){
@@ -124,6 +125,7 @@ class ArticleController extends AdminController {
         $uid = Yii::$app->user->identity->id;
         if(!$aid){
             $articleModel->subject = htmlspecialchars($subject);
+            $articleModel->description = htmlspecialchars($description);
             $articleModel->content = $content;
             $articleModel->view_auth = Yii::$app->request->post('viewAuth');
             $articleModel->image_id = $imageId;
@@ -143,6 +145,7 @@ class ArticleController extends AdminController {
         }else{
             $result = $articleModel::find()->where(['id'=>$aid])->one();
             $result->subject = htmlspecialchars($subject);
+            $result->description = htmlspecialchars($description);
             $result->content = $content;
             $result->view_auth = Yii::$app->request->post('viewAuth');
             $result->image_id = $imageId;
@@ -207,11 +210,19 @@ class ArticleController extends AdminController {
      */
     public function actionDelete($id) {
         //$this->findModel($id)->delete();
-        $status = Yii::$app->request->get('status');
-        if (!in_array($status, [1, 2])) {
-            return $this->message(['msg' => '数据错误']);
+        $updateData = Yii::$app->request->get('status');
+        $type = Yii::$app->request->get('type') ? Yii::$app->request->get('type') : 'status';
+        if($type == 'status'){
+            if (!in_array($updateData, [1, 2])) {
+                return $this->message(['msg' => '数据错误']);
+            }
+            $this->findModel($id)->updateAll(['status' => $updateData], ['id' => $id]);
+        }elseif($type == 'recommend'){
+            if (!in_array($updateData, [0, 1])) {
+                return $this->message(['msg' => '数据错误']);
+            }
+            $this->findModel($id)->updateAll(['recommend' => $updateData], ['id' => $id]);
         }
-        $this->findModel($id)->updateAll(['status' => $status], ['id' => $id]);
 
         return $this->redirect(['index']);
     }

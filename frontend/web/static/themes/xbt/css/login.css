@@ -1,4 +1,32 @@
 @charset "utf-8";
 .site-login{
     width:400px;
+    float: right;
+    margin-top: 100px;
+}
+.login-title{
+    font-size: 36px;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    margin-bottom: 10px;
+}
+.site-signup{
+    width:400px;
+    margin:0 auto;
+    margin-top: 60px;
+}
+body{
+    background: no-repeat 0px -10px url(../images/bg-zgf1.jpg)!important;
+}
+.footer{
+    opacity: 0.5;
+}
+.ba-area{
+    opacity: 1!important;
+    color: #000!important;
+}
+#w0{
+    opacity: 0.7;
 }

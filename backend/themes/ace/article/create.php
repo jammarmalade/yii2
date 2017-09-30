@@ -11,7 +11,7 @@ AppAsset::addScript($this, 'ueditor/ueditor.config.js');
 AppAsset::addScript($this, 'ueditor/ueditor.all.min.js');
 AppAsset::addScript($this, 'jquery-ui.min.js');
 
-$this->title = '新增文章';
+$this->title = isset($articleInfo['id']) && $articleInfo['id'] > 0 ? '修改文章' : '新增文章';
 $this->params['breadcrumbs'][] = ['label' => '文章列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -56,10 +56,16 @@ $this->params['breadcrumbs'][] = $this->title;
     #old_content{
         display: none;
     }
+    #description{
+        height:100px;
+        margin-top: 10px;
+        resize: vertical;
+    }
 </style>
 <div class="article-create">
     <h1><?= Html::encode($this->title) ?></h1>
     <input type="text" class="form-control" id="subject" placeholder="文章标题" value="<?=isset($articleInfo['subject']) ? $articleInfo['subject'] : ''?>">
+    <textarea class="form-control" id="description" placeholder="文章摘要"><?=isset($articleInfo['description']) ? $articleInfo['description'] : ''?></textarea>
     <div id="content_area">
         <div id="editor"></div>
         <div id="old_content"><?=isset($articleInfo['content']) ? $articleInfo['content'] : ''?></div>
@@ -199,6 +205,7 @@ jQuery(document).ready(function () {
     $('#submit').click(function(){
         var aid = $('#aid').val();
         var subject = $('#subject').val();
+        var description = $('#description').val();
         var content = ue.getContent();
         var tagIds = [];
         var viewAuth = $('#view_auth').val();
@@ -222,7 +229,7 @@ jQuery(document).ready(function () {
             showMsg('最多添加十个标签');
             return false;
         }
-        $.post("<?php echo Url::to(['article/create']);?>",{'aid': aid,'type': 'submit','subject': subject,'content': content,'tagIds': tagIds,'viewAuth': viewAuth},function(d){
+        $.post("<?php echo Url::to(['article/create']);?>",{'aid': aid,'type': 'submit','subject': subject,'description': description,'content': content,'tagIds': tagIds,'viewAuth': viewAuth},function(d){
             if(d.status){
                 window.location.href = '/index.php?r=article/view&id='+d.data;
             }else{

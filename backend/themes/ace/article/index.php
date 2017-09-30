@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{view} {update} {delete} ',
+                'template' => '{view} {update} {recommend} {delete}',
                 'buttons' => [
                     'view' => function($url, $model, $key){
                        return Html::a('查看',['view', 'id' => $key], ['class' => 'btn btn-sm btn-success',]
@@ -98,11 +98,18 @@ $this->params['breadcrumbs'][] = $this->title;
                        return Html::a('修改',['create', 'id' => $key], ['class' => 'btn btn-sm btn-success',]
                        );
                     },
+                    'recommend' => function($url, $model, $key){
+                       if($model->recommend == 1){
+                            return Html::a('取消推荐',['delete', 'id' => $key ,'status' => 0,'type'=>'recommend'], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '你确定要取消吗？','method' => 'post']]);
+                        }else{
+                            return Html::a('推荐',['delete', 'id' => $key ,'status' => 1,'type'=>'recommend'], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '确认推荐吗？','method' => 'post']]);
+                        }
+                    },
                     'delete' => function($url, $model, $key){
                         if($model->status == 2){
-                            return Html::a('<i class="icon-reply"></i>恢复',['delete', 'id' => $key ,'status' => 1], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '你确定要恢复吗？','method' => 'post']]);
+                            return Html::a('<i class="icon-reply"></i>恢复',['delete', 'id' => $key ,'status' => 1,'type'=>'del'], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '你确定要恢复吗？','method' => 'post']]);
                         }else{
-                            return Html::a('<i class="icon-trash"></i>删除',['delete', 'id' => $key ,'status' => 2], ['class' => 'btn btn-sm btn-danger','data' => ['confirm' => '你确定要删除吗？','method' => 'post']]);
+                            return Html::a('<i class="icon-trash"></i>删除',['delete', 'id' => $key ,'status' => 2,'type'=>'del'], ['class' => 'btn btn-sm btn-danger','data' => ['confirm' => '你确定要删除吗？','method' => 'post']]);
                         }
                     },
                 ],

@@ -9,3 +9,6 @@
         $(this).addClass('cur');
     });
 })();
+$("img.lazy").lazyload({
+    effect: "fadeIn"
+});
