@@ -23,7 +23,9 @@ class LoginForm extends Model
     {
         return [
             // username和password必须
-            [['username', 'password'], 'required'],
+            ['username', 'required', 'message' => '用户名不可以为空'],
+            ['password', 'required', 'message' => '密码不能为空'],
+            ['username', 'string', 'min' => 5, 'max' => 16,'tooShort'=>'用户名至少包含五个字符'],
             // rememberMe是一个boolean值
             ['rememberMe', 'boolean'],
             // 这里需要注意的是 validatePassword 是自定义的验证方法！！！只需要在当前模型内增加对应的认证方法即可
@@ -48,7 +50,7 @@ class LoginForm extends Model
             // 在 UserBackend 方法里增加
             if (!$user || !$user->validatePassword($this->password)) {
                 // 验证失败，调用addError方法给用户提醒信息
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, '用户名或密码错误.');
             }
         }
     }

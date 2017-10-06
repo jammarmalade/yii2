@@ -36,7 +36,11 @@ return [
             'tablePrefix' => 't_',
         ],
         'errorHandler' => [
-            'errorAction' => 'layouts/error',
+            'errorAction' => 'site/error',
+        ],
+        //缓存配置
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
         ],
         //配置主题
 //        'view' => [

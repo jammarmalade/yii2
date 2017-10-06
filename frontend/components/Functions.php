@@ -1,6 +1,7 @@
 <?php
 
 namespace frontend\components;
+
 use yii;
 
 class Functions {
@@ -106,6 +107,7 @@ class Functions {
         array_multisort($key_array, $sort, $multi_array);
         return $multi_array;
     }
+
     /**
      * 关闭yii 的toolbar
      */
@@ -114,4 +116,20 @@ class Functions {
             Yii::$app->view->off(\yii\web\View::EVENT_END_BODY, [\yii\debug\Module::getInstance(), 'renderToolbar']);
         }
     }
+
+    /**
+     * 随机返回颜色十六进制值
+     */
+    public static function randomColor() {
+//        mt_srand((double) microtime() * 1000000);
+//        $c = '#';
+//        while (strlen($c) < 6) {
+//            $c .= sprintf("%02X", mt_rand(0, 255));
+//        }
+//        return $c;
+        //第二种
+        $color = ['#8A9B0F','#EB6841','#3FB8AF','#FE4365','#FC9D9A','#EDC951','#C8C8A9','#83AF9B','#036564','#3299BB','#428BCA'];
+        return $color[array_rand($color)];
+    }
+
 }

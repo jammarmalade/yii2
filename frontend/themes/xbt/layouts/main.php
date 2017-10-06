@@ -7,7 +7,8 @@ use yii\helpers\Url;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::addCss($this, 'common.css?v=1.1');
+AppAsset::addCss($this, 'common.css');
+AppAsset::addScript($this, 'common.js');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -36,7 +37,7 @@ AppAsset::addCss($this, 'common.css?v=1.1');
                 </div>
                 <div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav nav">
-                        <li class="active"><a href="<?= Url::to(['site/index']) ?>">首页</a></li>
+                        <li <?php if(Yii::$app->controller->id=='site' && Yii::$app->controller->action->id=='index'){?>class="active"<?php }?>><a href="<?= Url::to(['site/index']) ?>">首页</a></li>
                         <li><a href="<?= Url::to(['site/about']) ?>">关于</a></li>
                         <li><a href="<?= Url::to(['site/contact']) ?>">联系我</a></li>
                     </ul>
@@ -45,8 +46,8 @@ AppAsset::addCss($this, 'common.css?v=1.1');
                             <li><a href="javascript:;"><?= Yii::$app->user->identity->username?></a></li>
                             <li><a href="<?= Url::to(['user/logout']) ?>">退出</a></li>
                         <?php }else{?>
-                            <li><a href="<?= Url::to(['user/signup']) ?>">注册</a></li>
-                            <li><a href="<?= Url::to(['user/login']) ?>">登录</a></li>
+                            <li <?php if(Yii::$app->controller->action->id=='signup'){?>class="active"<?php }?>><a href="<?= Url::to(['user/signup']) ?>">注册</a></li>
+                            <li <?php if(Yii::$app->controller->action->id=='login'){?>class="active"<?php }?>><a href="<?= Url::to(['user/login']) ?>">登录</a></li>
                         <?php }?>
                     </ul>
                 </div>
@@ -59,11 +60,13 @@ AppAsset::addCss($this, 'common.css?v=1.1');
         <?= $content ?>
         </div>
     </div>
-
+    
     <footer class="footer">
-        <div class="container">
-        <p class="pull-left">&copy; 果酱 <?= date('Y') ?></p>
-        <p class="pull-right"><a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备17011886号</a></p>
+        <div class="container ba-area">
+        <p class="pull-left"><a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备17011886号</a></p>
+        <p class="pull-right">
+            Copyright &copy; <a href="/">jam00.com</a> 2017
+        </p>
         </div>
     </footer>
 

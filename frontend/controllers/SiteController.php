@@ -1,27 +1,26 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use frontend\components\WebController;
+use common\models\Article;
+use backend\models\Tag;
+use common\models\ArticleTag;
+use yii\data\Pagination;
+use backend\models\Image as TableImage;
+use frontend\components\Functions as tools;
 
 /**
  * Site controller
  */
-class SiteController extends WebController
-{
+class SiteController extends WebController {
 
     /**
      * @inheritdoc
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -33,21 +32,91 @@ class SiteController extends WebController
         ];
     }
 
-    public function actionIndex()
-    {
-        Yii::$app->language = 'zh-CN';
-        return $this->render('index');
+    public function actionIndex() {
+        $cache = Yii::$app->cache;
+        $page = $this->input('page', 0);
+        $skey = 'article-list-' . $page;
+        //测试删除
+//        $cache->flush();
+        //getOrSet yii2.0.11版本 才有，我是直接覆盖了caching文件夹
+        $cacheData = $cache->getOrSet($skey, function () {
+            return $this->getArticleList();
+        },3600);
+        //标签云
+        $tagList = $cache->getOrSet('tag-list-cloud', function(){
+            return $this->getTagCloudList();
+        }, 7200);
+        //随机打乱
+        shuffle($tagList);
+
+        return $this->render('index', [
+            'defaultArticlItemImg' => $this->defaultArticlItemImg,
+            'pages' => $cacheData['pages'],
+            'dataList' => $cacheData['articleList'],
+            'tagList' => $tagList,
+        ]);
+    }
+    //标签云
+    public function getTagCloudList(){
+        $limit = 100;
+        $tableName = ArticleTag::tableName();
+        $sql = 'SELECT tid FROM '.$tableName.' WHERE id >= ((SELECT MAX(id) FROM '.$tableName.')-(SELECT MIN(id) FROM '.$tableName.')) * RAND() + (SELECT MIN(id) FROM '.$tableName.') LIMIT '.$limit;
+        $tagIds = Yii::$app->db->createCommand($sql)->queryColumn();
+        $tagList = Tag::find()->select('id,name')->where(['in','id', array_values(array_unique($tagIds))])->asArray()->all();
+        return $tagList;
+    }
+    //获取文章列表
+    private function getArticleList() {
+        $limit = 10;
+        //文章列表
+        $articleQuery = Article::find()->where(['status' => 1]);
+        $count = $articleQuery->count();
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $limit]);
+        $field = 'id,uid,username,subject,description,view_auth,image_id,time_create,like,view,comment';
+        $articleList = $articleQuery->select($field)->orderBy('time_create DESC')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+        $imgList = $imageIds = $aids = $groupTagList = [];
+        if (is_array($articleList)) {
+            $imageIds = array_filter(array_column($articleList, 'image_id'));
+            $aids = array_filter(array_column($articleList, 'id'));
+        }
+        if ($imageIds) {
+            //查询文章图片
+            $imgList = TableImage::find()->select('sid,path,thumb')->where(['in', 'id', $imageIds])->asArray()->indexBy('sid')->all();
+        }
+        //标签
+        if ($aids) {
+            $tagList = ArticleTag::find()->from(ArticleTag::tableName() . ' as at')
+                            ->join('LEFT JOIN', Tag::tableName() . ' as t', 't.id = at.tid')
+                            ->where(['in', 'at.aid', $aids])->select('at.id,at.tid,at.aid,t.name as tagname')->asArray()->all();
+            //按照aid 分组
+            foreach ($tagList as $k => $v) {
+                $groupTagList[$v['aid']][] = $v;
+            }
+        }
+        if (is_array($articleList)) {
+            foreach ($articleList as $k => $v) {
+                $v['date'] = substr($v['time_create'], 0, 10);
+                $v['faceUrl'] = $this->defaultArticlItemImg;
+                if (isset($imgList[$v['id']])) {
+                    $tmpImage = $imgList[$v['id']];
+                    $v['faceUrl'] = $this->imageUrl . $tmpImage['path'];
+                    if ($tmpImage['thumb']) {
+                        $v['faceUrl'] .= '.thumb.jpg';
+                    }
+                }
+                $v['tagList'] = [];
+                if (isset($groupTagList[$v['id']])) {
+                    $v['tagList'] = $groupTagList[$v['id']];
+                }
+                $articleList[$k] = $v;
+            }
+        }
+        $cacheData['articleList'] = $articleList;
+        $cacheData['pages'] = $pages;
+        return $cacheData;
     }
 
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -59,13 +128,13 @@ class SiteController extends WebController
             return $this->refresh();
         } else {
             return $this->render('contact', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
 
-    public function actionAbout()
-    {
+    public function actionAbout() {
         return $this->render('about');
     }
+
 }

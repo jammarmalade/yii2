@@ -14,6 +14,7 @@ class SignupForm extends Model {
     public $username;
     public $email;
     public $password;
+    public $password1;
 
     /**
      * @inheritdoc
@@ -37,6 +38,7 @@ class SignupForm extends Model {
             ['email', 'unique', 'targetClass' => '\backend\models\UserBackend', 'message' => 'email已存在'],
             ['password', 'required', 'message' => '密码不可以为空'],
             ['password', 'string', 'min' => 6, 'tooShort' => '密码至少填写6位'],
+            ['password1', 'compare', 'compareAttribute'=>'password','message' => '两次密码输入不一致'],
         ];
     }
 
