@@ -53,9 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'path',
                             'value' => function($model){
-                                $imgUrl = $imgUrlThumb = \Yii::$app->params['SERVER_IMG'].$model->path;
+                                $imgUrl = $imgUrlThumb = \Yii::$app->params['imgDomain'].$model->path;
                                 //若是有缩略图
-                                if($model->width_thumb){
+                                if($model->thumb){
                                     $imgUrlThumb = $imgUrlThumb.'.thumb.jpg';
                                 }
                                 $imgStr = Html::img($imgUrlThumb,['class' => 'img-list']);
@@ -68,14 +68,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'type',
                             'label' => '使用位置',
                             'value' => function($model){
-                               $state = [
-                                    '0' => '未使用',
-                                    '1' => '收支记录',
-                                ];
+                               $state = $model->getTypeArr();
                                 return $state[$model->type];   
                             },
                             'headerOptions' => ['width' => '70'],
-                            'filter' => Html::activeDropDownList($searchModel,'type',['1'=>'收支记录','0'=>'未使用'],['prompt'=>'全部'])
+                            'filter' => Html::activeDropDownList($searchModel,'type',$searchModel->getTypeArr(),['prompt'=>'全部'])
                         ],
                         [
                             'attribute' => 'size',

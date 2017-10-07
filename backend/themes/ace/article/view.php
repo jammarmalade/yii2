@@ -8,7 +8,7 @@ use backend\assets\AppAsset;
 /* @var $model common\models\Article */
 
 //引入代码高亮文件
-AppAsset::addCss($this, '/static/js/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css',true);
+AppAsset::addCss($this, 'ueditor/third-party/SyntaxHighlighter/shCoreDefault.css',true);
 AppAsset::addScript($this, 'ueditor/third-party/SyntaxHighlighter/shCore.min.js', yii\web\View::POS_HEAD);
 AppAsset::addScript($this, 'lazyload.min.js', yii\web\View::POS_HEAD);
 

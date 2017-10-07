@@ -3,6 +3,7 @@
 namespace frontend\components;
 
 use yii;
+use yii\web\Cookie;
 
 class Functions {
 
@@ -131,5 +132,38 @@ class Functions {
         $color = ['#8A9B0F','#EB6841','#3FB8AF','#FE4365','#FC9D9A','#EDC951','#C8C8A9','#83AF9B','#036564','#3299BB','#428BCA'];
         return $color[array_rand($color)];
     }
-
+    /**
+     * 设置cookie
+     */
+    public static function setCookie($key,$value,$expire = 3600){
+//        $viewCookies = Yii::$app->response->cookies;
+//        $viewCookies->add(new Cookie([
+//            'name' => $key,
+//            'expire' => $expire,
+//            'value' => $value
+//        ]));
+        $time = time();
+        $expire = $expire > 0 ? $time + $expire : ($expire < 0 ? $time - 600 : 0);
+	setcookie($key, $value, $expire);
+    }
+    /**
+     * 获取cookie
+     */
+    public static function getCookie($key,$defaultValue = ''){
+//        $cookies = Yii::$app->request->cookies;
+//        self::printarr($cookies);
+//        if (isset($cookies[$key])) {
+//            return $cookies[$key]->value;
+//        }else{
+//            return $defaultValue;
+//        }
+        return isset($_COOKIE[$key]) ? $_COOKIE[$key] : $defaultValue;
+    }
+    /**
+     * 是否存在cookie
+     */
+    public static function hasCookie($skey){
+        $cookies = Yii::$app->request->cookies;
+        return $cookies->has($skey);
+    }
 }

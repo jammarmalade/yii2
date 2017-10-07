@@ -146,3 +146,34 @@ article { width: 100%; margin: 20px auto; }
 .pagination > li > a:hover, .pagination > li > span:hover {
     color: #F77825;
 }
+/*文章详情*/
+.site-article{
+    padding: 10px;
+}
+#subject{
+    font-size: 22px;
+    font-weight: 700;
+}
+#article-head{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #c1c1c1;
+}
+#article-head .item-tag{
+    padding-left: 0px;
+    color: rgb(255, 101, 135);
+    margin-bottom: 10px;
+}
+#article-head .item-tag a{
+    font-size: 14px;
+    color:#fff;
+    display: inline-block;
+    padding: 2px 5px;
+    background-color: #428BCA;
+}
+#content{
+    font-size: 15px;
+    line-height: 25px;
+}
+.article-autor span{
+    padding-left: 0px;
+}

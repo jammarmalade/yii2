@@ -47,7 +47,7 @@ class ArticleSearch extends Article
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        $query->orderBy('id DESC');
         $this->load($params);
 
         if (!$this->validate()) {

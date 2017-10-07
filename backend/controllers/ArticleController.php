@@ -51,11 +51,14 @@ class ArticleController extends AdminController {
     public function actionView($id) {
         $articleInfo = $this->findModel($id);
         //替换图片bbcode
+        $tmpArr['imgList'] = [];
         if($articleInfo['image_id']){
-            $articleInfo->content = Image::replaceImgCode($articleInfo,'show');
+            $tmpArr = Image::replaceImgCode($articleInfo,'show');
+            $articleInfo->content = $tmpArr['content'];
         }
         return $this->render('view', [
             'articleInfo' => $articleInfo,
+            'imgList' => $tmpArr['imgList'],
         ]);
     }
 

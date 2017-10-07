@@ -95,6 +95,10 @@ class Image extends \yii\db\ActiveRecord
         $tmp = array_flip($this->typeArr);
         return $tmp[$typeId];
     }
+    public function getTypeArr(){
+        $tmp = array_flip($this->typeArr);
+        return $tmp;
+    }
     /**
      * 替换图片bbcode为百度编辑器的图片代码
      * @param type $articleInfo     文章信息
@@ -105,10 +109,12 @@ class Image extends \yii\db\ActiveRecord
         $searchArr = $replaceArr = [];
         $imgDomain = Yii::$app->params['imgDomain'];
         //占位图
-        $zwImage = Yii::$app->request->hostInfo.'/static/images/l.gif';
+        $zwImage = Yii::$app->request->hostInfo.Yii::$app->view->theme->baseUrl.'/images/l.gif';
+        $imgList = $tmpImgList = [];
         foreach($imageList as $k=>$v){
             $searchArr[] = '[img]'.$v['id'].'[/img]';
             $imUrl = $originalUrl = $imgDomain.$v['path'];
+            $tmpImgList[$v['id']] = $imUrl;
             if($v['thumb']){
                 $imUrl .= '.thumb.jpg';
             }
@@ -121,6 +127,18 @@ class Image extends \yii\db\ActiveRecord
                 $replaceArr[] = '<img src="'.$zwImage.'" title="'.$filename.'" class="lazy view-img" data-original="'.$imUrl.'" data-big="'.$originalUrl.'">';
             }
         }
-        return str_replace($searchArr, $replaceArr, $articleInfo['content']);
+        preg_match_all('#\[img\](\d+)\[/img\]#i', $articleInfo['content'], $m);
+        $tmpIds = $m[1];
+        $tmpContent = str_replace($searchArr, $replaceArr, $articleInfo['content']);
+        if($type=='ueditor'){
+            return $tmpContent;
+        }else{
+            foreach($tmpIds as $k=>$tmpId){
+                $imgList[] = $tmpImgList[$tmpId];
+            }
+            $res['content'] = $tmpContent;
+            $res['imgList'] = $imgList;
+            return $res;
+        }
     }
 }

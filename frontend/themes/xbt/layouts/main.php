@@ -38,8 +38,8 @@ AppAsset::addScript($this, 'common.js');
                 <div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav nav">
                         <li <?php if(Yii::$app->controller->id=='site' && Yii::$app->controller->action->id=='index'){?>class="active"<?php }?>><a href="<?= Url::to(['site/index']) ?>">首页</a></li>
-                        <li><a href="<?= Url::to(['site/about']) ?>">关于</a></li>
-                        <li><a href="<?= Url::to(['site/contact']) ?>">联系我</a></li>
+                        <!--<li><a href="<?= Url::to(['site/about']) ?>">关于博客</a></li>-->
+                        <!--<li><a href="<?= Url::to(['site/contact']) ?>">联系我</a></li>-->
                     </ul>
                     <ul id="w1" class="navbar-nav nav navbar-right">
                         <?php if(!Yii::$app->user->isGuest){?>

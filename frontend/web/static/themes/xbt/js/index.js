@@ -10,5 +10,5 @@
     });
 })();
 $("img.lazy").lazyload({
-    effect: "fadeIn"
+    effect: "fadeIn",
 });

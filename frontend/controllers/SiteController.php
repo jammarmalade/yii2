@@ -37,7 +37,7 @@ class SiteController extends WebController {
         $page = $this->input('page', 0);
         $skey = 'article-list-' . $page;
         //测试删除
-//        $cache->flush();
+        $cache->flush();
         //getOrSet yii2.0.11版本 才有，我是直接覆盖了caching文件夹
         $cacheData = $cache->getOrSet($skey, function () {
             return $this->getArticleList();
@@ -48,13 +48,48 @@ class SiteController extends WebController {
         }, 7200);
         //随机打乱
         shuffle($tagList);
+        //右侧内容
+        $rightInfo = $cache->getOrSet('right-info', function(){
+            return $this->getRightInfo();
+        }, 14400);
+        //友链
+        $friendLinkList = $cache->getOrSet('friend-link', function(){
+            return $this->getFriendLink();
+        }, 28800);
 
         return $this->render('index', [
             'defaultArticlItemImg' => $this->defaultArticlItemImg,
             'pages' => $cacheData['pages'],
             'dataList' => $cacheData['articleList'],
             'tagList' => $tagList,
+            'topList' => $rightInfo['topList'],
+            'recommendList' => $rightInfo['recommendList'],
+            'friendLinkList' => $friendLinkList,
         ]);
+    }
+    //友链
+    private function getFriendLink(){
+        $list = [
+            ['url' => 'https://www.baidu.com/', 'name' => '百度'],
+            ['url' => 'http://www.yiichina.com/doc/guide/2.0', 'name' => 'Yii2.0权威指南'],
+            ['url' => 'https://www.aliyun.com/', 'name' => '阿里云'],
+            ['url' => 'http://www.bootcss.com/', 'name' => 'Bootstrap'],
+            ['url' => 'http://layer.layui.com/', 'name' => 'layer弹层'],
+        ];
+        return $list;
+    }
+    //右侧信息
+    private function getRightInfo(){
+        //点击排行
+        $topList = Article::find()->select('id,subject,view')->where(['status'=>1])->limit(6)->orderBy('view DESC')->asArray()->all();
+        //推荐
+        $recommendList = Article::find()->select('id,subject,view')->where(['recommend'=>1])->limit(6)->orderBy('time_create DESC')->asArray()->all();
+        
+        $resData = [
+            'topList' => $topList,
+            'recommendList' => $recommendList,
+        ];
+        return $resData;
     }
     //标签云
     public function getTagCloudList(){

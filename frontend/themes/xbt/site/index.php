@@ -23,11 +23,11 @@ $this->title = '首页';
                     <div class="blogs">
                         <figure><img src="" class="lazy" data-original="<?=$article['faceUrl']?>"></figure>
                         <ul>
-                            <h3><a href="javascript:;"><?=$article['subject']?></a></h3>
+                            <h3><a href="<?=Url::to(['article/index','aid'=>$article['id']])?>"><?=$article['subject']?></a></h3>
                             <p class="article-description"><?=$article['description']?></p>
                             <p class="autor">
                                 <span class="time"><span class="glyphicon glyphicon-time" style="color: rgb(109, 160, 255);" aria-hidden="true"></span><?=$article['date']?></span>
-                                <span><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span>浏览（<a href="javascript:;"><?=$article['view']?></a>）</span>
+                                <span><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span>浏览（<?=$article['view']?>）</span>
                                 <br>
                                 <span class="item-tag">
                                     <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
@@ -55,30 +55,28 @@ $this->title = '首页';
                 <div class="ms-top">
                     <ul class="hd" id="tab">
                         <li class="switch-li cur"><a href="javascript:;">点击排行</a></li>
+                        <?php if($recommendList){?>
                         <li class="switch-li"><a href="javascript:;">推荐文章</a></li>
+                        <?php }?>
                     </ul>
                 </div>
                 <div class="ms-main" id="ms-main">
                     <div style="display: block;" class="bd bd-news" >
                         <ul>
-                            <li><span>1</span><a href="javascript:;" target="_blank">住在手机里的朋友</a></li>
-                            <li><span>2</span><a href="javascript:;" target="_blank">教你怎样用欠费手机拨打电话</a></li>
-                            <li><span>3</span><a href="javascript:;" target="_blank">原来以为，一个人的勇敢是，删掉他的手机号码...</a></li>
-                            <li><span>4</span><a href="javascript:;" target="_blank">手机的16个惊人小秘密，据说99.999%的人都不知</a></li>
-                            <li><span>5</span><a href="javascript:;" target="_blank">你面对的是生活而不是手机</a></li>
-                            <li><span>6</span><a href="javascript:;" target="_blank">豪雅手机正式发布! 在法国全手工打造的奢侈品</a></li>
+                            <?php foreach($topList as $k=>$v){?>
+                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/index','aid'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
+                            <?php }?>
                         </ul>
                     </div>
+                    <?php if($recommendList){?>
                     <div  class="bd bd-news">
                         <ul>
-                            <li><span>1</span><a href="javascript:;" target="_blank">豪雅手机正式发布! 在法国全手工打造的奢侈品</a></li>
-                            <li><span>2</span><a href="javascript:;" target="_blank">原来以为，一个人的勇敢是，删掉他的手机号码...</a></li>
-                            <li><span>3</span><a href="javascript:;" target="_blank">教你怎样用欠费手机拨打电话</a></li>
-                            <li><span>4</span><a href="javascript:;" target="_blank">手机的16个惊人小秘密，据说99.999%的人都不知</a></li>
-                            <li><span>5</span><a href="javascript:;" target="_blank">你面对的是生活而不是手机</a></li>
-                            <li><span>6</span><a href="javascript:;" target="_blank">住在手机里的朋友</a></li>
+                            <?php foreach($recommendList as $k=>$v){?>
+                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/index','aid'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
+                            <?php }?>
                         </ul>
                     </div>
+                    <?php }?>
                 </div>
                 <!--ms-main end --> 
             </div>
@@ -104,11 +102,9 @@ $this->title = '首页';
             <div class="links box" >
                 <h3><span>[<a href="javascript:;">申请友情链接</a>]</span>友情链接</h3>
                 <ul>
-                    <li><a href="https://www.baidu.com/">百度</a></li>
-                    <li><a href="http://www.yiichina.com/doc/guide/2.0">Yii2.0权威指南</a></li>
-                    <li><a href="https://www.aliyun.com/">阿里云</a></li>
-                    <li><a href="http://www.bootcss.com/">Bootstrap</a></li>
-                    <li><a href="http://layer.layui.com/">layer弹层</a></li>
+                    <?php foreach($friendLinkList as $k=>$v){?>
+                        <li><a href="<?=$v['url']?>" target="_blank"><?=$v['name']?></a></li>
+                    <?php }?>
                 </ul>
             </div>
         </div>
