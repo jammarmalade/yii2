@@ -13,4 +13,12 @@
     }
     footerPosition();
     $(window).resize(footerPosition);
+    
+    //dropdown
+    $('.dropdown').unbind("mouseover").mouseover(function () {
+        $(this).addClass('open');
+    })
+    $('.dropdown').unbind("mouseout").mouseout(function () {
+        $(this).removeClass('open');
+    })
 })();

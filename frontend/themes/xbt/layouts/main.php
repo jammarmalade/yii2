@@ -43,8 +43,23 @@ AppAsset::addScript($this, 'common.js');
                     </ul>
                     <ul id="w1" class="navbar-nav nav navbar-right">
                         <?php if(!Yii::$app->user->isGuest){?>
-                            <li><a href="javascript:;"><?= Yii::$app->user->identity->username?></a></li>
-                            <li><a href="<?= Url::to(['user/logout']) ?>">退出</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= Yii::$app->user->identity->username?> <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="http://admin.jam00.com/" target="_blank">
+                                            <i class="icon-cog"></i>
+                                            后台管理
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= Url::to(['user/logout']) ?>" data-method="post">
+                                            <span class="glyphicon glyphicon-log-out span-margin-left"></span>
+                                            退出
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         <?php }else{?>
                             <li <?php if(Yii::$app->controller->action->id=='signup'){?>class="active"<?php }?>><a href="<?= Url::to(['user/signup']) ?>">注册</a></li>
                             <li <?php if(Yii::$app->controller->action->id=='login'){?>class="active"<?php }?>><a href="<?= Url::to(['user/login']) ?>">登录</a></li>

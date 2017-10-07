@@ -178,3 +178,13 @@ article { width: 100%; margin: 20px auto; }
 .article-autor span{
     padding-left: 0px;
 }
+.open > .dropdown-toggle {
+  background-color: #EEEEEE;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color:#000;
+  background-color: #EEEEEE;
+}
