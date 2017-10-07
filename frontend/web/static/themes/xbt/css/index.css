@@ -164,11 +164,12 @@ article { width: 100%; margin: 20px auto; }
     margin-bottom: 10px;
 }
 #article-head .item-tag a{
-    font-size: 14px;
+    font-size: 15px;
     color:#fff;
     display: inline-block;
     padding: 2px 5px;
     background-color: #428BCA;
+    padding: 5px 10px;
 }
 #content{
     font-size: 15px;

@@ -23,7 +23,7 @@ $this->title = '首页';
                     <div class="blogs">
                         <figure><img src="" class="lazy" data-original="<?=$article['faceUrl']?>"></figure>
                         <ul>
-                            <h3><a href="<?=Url::to(['article/index','aid'=>$article['id']])?>"><?=$article['subject']?></a></h3>
+                            <h3><a href="<?=Url::to(['article/info','id'=>$article['id']])?>"><?=$article['subject']?></a></h3>
                             <p class="article-description"><?=$article['description']?></p>
                             <p class="autor">
                                 <span class="time"><span class="glyphicon glyphicon-time" style="color: rgb(109, 160, 255);" aria-hidden="true"></span><?=$article['date']?></span>
@@ -64,7 +64,7 @@ $this->title = '首页';
                     <div style="display: block;" class="bd bd-news" >
                         <ul>
                             <?php foreach($topList as $k=>$v){?>
-                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/index','aid'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
+                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/info','id'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
                             <?php }?>
                         </ul>
                     </div>
@@ -72,7 +72,7 @@ $this->title = '首页';
                     <div  class="bd bd-news">
                         <ul>
                             <?php foreach($recommendList as $k=>$v){?>
-                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/index','aid'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
+                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/info','id'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
                             <?php }?>
                         </ul>
                     </div>

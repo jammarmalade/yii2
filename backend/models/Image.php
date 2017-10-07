@@ -109,7 +109,12 @@ class Image extends \yii\db\ActiveRecord
         $searchArr = $replaceArr = [];
         $imgDomain = Yii::$app->params['imgDomain'];
         //占位图
-        $zwImage = Yii::$app->request->hostInfo.Yii::$app->view->theme->baseUrl.'/images/l.gif';
+        if(Yii::$app->request->serverName == 'admin.jam00.com'){
+            $tmpPath = '/static';
+        }else{
+            $tmpPath = Yii::$app->view->theme->baseUrl;
+        }
+        $zwImage = Yii::$app->request->hostInfo.$tmpPath.'/images/l.gif';
         $imgList = $tmpImgList = [];
         foreach($imageList as $k=>$v){
             $searchArr[] = '[img]'.$v['id'].'[/img]';

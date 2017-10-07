@@ -31,9 +31,9 @@ class ArticleController extends WebController {
         ];
     }
 
-    public function actionIndex() {
+    public function actionInfo() {
         $cache = Yii::$app->cache;
-        $aid = $this->input('aid', 0);
+        $aid = $this->input('id', 0);
         $skey = 'article-' . $aid;
         //测试删除
         $cache->flush();
