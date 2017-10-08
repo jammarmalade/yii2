@@ -57,3 +57,19 @@ body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #
     padding: 20px;
 }
 .fixed-bottom {position: fixed;bottom: 0;width:100%;}
+.site-bg{
+    position: fixed;
+    _position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    min-width: 1000px;
+    z-index: -10;
+    background-position: center 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    zoom: 1;
+}

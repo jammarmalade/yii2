@@ -41,6 +41,15 @@ class ArticleController extends WebController {
         $articleInfo = $cache->getOrSet($skey, function () use($aid) {
             return $this->getArticleInfo($aid);
         },3600);
+        //是否删除
+        if($articleInfo['status']!=1){
+            if(Yii::$app->user->isGuest){
+                return $this->message(['msg'=>'该内容不存在']);
+            }
+            if(Yii::$app->user->identity->id != 1){
+                return $this->message(['msg'=>'该内容已被删除']);
+            }
+        }
         //若是存在密码
         if ($articleInfo['view_auth']) {
             $cookieKey = 'auth-'.$aid;
