@@ -17,6 +17,9 @@ AppAsset::addCss($this, 'viewer.min.css');
 AppAsset::addScript($this, 'viewer.min.js');
 /* @var $this yii\web\View */
 $this->title = $articleInfo['subject'];
+$tagNames = join(',',array_column($articleInfo['tagList'], 'tagname'));
+$this->metaTags[]="<meta name='keywords' content='$tagNames'/>";
+$this->metaTags[]="<meta name='description' content='".$articleInfo['description']."'/>";
 ?>
 
 <div class="site-article box">

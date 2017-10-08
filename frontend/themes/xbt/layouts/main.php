@@ -36,7 +36,7 @@ AppAsset::addScript($this, 'common.js');
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">果酱</a>
+                    <a class="navbar-brand" href="/">果酱园</a>
                 </div>
                 <div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav nav">

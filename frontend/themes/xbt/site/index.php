@@ -11,7 +11,7 @@ AppAsset::addCss($this, 'index.css',false, yii\web\View::POS_BEGIN);
 AppAsset::addScript($this, 'index.js');
 
 /* @var $this yii\web\View */
-$this->title = '首页';
+$this->title = '果酱园';
 ?>
 <div class="site-index">
     <article>
