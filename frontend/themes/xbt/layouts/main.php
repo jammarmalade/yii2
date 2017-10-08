@@ -22,7 +22,9 @@ AppAsset::addScript($this, 'common.js');
 </head>
 <body>
     <?php $this->beginBody() ?>
+    <?php if(Yii::$app->controller->id=='site' && Yii::$app->controller->action->id=='index'){?>
     <div class="site-bg" style="background-color:rgb(255, 255, 255);background-image:url(https://ss2.bdstatic.com/kfoZeXSm1A5BphGlnYG/skin/257.jpg);">  </div>
+    <?php }?>
     <div class="wrap">
         
         <nav id="w0" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
