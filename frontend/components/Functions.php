@@ -166,4 +166,10 @@ class Functions {
         $cookies = Yii::$app->request->cookies;
         return $cookies->has($skey);
     }
+    /**
+     * textarea 转 br
+     */
+    public static function textarea2br($cotent){
+        return preg_replace('#\r\n|\r|\n#', '<br />', $cotent);
+    }
 }

@@ -134,6 +134,7 @@ class SiteController extends WebController {
             foreach ($articleList as $k => $v) {
                 $v['date'] = substr($v['time_create'], 0, 10);
                 $v['faceUrl'] = $this->defaultArticlItemImg;
+                $v['description'] = tools::textarea2br($v['description']);
                 if (isset($imgList[$v['id']])) {
                     $tmpImage = $imgList[$v['id']];
                     $v['faceUrl'] = $this->imageUrl . $tmpImage['path'];
