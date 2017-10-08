@@ -19,6 +19,7 @@ use Yii;
  * @property string $comment
  * @property string $view_auth
  * @property string $image_id
+ * @property string $copyright
  * @property integer $status
  * @property string $time_update
  * @property string $time_create
@@ -70,9 +71,19 @@ class Article extends \yii\db\ActiveRecord
             'comment' => '评论数',
             'view_auth' => '查看密码',
             'image_id' => '内容第一张图片的id',
+            'copyright' => '显示版权',
             'status' => '状态，1正常，2删除',
             'time_update' => '更新时间',
             'time_create' => '创建时间',
+        ];
+    }
+    /**
+     * 版权标记
+     */
+    public function copyrightArr(){
+        return [
+            0 => '不显示',
+            1 => '显示',
         ];
     }
 }

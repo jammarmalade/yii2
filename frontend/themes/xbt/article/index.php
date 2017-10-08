@@ -37,6 +37,11 @@ $this->title = $articleInfo['subject'];
     <div id="content">
         <?=$articleInfo['content']?>
     </div>
+    <?php if($articleInfo['copyright']){?>
+    <div id="copyright">
+        本内容为博主原创，转载请注明出处。本文链接 <a href="<?=$selfUrl?>"><?=$selfUrl?></a>
+    </div>
+    <?php }?>
 </div>
 <?php $this->beginBlock("article") ?>
 SyntaxHighlighter.all();

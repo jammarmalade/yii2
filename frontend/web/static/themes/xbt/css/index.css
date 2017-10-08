@@ -154,6 +154,11 @@ article { width: 100%; margin: 20px auto; }
     font-size: 22px;
     font-weight: 700;
 }
+#copyright{
+    margin-top: 50px;
+    color: #f30;
+    font-size: 14px;
+}
 #article-head{
     margin-bottom: 10px;
     border-bottom: 1px solid #c1c1c1;

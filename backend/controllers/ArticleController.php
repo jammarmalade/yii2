@@ -225,6 +225,11 @@ class ArticleController extends AdminController {
                 return $this->message(['msg' => '数据错误']);
             }
             $this->findModel($id)->updateAll(['recommend' => $updateData], ['id' => $id]);
+        }elseif($type == 'copyright'){
+            if (!in_array($updateData, [0, 1])) {
+                return $this->message(['msg' => '数据错误']);
+            }
+            $this->findModel($id)->updateAll(['copyright' => $updateData], ['id' => $id]);
         }
 
         return $this->redirect(['index']);

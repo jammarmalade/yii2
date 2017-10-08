@@ -52,6 +52,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['width' => '70'],
                 'filter' => Html::activeDropDownList($searchModel,'status',['1'=>'正常','2'=>'删除'],['prompt'=>'全部'])
             ],
+            [
+                'attribute' => 'copyright',
+                'label' => '版权',
+                'value' => function($model){
+                    $state = $model->copyrightArr();
+                    return $state[$model->status];   
+                },
+                'headerOptions' => ['width' => '70'],
+                'filter' => Html::activeDropDownList($searchModel,'status',$searchModel->copyrightArr(),['prompt'=>'全部'])
+            ],
             // 'time_update',
             // 'time_create',
             [
@@ -86,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{view} {update} {recommend} {delete}',
+                'template' => '{view} {update} {recommend} {delete} {copyright}',
                 'buttons' => [
                     'view' => function($url, $model, $key){
                        return Html::a('查看',['view', 'id' => $key], ['class' => 'btn btn-sm btn-success',]
@@ -108,6 +118,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<i class="icon-reply"></i>恢复',['delete', 'id' => $key ,'status' => 1,'type'=>'status'], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '你确定要恢复吗？','method' => 'post']]);
                         }else{
                             return Html::a('<i class="icon-trash"></i>删除',['delete', 'id' => $key ,'status' => 2,'type'=>'status'], ['class' => 'btn btn-sm btn-danger','data' => ['confirm' => '你确定要删除吗？','method' => 'post']]);
+                        }
+                    },
+                    'copyright' => function($url, $model, $key){
+                       if($model->copyright == 1){
+                            return Html::a('取消版权',['delete', 'id' => $key ,'status' => 0,'type'=>'copyright'], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '你确定要取消吗？','method' => 'post']]);
+                        }else{
+                            return Html::a('显示版权',['delete', 'id' => $key ,'status' => 1,'type'=>'copyright'], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '确认显示版权吗？','method' => 'post']]);
                         }
                     },
                 ],

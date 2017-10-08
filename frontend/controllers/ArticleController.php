@@ -36,7 +36,9 @@ class ArticleController extends WebController {
         $aid = $this->input('id', 0);
         $skey = 'article-' . $aid;
         //测试删除
-        $cache->flush();
+        if($this->input('t', '')){
+            $cache->flush();
+        }
         //getOrSet yii2.0.11版本 才有，我是直接覆盖了caching文件夹
         $articleInfo = $cache->getOrSet($skey, function () use($aid) {
             return $this->getArticleInfo($aid);
@@ -82,6 +84,7 @@ class ArticleController extends WebController {
 
         return $this->render('index', [
             'articleInfo' => $articleInfo,
+            'selfUrl' => Yii::$app->request->hostInfo.Yii::$app->request->url,
         ]);
     }
     private function getArticleInfo($aid){

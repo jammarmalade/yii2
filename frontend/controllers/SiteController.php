@@ -37,7 +37,9 @@ class SiteController extends WebController {
         $page = $this->input('page', 0);
         $skey = 'article-list-' . $page;
         //测试删除
-        $cache->flush();
+        if($this->input('t', '')){
+            $cache->flush();
+        }
         //getOrSet yii2.0.11版本 才有，我是直接覆盖了caching文件夹
         $cacheData = $cache->getOrSet($skey, function () {
             return $this->getArticleList();
