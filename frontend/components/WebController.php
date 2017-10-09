@@ -5,6 +5,7 @@ namespace frontend\components;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Json;
+use common\models\Config;
 
 /**
  * Web controller
@@ -23,7 +24,8 @@ class WebController extends Controller {
     public $view = '';
     //是否是手机端
     protected $mobile = false;
-
+    //配置信息
+    public $config = [];
     /**
      * 初始化一些变量
      * @inheritdoc
@@ -40,6 +42,11 @@ class WebController extends Controller {
         $this->view->params['defaultArticlItemImg'] = $this->defaultArticlItemImg = $this->staticUrl . '/images/articl-item.jpg';
         $this->imageUrl = Yii::$app->params['imgDomain'];
         $this->mobile = $this->checkmobile(); //开启手机端
+        //配置缓存
+        $cache = Yii::$app->cache;
+        $this->view->params['config'] = $this->config = $cache->getOrSet('config', function () {
+            return Config::getConfig();
+        },86400);
     }
 
     /**
@@ -52,7 +59,7 @@ class WebController extends Controller {
             ],
         ];
     }
-
+    
     public function message($data) {
         if (!isset($data['title'])) {
             $data['title'] = '错误提示';

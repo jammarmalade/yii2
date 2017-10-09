@@ -37,11 +37,12 @@ class Config extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'key', 'value', 'type'], 'required'],
+            ['key', 'unique', 'message' => 'key值已存在.'],
             [['type', 'status', 'order_number'], 'integer'],
             [['time_create'], 'safe'],
             [['name'], 'string', 'max' => 100],
             [['key'], 'string', 'max' => 20],
-            ['key', 'unique', 'targetClass' => '\common\models\Config', 'message' => 'key值已存在。'],
             [['value'], 'string', 'max' => 1000],
             [['remark'], 'string', 'max' => 200]
         ];
@@ -81,5 +82,28 @@ class Config extends \yii\db\ActiveRecord
             1 => '正常',
             2 => '删除',
         ];
+    }
+    /**
+     * 获取配置
+     */
+    public static function getConfig(){
+        $configListRes = Config::find()->where(['status'=>1])->asArray()->all();
+        $configList = [];
+        foreach($configListRes as $k=>$v){
+            $tmpValue = $v['value'];
+            if(strpos($tmpValue, 'config')!==false){
+                $tmpValue = Yii::$app->params['imgDomain'].$tmpValue;
+            }
+            $configList[$v['key']] = $tmpValue;
+        }
+        
+        return $configList;
+    }
+    /**
+     * 删除配置缓存
+     */
+    public static function delConfigCache(){
+        $cache = Yii::$app->cache;
+        $cache->delete('config');
     }
 }

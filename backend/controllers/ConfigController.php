@@ -72,11 +72,10 @@ class ConfigController extends AdminController
             if($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -88,7 +87,7 @@ class ConfigController extends AdminController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -112,7 +111,7 @@ class ConfigController extends AdminController
             return $this->message(['msg' => '数据错误']);
         }
         $this->findModel($id)->updateAll(['status' => $status],['id' => $id]);
-
+        
         return $this->redirect(['index']);
     }
 

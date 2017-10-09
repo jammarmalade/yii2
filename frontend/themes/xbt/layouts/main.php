@@ -9,6 +9,7 @@ use yii\helpers\Url;
 
 AppAsset::addCss($this, 'common.min.css');
 AppAsset::addScript($this, 'common.js');
+$confg = $this->params['config'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -45,7 +46,7 @@ AppAsset::addScript($this, 'common.js');
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">果酱园</a>
+                    <a class="navbar-brand" href="/"><?=$confg['siteName']?></a>
                 </div>
                 <div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav nav">
@@ -90,9 +91,9 @@ AppAsset::addScript($this, 'common.js');
     
     <footer class="footer">
         <div class="container ba-area">
-        <p class="pull-left"><a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备17011886号</a></p>
+        <p class="pull-left"><?=$confg['beian']?></p>
         <p class="pull-right">
-            Copyright &copy; <a href="/">jam00.com</a> 2017
+            <?=$confg['copyright']?>
         </p>
         </div>
     </footer>
