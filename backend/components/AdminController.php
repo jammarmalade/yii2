@@ -106,6 +106,27 @@ class AdminController extends Controller {
         ];
         return Json::encode($resData);
     }
+    /**
+     * 获取请求数据
+     * @param type $key     post.id / get.id
+     * @param type $default 默认值
+     */
+    public function input($key, $default = '') {
+        if (strpos($key, '.')) {
+            list($method, $name) = explode('.', $key);
+        } else {
+            $name = $key;
+            $method = 'get';
+        }
+        switch (strtolower($method)) {
+            case 'get': $val = Yii::$app->request->get($name);
+                break;
+            case 'post': $val = Yii::$app->request->post($name);
+                break;
+        }
+        $value = $val ? $val : $default;
+        return $value;
+    }
 
 
 }

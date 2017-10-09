@@ -136,14 +136,15 @@ class UploadController extends Controller {
     }
     
     private function save(){
-        if ($_FILES['imageFile']) {
+        if (isset($_FILES['imageFile'])) {
             $imgSource = $_FILES['imageFile']; //图片资源
         } else {
             $imgSource = $_FILES['Filedata'];
         }
         $type = $this->typeDir = Yii::$app->request->get('type');
         //允许上传的类型
-        $allowType = ['article', 'record'];
+        $imageModel = new TableImage();
+        $allowType = array_keys($imageModel->typeArr);
         if (!in_array($type, $allowType)) {
             return $this->ajaxReturn('','不允许上传', false);
         }
@@ -212,6 +213,7 @@ class UploadController extends Controller {
         }
         $resData = [
             'state' => $state,
+            'path' => $data['path'],
             'url' => $data['url'],
             'title' => $data['id'].'_'.$data['newFilename'],
             'original' => $data['filename'],

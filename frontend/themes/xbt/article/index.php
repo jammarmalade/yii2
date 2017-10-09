@@ -10,11 +10,11 @@ AppAsset::addCss($this, '/js/ueditor/third-party/SyntaxHighlighter/shCoreDefault
 AppAsset::addScript($this, 'ueditor/third-party/SyntaxHighlighter/shCore.min.js');
 //延迟加载
 AppAsset::addScript($this, 'lazyload.min.js');
-AppAsset::addCss($this, 'index.min.css',false, yii\web\View::POS_BEGIN);
-AppAsset::addScript($this, 'index.js');
 //图片查看
 AppAsset::addCss($this, 'viewer.min.css');
 AppAsset::addScript($this, 'viewer.min.js');
+AppAsset::addCss($this, 'index.min.css',false, yii\web\View::POS_BEGIN);
+AppAsset::addScript($this, 'index.js');
 /* @var $this yii\web\View */
 $this->title = $articleInfo['subject'];
 $tagNames = join(',',array_column($articleInfo['tagList'], 'tagname'));

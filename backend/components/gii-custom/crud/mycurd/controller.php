@@ -141,7 +141,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         //$this->findModel(<?= $actionParams ?>)->delete();
         $status = Yii::$app->request->get('status');
-        if(!in_array($status,[0,1])){
+        if(!in_array($status,[1,2])){
             return $this->message(['msg' => '数据错误']);
         }
         $this->findModel(<?= $actionParams ?>)->updateAll(['status' => $status],['id' => <?= $actionParams ?>]);

@@ -99,3 +99,14 @@ table{
     background-color: #4f99c6;
     color: #fff;
 }
+.input-uploade {
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #444;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+}

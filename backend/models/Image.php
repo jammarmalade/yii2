@@ -76,9 +76,10 @@ class Image extends \yii\db\ActiveRecord
             'time_create' => '上传时间',
         ];
     }
-    private $typeArr = [
+    protected $typeArr = [
             'article' => 0,
             'record' => 1,
+            'config' => 2,
         ];
     /**
      * 获取分类id

@@ -196,3 +196,6 @@ article { width: 100%; margin: 20px auto; }
 .view-img{
     margin: 10px 0px;
 }
+.viewer-toolbar {
+    width: 100px;
+}
