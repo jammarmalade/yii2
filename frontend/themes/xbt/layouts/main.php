@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::addCss($this, 'common.css');
+AppAsset::addCss($this, 'common.min.css');
 AppAsset::addScript($this, 'common.js');
 ?>
 <?php $this->beginPage() ?>

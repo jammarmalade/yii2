@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use frontend\assets\AppAsset;
 
-AppAsset::addCss($this, 'login.css',false, yii\web\View::POS_BEGIN);
+AppAsset::addCss($this, 'login.min.css',false, yii\web\View::POS_BEGIN);
 
 $this->title = '登录';
 ?>

@@ -11,7 +11,7 @@ body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #
     border-top: 1px solid #ddd;
     padding-top: 20px;
 }
-//----------------导航--------------
+/*----------------导航--------------*/
 .navbar {background: #fff; box-shadow: rgba(0,0,0,0.05) 0 1px 5px; }
 .navbar-inverse {
     box-shadow: 0 1px 5px rgba(0,0,0,0.2);
@@ -72,4 +72,10 @@ body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #
     -webkit-background-size: cover;
     -o-background-size: cover;
     zoom: 1;
+}
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #000;
+}
+.navbar-inverse .navbar-toggle:focus .icon-bar {
+  background-color: #fff;
 }

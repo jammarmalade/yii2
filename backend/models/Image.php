@@ -116,6 +116,8 @@ class Image extends \yii\db\ActiveRecord
         }
         $zwImage = Yii::$app->request->hostInfo.$tmpPath.'/images/l.gif';
         $imgList = $tmpImgList = [];
+        //手机端显示
+        $mobileReplaceArr = [];
         foreach($imageList as $k=>$v){
             $searchArr[] = '[img]'.$v['id'].'[/img]';
             $imUrl = $originalUrl = $imgDomain.$v['path'];
@@ -130,6 +132,7 @@ class Image extends \yii\db\ActiveRecord
             }elseif($type=='show'){
                 $filename = substr($v['filename'],0,strrpos($v['filename'],'.'));
                 $replaceArr[] = '<img src="'.$zwImage.'" title="'.$filename.'" class="lazy view-img" data-original="'.$imUrl.'" data-big="'.$originalUrl.'">';
+                $mobileReplaceArr[] = '<img width="100%" src="'.$zwImage.'" title="'.$filename.'" class="lazy view-img" data-original="'.$imUrl.'" data-big="'.$imUrl.'">';
             }
         }
         preg_match_all('#\[img\](\d+)\[/img\]#i', $articleInfo['content'], $m);
@@ -137,10 +140,15 @@ class Image extends \yii\db\ActiveRecord
         $tmpContent = str_replace($searchArr, $replaceArr, $articleInfo['content']);
         if($type=='ueditor'){
             return $tmpContent;
-        }else{
+        }elseif($type=='show'){
+            $mobileContent = '';
+            if($mobileReplaceArr){
+                $mobileContent = str_replace($searchArr, $mobileReplaceArr, $articleInfo['content']);
+            }
             foreach($tmpIds as $k=>$tmpId){
                 $imgList[] = $tmpImgList[$tmpId];
             }
+            $res['mobileContent'] = $mobileContent;
             $res['content'] = $tmpContent;
             $res['imgList'] = $imgList;
             return $res;

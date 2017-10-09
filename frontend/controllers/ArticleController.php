@@ -9,7 +9,6 @@ use backend\models\Tag;
 use common\models\ArticleTag;
 use backend\models\Image as TableImage;
 use frontend\components\Functions as tools;
-use yii\web\Cookie;
 
 /**
  * Article controller
@@ -43,6 +42,10 @@ class ArticleController extends WebController {
         $articleInfo = $cache->getOrSet($skey, function () use($aid) {
             return $this->getArticleInfo($aid);
         },3600);
+        //若是手机端，就替换为手机端的内容
+        if($this->mobile){
+            $articleInfo['content'] = $articleInfo['mobileContent'];
+        }
         //是否删除
         if($articleInfo['status']!=1){
             if(Yii::$app->user->isGuest){
@@ -98,6 +101,7 @@ class ArticleController extends WebController {
         $articleInfo['imgList'] =[]; 
         if($articleInfo['image_id']){
             $tmpArr = TableImage::replaceImgCode($articleInfo,'show');
+            $articleInfo['mobileContent'] = $tmpArr['mobileContent'];
             $articleInfo['content'] = $tmpArr['content'];
             $articleInfo['imgList'] = $tmpArr['imgList'];
         }
