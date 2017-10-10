@@ -129,13 +129,14 @@ class Functions {
 //        }
 //        return $c;
         //第二种
-        $color = ['#8A9B0F','#EB6841','#3FB8AF','#FE4365','#FC9D9A','#EDC951','#C8C8A9','#83AF9B','#036564','#3299BB','#428BCA'];
+        $color = ['#8A9B0F', '#EB6841', '#3FB8AF', '#FE4365', '#FC9D9A', '#EDC951', '#C8C8A9', '#83AF9B', '#036564', '#3299BB', '#428BCA'];
         return $color[array_rand($color)];
     }
+
     /**
      * 设置cookie
      */
-    public static function setCookie($key,$value,$expire = 3600){
+    public static function setCookie($key, $value, $expire = 3600) {
 //        $viewCookies = Yii::$app->response->cookies;
 //        $viewCookies->add(new Cookie([
 //            'name' => $key,
@@ -144,12 +145,13 @@ class Functions {
 //        ]));
         $time = time();
         $expire = $expire > 0 ? $time + $expire : ($expire < 0 ? $time - 600 : 0);
-	setcookie($key, $value, $expire);
+        setcookie($key, $value, $expire);
     }
+
     /**
      * 获取cookie
      */
-    public static function getCookie($key,$defaultValue = ''){
+    public static function getCookie($key, $defaultValue = '') {
 //        $cookies = Yii::$app->request->cookies;
 //        self::printarr($cookies);
 //        if (isset($cookies[$key])) {
@@ -159,17 +161,71 @@ class Functions {
 //        }
         return isset($_COOKIE[$key]) ? $_COOKIE[$key] : $defaultValue;
     }
+
     /**
      * 是否存在cookie
      */
-    public static function hasCookie($skey){
+    public static function hasCookie($skey) {
         $cookies = Yii::$app->request->cookies;
         return $cookies->has($skey);
     }
+
     /**
      * textarea 转 br
      */
-    public static function textarea2br($cotent){
+    public static function textarea2br($cotent) {
         return preg_replace('#\r\n|\r|\n#', '<br />', $cotent);
     }
+
+    /**
+     * 格式化时间
+     * @param string $time 时间戳
+     * @param int $ago 是否显示为 几秒/几分/几小时...的相对时间
+     * @param string $format  显示的日期格式
+     * @return string
+     */
+    public static function formatTime($time, $ago = '', $format = '') {
+        static $year;
+        $time = strtotime($time);
+        $timestamp = time();
+        $year = date('Y', $timestamp);
+        if ($ago) {
+            $dur = $timestamp - $time;
+            if ($dur < 0) {
+                return date('Y-m-d H:i:s', $time);
+            } else {
+                if ($dur < 60) {
+                    return $dur . ' 秒前';
+                } else {
+                    if ($dur < 3600) {
+                        return floor($dur / 60) . ' 分钟前';
+                    } else {
+                        if ($dur < 86400) {
+                            return floor($dur / 3600) . ' 小时前';
+                        } else {
+                            if ($dur < 604800) {
+                                $day = floor($dur / 86400);
+                                if ($day == 1) {
+                                    return '昨天 ' . date('H:i', $time);
+                                } elseif ($day == 2) {
+                                    return '前天 ' . date('H:i', $time);
+                                } else {
+                                    return $day . ' 天前';
+                                }
+                            } else {
+                                if ($year != date('Y', $time)) {
+                                    return date('Y-m-d H:i', $time);
+                                } else {
+                                    return date('n-j H:i', $time);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            return date($format ? $format : ('Y-m-d H:i:s'), $time);
+        }
+    }
+
 }

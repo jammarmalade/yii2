@@ -131,7 +131,7 @@ class Article extends \yii\db\ActiveRecord
         if (is_array($articleList)) {
             $defaultArticlItemImg = Yii::$app->view->theme->baseUrl.'/images/articl-item.jpg';
             foreach ($articleList as $k => $v) {
-                $v['date'] = substr($v['time_create'], 0, 10);
+                $v['date'] = substr($v['time_create'], 0, 16);
                 $v['faceUrl'] = $defaultArticlItemImg;
                 $v['description'] = tools::textarea2br($v['description']);
                 if (isset($imgList[$v['id']])) {

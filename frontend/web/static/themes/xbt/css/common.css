@@ -79,3 +79,7 @@ body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #
 .navbar-inverse .navbar-toggle:focus .icon-bar {
   background-color: #fff;
 }
+/*代码高亮向上偏移的问题*/
+.syntaxhighlighter td{
+    vertical-align: middle!important;
+}

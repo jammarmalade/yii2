@@ -27,7 +27,7 @@ $this->title = $confg['siteName'];
                             <h3><a href="<?=Url::to(['article/info','id'=>$article['id']])?>"><?=$article['subject']?></a></h3>
                             <p class="article-description"><?=$article['description']?></p>
                             <p class="autor">
-                                <span class="time"><span class="glyphicon glyphicon-time" style="color: rgb(109, 160, 255);" aria-hidden="true"></span><?=$article['date']?></span>
+                                <span class="time" title="<?=$article['date']?>"><span class="glyphicon glyphicon-time" style="color: rgb(109, 160, 255);" aria-hidden="true"></span><?= tools::formatTime($article['time_create'], 1, 'Y-m-d')?></span>
                                 <span><span class="glyphicon glyphicon-eye-open" aria-hidden="true" ></span>浏览（<?=$article['view']?>）</span>
                                 <br>
                                 <span class="item-tag">

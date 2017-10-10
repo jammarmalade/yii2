@@ -110,3 +110,7 @@ table{
     height: 30px;
     text-align: center;
 }
+/*代码高亮向上偏移的问题*/
+.syntaxhighlighter td{
+    vertical-align: middle!important;
+}

@@ -92,7 +92,7 @@ class ArticleController extends WebController {
     }
     private function getArticleInfo($aid){
         $articleInfo = Article::find()->where(['id'=>$aid])->asArray()->one();
-        $articleInfo['date'] = substr($articleInfo['time_create'], 0, 10);
+        $articleInfo['date'] = substr($articleInfo['time_create'], 0, 16);
         //标签
         $articleInfo['tagList'] = ArticleTag::find()->from(ArticleTag::tableName() . ' as at')
                 ->join('LEFT JOIN', Tag::tableName() . ' as t', 't.id = at.tid')

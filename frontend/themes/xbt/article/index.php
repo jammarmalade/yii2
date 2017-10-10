@@ -32,8 +32,11 @@ $this->metaTags[]="<meta name='description' content='".$articleInfo['description
         <span id="subject"><?=$articleInfo['subject']?></span>
         <div class="autor article-autor">
             <div>
-                <span class="time"><span class="glyphicon glyphicon-time"aria-hidden="true"></span><?=$articleInfo['date']?></span>
+                <span class="time" title="<?=$articleInfo['date']?>"><span class="glyphicon glyphicon-time"aria-hidden="true"></span><?= tools::formatTime($articleInfo['time_create'], 1, 'Y-m-d')?></span>
                 <span><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>浏览（<a href="javascript:;"><?=$articleInfo['view']?></a>）</span>
+                <?php if($articleInfo['time_update']!=$articleInfo['time_create']){?>
+                <span title="<?=$articleInfo['time_update']?>">更新于 <?= tools::formatTime($articleInfo['time_update'], 1, 'Y-m-d')?></span>
+                <?php }?>
             </div>
         </div>
     </div>
