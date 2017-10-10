@@ -41,12 +41,9 @@ class WebController extends Controller {
         $this->view->params['staticJsUrl'] = $this->staticUrl . '/js';
         $this->view->params['defaultArticlItemImg'] = $this->defaultArticlItemImg = $this->staticUrl . '/images/articl-item.jpg';
         $this->imageUrl = Yii::$app->params['imgDomain'];
-        $this->mobile = $this->checkmobile(); //开启手机端
+        $this->mobile = $this->checkmobile(); //是否是手机端访问
         //配置缓存
-        $cache = Yii::$app->cache;
-        $this->view->params['config'] = $this->config = $cache->getOrSet('config', function () {
-            return Config::getConfig();
-        },86400);
+        $this->view->params['config'] = $this->config = Config::getConfig();
     }
 
     /**

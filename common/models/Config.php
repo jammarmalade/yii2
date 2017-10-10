@@ -85,19 +85,32 @@ class Config extends \yii\db\ActiveRecord
     }
     /**
      * 获取配置
+     * @param string  $key     key 值
+     * @return string|key 
      */
-    public static function getConfig(){
-        $configListRes = Config::find()->where(['status'=>1])->asArray()->all();
-        $configList = [];
-        foreach($configListRes as $k=>$v){
-            $tmpValue = $v['value'];
-            if(strpos($tmpValue, 'config')!==false){
-                $tmpValue = Yii::$app->params['imgDomain'].$tmpValue;
-            }
-            $configList[$v['key']] = $tmpValue;
+    public static function getConfig($key = ''){
+        $cache = Yii::$app->cache;
+        if(Yii::$app->request->get('t')==1){
+            $cache->delete('config');
         }
+        $configList = $cache->getOrSet('config', function () {
+            $configListRes = Config::find()->where(['status'=>1])->asArray()->all();
+            $configList = [];
+            foreach($configListRes as $k=>$v){
+                $tmpValue = $v['value'];
+                if(strpos($tmpValue, 'config')!==false){
+                    $tmpValue = Yii::$app->params['imgDomain'].$tmpValue;
+                }
+                $configList[$v['key']] = $tmpValue;
+            }
+            return $configList;
+        },86400);
         
-        return $configList;
+        $returnData = $configList;
+        if($key && isset($returnData[$key])){
+            $returnData = $returnData[$key];
+        }
+        return $returnData;
     }
     /**
      * 删除配置缓存

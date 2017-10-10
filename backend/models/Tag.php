@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use common\models\ArticleTag;
 
 /**
  * This is the model class for table "{{%tag}}".
@@ -101,5 +102,16 @@ class Tag extends \yii\db\ActiveRecord
         }
         shuffle($data);
         return array_slice($data, 0, $count);
+    }
+    /**
+     * 获取标签云
+     */
+    public static function getTagCloudList(){
+        $limit = 100;
+        $tableName = ArticleTag::tableName();
+        $sql = 'SELECT tid FROM '.$tableName.' WHERE id >= ((SELECT MAX(id) FROM '.$tableName.')-(SELECT MIN(id) FROM '.$tableName.')) * RAND() + (SELECT MIN(id) FROM '.$tableName.') LIMIT '.$limit;
+        $tagIds = Yii::$app->db->createCommand($sql)->queryColumn();
+        $tagList = Tag::find()->select('id,name')->where(['in','id', array_values(array_unique($tagIds))])->asArray()->all();
+        return $tagList;
     }
 }
