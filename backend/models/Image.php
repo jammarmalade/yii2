@@ -142,14 +142,13 @@ class Image extends \yii\db\ActiveRecord
         if($type=='ueditor'){
             return $tmpContent;
         }elseif($type=='show'){
-            $mobileContent = '';
+            $mobileContent = $articleInfo['content'];
             
             if($mobileReplaceArr){
-                $mobileContent = str_replace($searchArr, $mobileReplaceArr, $articleInfo['content']);
-                $mobileContent = self::replaceDynamicMap($mobileContent,true);
-            }else{
-                $tmpContent = self::replaceDynamicMap($tmpContent);
+                $mobileContent = str_replace($searchArr, $mobileReplaceArr, $mobileContent);
             }
+            $mobileContent = self::replaceDynamicMap($mobileContent,true);
+            $tmpContent = self::replaceDynamicMap($tmpContent);
             foreach($tmpIds as $k=>$tmpId){
                 $imgList[] = $tmpImgList[$tmpId];
             }
