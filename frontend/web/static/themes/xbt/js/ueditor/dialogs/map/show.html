@@ -40,7 +40,12 @@
             return;
         }
         var dituContent = document.getElementById('dituContent');
-        dituContent.style.width = widthParam + 'px';
+		//若是百分比
+		if(isNaN(widthParam)){
+			dituContent.style.width = widthParam;
+		}else{
+	        dituContent.style.width = widthParam + 'px';
+		}
         dituContent.style.height = heightParam + 'px';
 
         createMap();//创建地图

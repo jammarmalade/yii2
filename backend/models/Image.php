@@ -143,8 +143,12 @@ class Image extends \yii\db\ActiveRecord
             return $tmpContent;
         }elseif($type=='show'){
             $mobileContent = '';
+            
             if($mobileReplaceArr){
                 $mobileContent = str_replace($searchArr, $mobileReplaceArr, $articleInfo['content']);
+                $mobileContent = self::replaceDynamicMap($mobileContent,true);
+            }else{
+                $tmpContent = self::replaceDynamicMap($tmpContent);
             }
             foreach($tmpIds as $k=>$tmpId){
                 $imgList[] = $tmpImgList[$tmpId];
@@ -154,5 +158,26 @@ class Image extends \yii\db\ActiveRecord
             $res['imgList'] = $imgList;
             return $res;
         }
+    }
+    /**
+     * 替换百度动态地图链接地址
+     */
+    public static function replaceDynamicMap($content,$mobile = false){
+        return preg_replace_callback('#<iframe src="http://([^/]+?)/static/js/ueditor/dialogs/map/show.html([^"]+?)"([^>]+?)>#',function($m) use($mobile){
+            $serverName = Yii::$app->request->serverName;
+            if($serverName!='admin.jam00.com'){
+                $path = Yii::$app->view->theme->baseUrl.'/js/ueditor/dialogs/map/show.html';
+            }else{
+                $path = 'http://admin.jam00.com/static/js/ueditor/dialogs/map/show.html';
+            }
+            $fragment = $m[2];
+            $attrs = $m[3];
+            if($mobile){
+                $fragment = str_replace('width=800', 'width=100%', $fragment);
+                $attrs = str_replace('width="804"', 'width="100%"', $attrs);
+            }
+            $src = $path.$fragment;
+            return '<iframe src="'.$src.'"'.$attrs.'>';
+        },$content);
     }
 }
