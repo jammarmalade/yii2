@@ -100,4 +100,14 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         return new <?= $queryClassFullName ?>(get_called_class());
     }
 <?php endif; ?>
+    /**
+     * 状态
+     */
+    public function statusArr(){
+        return [
+            1 => '正常',
+            2 => '删除',
+        ];
+    }
+    
 }
