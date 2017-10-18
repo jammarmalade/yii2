@@ -33,8 +33,8 @@ $menuList = $this->params['menuList'];
 </head>
 <body>
     <?php $this->beginBody() ?>
-    <?php if(Yii::$app->controller->id=='site' && Yii::$app->controller->action->id=='index'){?>
-    <div class="site-bg" style="background-color:rgb(255, 255, 255);background-image:url(https://ss2.bdstatic.com/kfoZeXSm1A5BphGlnYG/skin/257.jpg);">  </div>
+    <?php if(in_array(Yii::$app->controller->id, ['site','tag']) && Yii::$app->controller->action->id=='index' && $confg['bgImageUrl']){?>
+    <div class="site-bg" style="background-color:rgb(255, 255, 255);background-image:url(<?=$confg['bgImageUrl']?>);">  </div>
     <?php }?>
     <div class="wrap">
         
