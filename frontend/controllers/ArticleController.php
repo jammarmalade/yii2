@@ -104,7 +104,11 @@ class ArticleController extends WebController {
             $articleInfo['mobileContent'] = $tmpArr['mobileContent'];
             $articleInfo['content'] = $tmpArr['content'];
             $articleInfo['imgList'] = $tmpArr['imgList'];
+        }else{
+            //替换百度编辑的内容为https
+            $articleInfo['content'] = preg_replace('#src="http://img.baidu.com([^"]+?)"#','src="https://img.baidu.com$1"',$articleInfo['content']);
         }
+        
         return $articleInfo;
     }
     
