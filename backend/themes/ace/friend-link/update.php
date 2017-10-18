@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\FriendLink */
 
-$this->title = 'Update Friend Link: ' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Friend Links', 'url' => ['index']];
+$this->title = '修改友链: ' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => '友链列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="friend-link-update">
 

@@ -8,37 +8,45 @@ use yii\jui\DatePicker;
 /* @var $searchModel backend\models\FriendLinkSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Friend Links';
+$this->title = '友链列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="friend-link-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Friend Link', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新增友链', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['width' => '80'],
+            ],
             'name',
             'url:url',
             'email:email',
-            'status',
-            // 'order_number',
-            // 'create_time',
-            // 'remark',
+            'order_number',
+            'remark',
             [
-                'attribute' => 'time_create',
+                'attribute' => 'status',
+                'label' => '状态',
+                'value' => function($model){
+                    $state = $model->statusArr();
+                    return $state[$model->status];   
+                },
+                'headerOptions' => ['width' => '70'],
+                'filter' => Html::activeDropDownList($searchModel,'status',$searchModel->statusArr(),['prompt'=>'全部'])
+            ],
+            [
+                'attribute' => 'create_time',
                 'label' => '创建时间',
                 'value' => function($model){
-                    return  $model->time_create;   
+                    return  $model->create_time;   
                 },
                 'headerOptions' => ['width' => '200'],
                 'format' => ['datetime','php:Y-m-d H:i:s'],
@@ -80,7 +88,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         if($model->status == 2){
                             return Html::a('<i class="icon-reply"></i>恢复',['delete', 'id' => $key ,'status' => 1], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '你确定要恢复吗？','method' => 'post']]);
                         }else{
-                            return Html::a('<i class="icon-trash"></i>删除',['delete', 'id' => $key ,'status' => 2], ['class' => 'btn btn-sm btn-danger','data' => ['confirm' => '你确定要删除吗？','method' => 'post']]);
+                            $html = '';
+                            if($model->status == 3){
+                                $html .= Html::a('通过审核',['delete', 'id' => $key ,'status' => 1], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '确认通过审核？','method' => 'post']]);
+                            }
+                            $html .= Html::a('<i class="icon-trash"></i>删除',['delete', 'id' => $key ,'status' => 2], ['class' => 'btn btn-sm btn-danger','data' => ['confirm' => '你确定要删除吗？','method' => 'post']]);
+                            return $html;
                         }
                     },
                 ],

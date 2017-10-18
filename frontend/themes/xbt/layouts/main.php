@@ -10,6 +10,7 @@ use yii\helpers\Url;
 AppAsset::addCss($this, 'common.min.css');
 AppAsset::addScript($this, 'common.js');
 $confg = $this->params['config'];
+$menuList = $this->params['menuList'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -51,10 +52,26 @@ $confg = $this->params['config'];
                 <div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav nav">
                         <li <?php if(Yii::$app->controller->id=='site' && Yii::$app->controller->action->id=='index'){?>class="active"<?php }?>><a href="<?= Yii::$app->request->hostInfo ?>">首页</a></li>
-                        <!--<li><a href="<?= Url::to(['site/about']) ?>">关于博客</a></li>-->
-                        <!--<li><a href="<?= Url::to(['site/contact']) ?>">联系我</a></li>-->
+                        <?php 
+                        if(is_array($menuList) && count($menuList) > 0){
+                            $html = '';
+                            foreach($menuList as $k=>$menu){
+                                if(!isset($menu['cnav'])){
+                                    $html .= '<li><a href="'.$menu['url'].'">'.$menu['name'].'</a></li>';
+                                }else{
+                                    $html .=  '<li class="dropdown"><a href="'.$menu['url'].'" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$menu['name'].'<span class="caret"></span></a>';
+                                    $html .=  '<ul class="dropdown-menu">';
+                                    foreach($menu['cnav'] as $navInfo){
+                                        $html .= '<li><a href="'.$navInfo['url'].'" >'.$navInfo['name'].'</a></li>';//target="_blank"
+                                    }
+                                    $html .=  '</ul></li>';
+                                }
+                            }
+                            echo $html;
+                        }
+                        ?>
                     </ul>
-                    <ul id="w1" class="navbar-nav nav navbar-right">
+                    <ul id="w2" class="navbar-nav nav navbar-right">
                         <?php if(!Yii::$app->user->isGuest){?>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= Yii::$app->user->identity->username?> <span class="caret"></span></a>

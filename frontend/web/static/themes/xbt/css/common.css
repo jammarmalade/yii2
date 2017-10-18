@@ -83,3 +83,13 @@ body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #
 .syntaxhighlighter td{
     vertical-align: middle!important;
 }
+/*二级导航样式*/
+.dropdown-menu > li > a{
+    padding: 5px 20px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    color: #fff;
+    background-color: #f77825;
+}

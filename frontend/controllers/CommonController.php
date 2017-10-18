@@ -3,18 +3,19 @@
 namespace frontend\controllers;
 
 use Yii;
-use frontend\components\WebController;
+use yii\web\Controller;
 use common\models\Article;
 use backend\models\Tag;
 use common\models\ArticleTag;
 use backend\models\Image as TableImage;
 use frontend\components\Functions as tools;
+use common\models\FriendLink;
 
 /**
  * Common controller
  * 一些通用的获取数据
  */
-class CommonController extends WebController {
+class CommonController extends Controller {
 
     //右侧信息
     public static function getRightInfo(){
@@ -31,13 +32,7 @@ class CommonController extends WebController {
     }
     //友链
     public static function getFriendLink(){
-        $list = [
-            ['url' => 'https://www.baidu.com/', 'name' => '百度'],
-            ['url' => 'http://www.yiichina.com/doc/guide/2.0', 'name' => 'Yii2.0权威指南'],
-            ['url' => 'https://www.aliyun.com/', 'name' => '阿里云'],
-            ['url' => 'http://www.bootcss.com/', 'name' => 'Bootstrap'],
-            ['url' => 'http://layer.layui.com/', 'name' => 'layer弹层'],
-        ];
+        $list = FriendLink::find()->where(['status' => 1])->select('id,url,name')->orderBy('order_number DESC')->asArray()->all();
         return $list;
     }
     

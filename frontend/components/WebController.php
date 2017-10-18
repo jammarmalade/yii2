@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\helpers\Json;
 use common\models\Config;
+use common\models\Column;
 
 /**
  * Web controller
@@ -26,6 +27,8 @@ class WebController extends Controller {
     protected $mobile = false;
     //配置信息
     public $config = [];
+    //导航列表
+    public $columnList = [];
     /**
      * 初始化一些变量
      * @inheritdoc
@@ -44,6 +47,13 @@ class WebController extends Controller {
         $this->mobile = $this->checkmobile(); //是否是手机端访问
         //配置缓存
         $this->view->params['config'] = $this->config = Config::getConfig();
+        //主导航栏
+        $columnModel = new Column();
+        $this->columnList = $columnModel->getColumnList();
+        $this->view->params['menuList'] = [];
+        if(isset($this->columnList['formatNavMul'][1]['cnav'])){
+           $this->view->params['menuList'] = $this->columnList['formatNavMul'][1]['cnav'];
+        }
     }
 
     /**

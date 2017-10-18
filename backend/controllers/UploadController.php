@@ -9,6 +9,7 @@ use yii\imagine\Image;
 use backend\components\Functions as tools;
 use yii\helpers\Url;
 use backend\models\Image as TableImage;
+use common\models\Config;
 
 class UploadController extends Controller {
     //取消csrf验证
@@ -24,10 +25,13 @@ class UploadController extends Controller {
     private $thumbWidth = 800;
     //文件域名
     private $imgDomain = '';
+    //配置
+    private $config = [];
 
     public function actionIndex() {
         $this->imgDomain = Yii::$app->params['imgDomain'];
         $action = Yii::$app->request->get('action');
+        $this->config = Config::getConfig();
         switch ($action){
             case 'config':
                 $configArr = $this->jsonConfig();
@@ -167,22 +171,35 @@ class UploadController extends Controller {
             $imageInfo['height'] = $tmpImgInfo[1];
             //若是宽度超过600 的，生成缩略图
             $imageInfo['thumb'] = 0;
+            //后台设置的缩略图宽度
+            if(isset($this->config['thumbWidth'])){
+                $this->thumbWidth = $this->config['thumbWidth'];
+            }
+            $thumbQuality = isset($this->config['thumbQuality']) ? $this->config['thumbQuality'] : 90;//缩略图质量
             if($imageInfo['width'] > $this->thumbWidth){
                 $imageInfo['width_thumb'] = $this->thumbWidth;
                 //以宽为基准计算缩略图等比例高度
                 $imageInfo['height_thumb'] = ceil($imageInfo['height'] * ($this->thumbWidth / $imageInfo['width']));
                 //生成缩略图
-                Image::thumbnail($savePath, $imageInfo['width_thumb'], $imageInfo['height_thumb'])->save($savePath.'.thumb.jpg', ['quality' => 90]);
+                Image::thumbnail($savePath, $imageInfo['width_thumb'], $imageInfo['height_thumb'])->save($savePath.'.thumb.jpg', ['quality' => $thumbQuality]);
                 $imageInfo['thumb'] = 1;
             }
             $imageInfo['path'] = $savePathSuffix;
             $imageInfo['filename'] = $imgSource['name'];
             $imageInfo['size'] = $imgSource['size'];
             $imageInfo['newFilename'] = $saveFileName;
+            $sourceImageMaxSize = isset($this->config['sourceImageMaxSize']) ? $this->config['sourceImageMaxSize'] : 2;//原图压缩大小（单位 M），大于此大小才会压缩
             //若是图片大于4M ，就压缩图片
-            if($imgSource['size'] >= 2 * 1024 * 1024){
+            if($imgSource['size'] >= $sourceImageMaxSize * 1024 * 1024){
                 //有exif数据，去掉原图的exif数据
-                Image::thumbnail($savePath, $imageInfo['width'], $imageInfo['height'])->save($savePath, ['quality' => 85]);
+                $sourceImageWidth = $imageInfo['width'];
+                $sourceImageHeight = $imageInfo['height'];
+                if(isset($this->config['sourceImageWidth']) && $this->config['sourceImageWidth'] < $sourceImageWidth){
+                    $sourceImageWidth = $this->config['sourceImageWidth'];
+                    $sourceImageHeight = ceil($sourceImageHeight * ($sourceImageWidth / $imageInfo['width']));
+                }
+                $sourceImageQuality = isset($this->config['sourceImageQuality']) ? $this->config['sourceImageQuality'] : 85;//原图缩略质量
+                Image::thumbnail($savePath, $sourceImageWidth, $sourceImageHeight)->save($savePath, ['quality' => $sourceImageQuality]);
                 $imageInfo['size'] = filesize($savePath);
             }
             //获取图片 exif 信息

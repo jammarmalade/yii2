@@ -43,7 +43,7 @@ class ArticleController extends WebController {
             return $this->getArticleInfo($aid);
         },3600);
         //若是手机端，就替换为手机端的内容
-        if($this->mobile){
+        if($this->mobile && isset($articleInfo['mobileContent'])){
             $articleInfo['content'] = $articleInfo['mobileContent'];
         }
         //是否删除

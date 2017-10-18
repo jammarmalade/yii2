@@ -62,13 +62,21 @@ class FriendLinkController extends AdminController
     {
         $model = new FriendLink();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            $model->status = 1;
+            $model->create_time = $this->formatTime;
+            if(!$model->order_number){
+                $model->order_number = 0;
+            }
+            
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -80,14 +88,19 @@ class FriendLinkController extends AdminController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            if(!$model->order_number){
+                $model->order_number = 0;
+            }
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

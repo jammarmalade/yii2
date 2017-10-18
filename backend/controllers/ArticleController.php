@@ -113,7 +113,7 @@ class ArticleController extends AdminController {
             return $this->ajaxReturn('', '最多添加十个标签', false);
         }
         //提取本站图片，并替换为bbcode
-        $content = preg_replace('#<img[^>]+?title="(\d+)\_[a-z0-9]+\.jpg"[^>]+?/>#i','[img]$1[/img]',$content);
+        $content = preg_replace('#<img[^>]+?title="(\d+)\_[a-z0-9]+\.jpg"[^>]*?/>#i','[img]$1[/img]',$content);
         preg_match_all('#\[img\](\d+)\[/img\]#',$content,$m);
         $imageIds = $m[1];
         $imageId = 0;
