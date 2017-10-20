@@ -10,11 +10,15 @@ function mb_strlen(str) {
 }
 var laydate;
 var layer;
+var flow;
 layui.use('laydate', function () {
-	laydate = layui.laydate;
+    laydate = layui.laydate;
 })
 layui.use('layer', function () {
-	layer = layui.layer;
+    layer = layui.layer;
+})
+layui.use('flow', function () {
+    flow = layui.flow;
 })
 /**
  * 弹出层
@@ -67,4 +71,11 @@ function showConfirm(msg , funcOk ,funcClose,okMsg,cancelMsg){
     layer.confirm(msg, {
         btn: [okMsg, cancelMsg] //按钮
     },funcOk, funcClose);
+}
+//延迟加载
+function lazyimg(opt){
+    if(!opt['elem']){
+        opt['elem'] = 'lazy';
+    }
+    flow.lazyimg(opt); 
 }
