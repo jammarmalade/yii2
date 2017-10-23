@@ -180,6 +180,10 @@ article { width: 100%; margin: 20px auto; }
     font-size: 15px;
     line-height: 25px;
 }
+#content a:link,#content a:visited{
+    color: #00F;
+}
+
 .article-autor span{
     padding-left: 0px;
 }
@@ -195,7 +199,4 @@ article { width: 100%; margin: 20px auto; }
 }
 .view-img{
     margin: 10px 0px;
-}
-.viewer-toolbar {
-    width: 100px;
 }

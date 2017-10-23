@@ -54,6 +54,7 @@ SyntaxHighlighter.all();
 var viewer = new Viewer(document.getElementById('content'), {
     url: 'data-big',
     title: false,
+    navbar: false,
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["article"], \yii\web\View::POS_END); ?>

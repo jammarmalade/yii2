@@ -136,7 +136,7 @@ class Image extends \yii\db\ActiveRecord
                 $mobileReplaceArr[] = '<img width="100%" src="'.$zwImage.'" title="'.$filename.'" class="lazy view-img" data-original="'.$imUrl.'" data-big="'.$imUrl.'">';
             }
         }
-        $articleInfo['content'] = preg_replace('#src="http://img.baidu.com([^"]+?)"#','src="https://img.baidu.com$1"',$articleInfo['content']);
+        $articleInfo['content'] = preg_replace('#src="http://(api\.map|img).baidu.com([^"]+?)"#','src="https://$1.baidu.com$2"',$articleInfo['content']);
         preg_match_all('#\[img\](\d+)\[/img\]#i', $articleInfo['content'], $m);
         $tmpIds = $m[1];
         $tmpContent = str_replace($searchArr, $replaceArr, $articleInfo['content']);

@@ -67,6 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $this->beginBlock("code") ?>
 SyntaxHighlighter.all();
-lazyimg();
+$("img.lazy").lazyload({
+    effect: "fadeIn"
+});
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["code"], \yii\web\View::POS_END); ?>
