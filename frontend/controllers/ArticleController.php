@@ -9,6 +9,7 @@ use backend\models\Tag;
 use common\models\ArticleTag;
 use backend\models\Image as TableImage;
 use frontend\components\Functions as tools;
+use common\models\Comment;
 
 /**
  * Article controller
@@ -84,6 +85,8 @@ class ArticleController extends WebController {
             Article::updateAll(['view' => $articleInfo['view'] + 1], "id = $aid");
             tools::setCookie($viewCounter, $aid, 300);
         }
+        //查询评论列表
+        $commentList = Comment::getList($articleInfo['id'],$this->input('p',1), $this->defaultHeadImg);
 
         return $this->render('index', [
             'articleInfo' => $articleInfo,

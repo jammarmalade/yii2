@@ -79,11 +79,11 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
         }
         
         if($this->time_create_from!='' && $this->time_create_to!=''){
-            $query->andFilterWhere(['between', 'time_create', $this->time_create_from,$this->time_create_to]);
+            $query->andFilterWhere(['between', 'create_time', $this->time_create_from,$this->time_create_to]);
         }elseif($this->time_create_from!=''){
-            $query->andFilterWhere(['>=', 'time_create', $this->time_create_from]);
+            $query->andFilterWhere(['>=', 'create_time', $this->time_create_from]);
         }elseif($this->time_create_to!=''){
-            $query->andFilterWhere(['<=', 'time_create', $this->time_create_to]);
+            $query->andFilterWhere(['<=', 'create_time', $this->time_create_to]);
         }
 
         <?= implode("\n        ", $searchConditions) ?>

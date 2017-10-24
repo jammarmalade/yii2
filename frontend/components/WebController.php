@@ -20,15 +20,23 @@ class WebController extends Controller {
     //静态资源地址
     public $staticUrl = '';
     //默认图片地址
-    public $defaultArticlItemImg = '';
+    protected $defaultArticlItemImg = '';
+    //默认头像
+    protected $defaultHeadImg = '';
     //视图属性
-    public $view = '';
+    protected $view = '';
     //是否是手机端
     protected $mobile = false;
     //配置信息
     public $config = [];
     //导航列表
     public $columnList = [];
+    //用户id
+    protected $uid = 0;
+    //用户昵称
+    protected $username = '';
+    //是否是ajax
+    protected $ajax = false;
     /**
      * 初始化一些变量
      * @inheritdoc
@@ -43,6 +51,7 @@ class WebController extends Controller {
         $this->view->params['staticCssUrl'] = $this->staticUrl . '/css';
         $this->view->params['staticJsUrl'] = $this->staticUrl . '/js';
         $this->view->params['defaultArticlItemImg'] = $this->defaultArticlItemImg = $this->staticUrl . '/images/articl-item.jpg';
+        $this->view->params['defaultHeadImg'] = $this->defaultHeadImg = $this->staticUrl . '/images/default_head.png';
         $this->imageUrl = Yii::$app->params['imgDomain'];
         $this->mobile = $this->checkmobile(); //是否是手机端访问
         //配置缓存
@@ -54,6 +63,12 @@ class WebController extends Controller {
         if(isset($this->columnList['formatNavMul'][1]['cnav'])){
            $this->view->params['menuList'] = $this->columnList['formatNavMul'][1]['cnav'];
         }
+        //用户id和昵称
+        if(!Yii::$app->user->isGuest){
+            $this->uid = Yii::$app->user->identity->id;
+            $this->username = Yii::$app->user->identity->username;
+        }
+        $this->ajax = Yii::$app->request->isAjax;
     }
 
     /**

@@ -72,7 +72,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
                 'filter' => Html::activeDropDownList($searchModel,'status',$searchModel->statusArr(),['prompt'=>'全部'])
             ],
             [
-                'attribute' => 'time_create',
+                'attribute' => 'create_time',
                 'label' => '创建时间',
                 'value' => function($model){
                     return  $model->create_time;   

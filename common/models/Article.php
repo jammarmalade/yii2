@@ -96,6 +96,7 @@ class Article extends \yii\db\ActiveRecord
     public static function getArticleList($tagId = ''){
         $limit = Config::getConfig('articleListLimit');
         $limit = $limit ? $limit : 10;
+        $defaultPageSize = $limit;
         //文章列表
         //若有tagid 则根据 ArticleTag表查询
         $field = 'a.id,a.uid,a.username,a.subject,a.description,a.view_auth,a.image_id,a.time_create,a.like,a.view,a.comment';
@@ -105,7 +106,7 @@ class Article extends \yii\db\ActiveRecord
             $articleQuery = Article::find()->from(Article::tableName().' a')->where(['status' => 1]);
         }
         $count = $articleQuery->count();
-        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $limit]);
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $limit,'defaultPageSize' => $defaultPageSize]);
         $articleList = $articleQuery->select($field)->orderBy('a.time_create DESC')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         
         $imgList = $imageIds = $aids = $groupTagList = [];

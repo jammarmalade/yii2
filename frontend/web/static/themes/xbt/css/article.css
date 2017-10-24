@@ -1,0 +1,105 @@
+/*文章详情*/
+.site-article{
+    padding: 10px;
+}
+#subject{
+    font-size: 22px;
+    font-weight: 700;
+}
+#copyright{
+    margin-top: 50px;
+    color: #f30;
+    font-size: 14px;
+}
+#article-head{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #c1c1c1;
+}
+#article-head .item-tag{
+    padding-left: 0px;
+    color: rgb(255, 101, 135);
+    margin-bottom: 10px;
+}
+#article-head .item-tag a{
+    font-size: 15px;
+    color:#fff;
+    display: inline-block;
+    padding: 2px 5px;
+    background-color: #428BCA;
+    padding: 5px 10px;
+}
+#content{
+    font-size: 15px;
+    line-height: 25px;
+}
+#content a:link,#content a:visited{
+    color: #00F;
+}
+.article-autor span{
+    padding-left: 0px;
+}
+/*评论*/
+#comment_area{
+    margin-top: 50px;
+}
+#comment_title{
+    padding-top: 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    border-top: 1px solid #c1c1c1;
+}
+#comment_title .count{
+    font-size: 14px;
+}
+/*评论列表样式*/
+.media-object{
+    height:50px;
+    width: 50px;
+    border-radius: 5px;
+}
+.media-body-content{
+    font-size: 14px;
+}
+.media-body-opt{
+    padding: 5px 0px;
+}
+.media-body-opt > .opt-time,.opt-like,.opt-reply{
+    padding-right: 15px;
+}
+.media-body-opt > .opt-like:hover,.opt-reply:hover{
+    text-decoration:underline;
+    color:#585858;
+    cursor: pointer;
+}
+/*评论编辑器*/
+#comment_add_area{
+    margin-top: 20px;
+}
+#comment_add_title{
+    padding-top: 10px;
+    font-size: 18px;
+    border-top: 1px solid #c1c1c1;
+}
+#comment_editor{
+    margin-top:10px;
+}
+#comment_opt{
+    margin-top: 10px;
+}
+#reply_area{
+    line-height: 34px;
+    min-height: 34px;
+    min-width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+}
+#reply_username{
+    padding-left: 10px;
+    color: #3879D9;
+}
+#cancel_reply{
+    padding-left: 10px;
+}
+#comment_btn{
+    float: right;
+}
