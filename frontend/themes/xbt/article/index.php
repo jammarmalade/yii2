@@ -12,7 +12,7 @@ AppAsset::addScript($this, 'lazyload.min.js');
 AppAsset::addCss($this, 'viewer.min.css');
 AppAsset::addScript($this, 'viewer.min.js');
 AppAsset::addCss($this, 'index.min.css',false, yii\web\View::POS_BEGIN);
-AppAsset::addCss($this, 'article.css',false, yii\web\View::POS_BEGIN);
+AppAsset::addCss($this, 'article.css',false, yii\web\View::POS_END);
 AppAsset::addScript($this, 'index.js');
 //markdown编辑器
 AppAsset::addCss($this, 'simplemde.css');
@@ -56,37 +56,7 @@ $this->metaTags[]="<meta name='description' content='".$articleInfo['description
     <div id="comment_area">
         <div id="comment_title">评论<span class="count">（<?=$articleInfo['comment']?>）</span></div>
         <div id="comment_list">
-            
-            <div class="media">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object" src="<?=$this->params['defaultHeadImg'];?>" >
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">Media heading</h4>
-                    <div class="media-body-content">测试一下贝恩嫩嗯嗯嗯呢</div>
-                    <div class="media-body-opt">
-                        <span class="opt-time"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> 2017-10-24 17:18</span>
-                        <span class="opt-like"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <m>10</m></span>
-                        <span class="opt-reply"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> 回复</span>
-                    </div>
-                    <div class="reply-list">
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                    <img class="media-object" src="<?=$this->params['defaultHeadImg'];?>" >
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">User11</h4>
-                                <div class="media-body-content">测试一下贝恩嫩嗯嗯嗯呢</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <?=$this->render('../comment/_commentList', ['pages' => $commentData['pages'],'dataList'=>$commentData['list']]);?>
         </div>
     </div>
     <div id="comment_add_area">
@@ -95,7 +65,7 @@ $this->metaTags[]="<meta name='description' content='".$articleInfo['description
             <textarea name="comment_content" id="comment_content"></textarea>
         </div>
         <div id="comment_opt" class="clearfix">
-            <div id="reply_area">回复<span id="reply_username">admin</span><a href="javascript:;" id="cancel_reply" title="取消回复">X</a></div>
+            <span id="reply_area">回复<span id="reply_username"></span><a href="javascript:;" id="cancel_reply" title="取消回复">X</a></span>
             <button type="button" class="btn btn-default" id="comment_btn" data-rid="" data-aid="<?=$articleInfo['id']?>">提交</button>
         </div>
     </div>

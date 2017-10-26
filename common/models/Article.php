@@ -8,6 +8,7 @@ use backend\models\Image as TableImage;
 use backend\models\Tag;
 use frontend\components\Functions as tools;
 use common\models\ArticleTag;
+use common\models\BaseModel;
 /**
  * This is the model class for table "t_article".
  *
@@ -28,7 +29,7 @@ use common\models\ArticleTag;
  * @property string $time_update
  * @property string $time_create
  */
-class Article extends \yii\db\ActiveRecord
+class Article extends BaseModel
 {
     //时期搜索（开始）
     public $time_create_from;
@@ -153,4 +154,5 @@ class Article extends \yii\db\ActiveRecord
         $cacheData['pages'] = $pages;
         return $cacheData;
     }
+    
 }

@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use frontend\components\WebController;
 use common\models\Comment;
+use common\models\Article;
 /**
  * Comment controller
  * 评论
@@ -32,23 +33,29 @@ class CommentController extends WebController {
                 $rid = $replyCommentInfo['rid'];
             }
         }
-        $insertData = [
-            'rid' => $rid,
-            'ruid' => $ruid,
-            'username' => $username,
-            'aid' => $aid,
-            'authorid' => $this->uid,
-            'author' => $this->username,
-            'content' => $content,
-            'like' => 0,
-            'type' => $this->input('post.type', 1),
-            'status' => 1,
-            'create_time' => $this->formatTime,
-        ];
         $commentModel = new Comment();
-        $insertData['id'] = $commentModel->save($insertData);
+        $commentModel->rid = $rid;
+        $commentModel->ruid = $ruid;
+        $commentModel->username = $username;
+        $commentModel->aid = $aid;
+        $commentModel->authorid = $this->uid;
+        $commentModel->author = $this->username;
+        $commentModel->content = $content;
+        $commentModel->type = $this->input('post.type', 1);
+        $commentModel->status = 1;
+        $commentModel->create_time = $this->formatTime;
+        
+        $commentModel->id = $commentModel->save(false);
+        $insertData = $commentModel->attributes;
         if($insertData['id']){
-            return $this->ajaxReturn($insertData, '评论成功！',true);
+            $insertData['head'] = $this->defaultHeadImg;
+            $insertData['showTime'] = '刚刚';
+            $insertData['showDate'] = substr($insertData['create_time'], 0, 16);
+            $commentHtml = $this->renderPartial('../comment/_commentItem', ['comment' => $insertData]);
+            //评论成功，增加文章评论数
+            $articleModel = new Article();
+            $articleModel->increase($aid, 'comment');
+            return $this->ajaxReturn($insertData, $commentHtml,true);
         }else{
             return $this->ajaxReturn('', '评论失败！');
         }

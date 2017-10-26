@@ -34,6 +34,17 @@ class ArticleController extends WebController {
     public function actionInfo() {
         $cache = Yii::$app->cache;
         $aid = $this->input('id', 0);
+        //若是ajax，则是获取评论
+        if($this->ajax){
+            //查询评论列表
+            $commentskey = 'comment-list-'.$aid.'-'.$this->input('page', 0);
+            $defaultHead = $this->defaultHeadImg;
+            $commentData = $cache->getOrSet($commentskey, function () use($aid,$defaultHead) {
+                return Comment::getList($aid, $defaultHead);
+            },300);
+            $commentHtml = $this->renderPartial('../comment/_commentList', ['pages' => $commentData['pages'],'dataList'=>$commentData['list']]);
+            return $this->ajaxReturn($commentHtml, '', true);
+        }
         $skey = 'article-' . $aid;
         //测试删除
         if($this->input('t', '')){
@@ -86,11 +97,16 @@ class ArticleController extends WebController {
             tools::setCookie($viewCounter, $aid, 300);
         }
         //查询评论列表
-        $commentList = Comment::getList($articleInfo['id'],$this->input('p',1), $this->defaultHeadImg);
+        $commentskey = 'comment-list-'.$aid.'-'.$this->input('page', 0);
+        $defaultHead = $this->defaultHeadImg;
+        $commentData = $cache->getOrSet($commentskey, function () use($aid,$defaultHead) {
+            return Comment::getList($aid, $defaultHead);
+        },300);
 
         return $this->render('index', [
             'articleInfo' => $articleInfo,
             'selfUrl' => Yii::$app->request->hostInfo.Yii::$app->request->url,
+            'commentData' => $commentData,
         ]);
     }
     private function getArticleInfo($aid){

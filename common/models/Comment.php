@@ -3,7 +3,9 @@
 namespace common\models;
 
 use Yii;
-
+use yii\data\Pagination;
+use frontend\components\Functions as tools;
+use common\models\BaseModel;
 /**
  * This is the model class for table "{{%comment}}".
  *
@@ -20,7 +22,7 @@ use Yii;
  * @property integer $status
  * @property string $create_time
  */
-class Comment extends \yii\db\ActiveRecord
+class Comment extends BaseModel
 {
     //时期搜索（开始）
     public $time_create_from;
@@ -86,16 +88,49 @@ class Comment extends \yii\db\ActiveRecord
         ];
     }
     /**
-     * 获取评论列表
+     * 获取评论列表(内部)
      */
-    public static function getList($aid,$page,$defaultHead){
-        $cache = Yii::$app->cache;
-        $skey = 'comment-list-'.$aid.'-'.$page;
-    }
-    /**
-     * 获取评论列表内部
-     */
-    public static function _getList(){
+    public static function getList($aid,$defaultHead){
+        $limit = Config::getConfig('commentListLimit');
+        $limit = $limit ? $limit : 10;
+        //查询一级评论
+        $commentQuery = Comment::find()->where(['aid'=>$aid,'rid'=>0,'status'=>1]);
+        $count = $commentQuery->count();
         
+        $pages = new Pagination(['totalCount' => $count, 'pageSize' => $limit,'defaultPageSize' => $limit]);
+        
+        $list = $commentQuery->orderBy('create_time DESC')->offset($pages->offset)->limit($pages->limit)->asArray()->indexBy('id')->all();
+        //获取所有回复评论的信息
+        $rids = array_keys($list);
+        $replyList = Comment::find()->where([
+            'and',
+            'aid=:aid',
+            '`status`=1',
+            ['in','rid',$rids]
+        ],[
+            ':aid'=>$aid
+        ])->asArray()->all();
+        $groupReplyList = [];
+        if(is_array($replyList) &&$replyList){
+            foreach($replyList as $k=>$v){
+                $v['head'] = $defaultHead;
+                $v['showTime'] = tools::formatTime($v['create_time'], 1);
+                $v['showDate'] = substr($v['create_time'], 0, 16);
+                $groupReplyList[$v['rid']][] = $v;
+            }
+        }
+        foreach($list as $k=>$v){
+            $v['head'] = $defaultHead;
+            $v['showTime'] = tools::formatTime($v['create_time'], 1);
+            $v['replyList'] = isset($groupReplyList[$v['id']]) ? $groupReplyList[$v['id']] : [];
+            $v['showDate'] = substr($v['create_time'], 0, 16);
+            $list[$k] = $v;
+        }
+        
+        $data = [
+            'list' => $list,
+            'pages' => $pages,
+        ];
+        return $data;
     }
 }
