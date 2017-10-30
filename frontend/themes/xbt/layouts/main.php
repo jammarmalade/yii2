@@ -9,7 +9,7 @@ use yii\helpers\Url;
 
 //AppAsset::addCss($this, 'common.min.css');
 AppAsset::addScript($this, 'layui/layui.js');
-AppAsset::addScript($this, 'common.js');
+AppAsset::addScript($this, 'common.min.js');
 $confg = $this->params['config'];
 $menuList = $this->params['menuList'];
 ?>

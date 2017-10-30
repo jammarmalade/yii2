@@ -12,14 +12,14 @@ AppAsset::addScript($this, 'lazyload.min.js');
 AppAsset::addCss($this, 'viewer.min.css');
 AppAsset::addScript($this, 'viewer.min.js');
 AppAsset::addCss($this, 'index.min.css',false, yii\web\View::POS_BEGIN);
-AppAsset::addCss($this, 'article.css',false, yii\web\View::POS_END);
+AppAsset::addCss($this, 'article.min.css',false, yii\web\View::POS_END);
 AppAsset::addScript($this, 'index.js');
 //markdown编辑器
-AppAsset::addCss($this, 'simplemde.css');
-AppAsset::addScript($this, 'simplemde.js');
+AppAsset::addCss($this, 'simplemde.min.css');
+AppAsset::addScript($this, 'simplemde.min.js');
 
 //本页js
-AppAsset::addScript($this, 'article.js');
+AppAsset::addScript($this, 'article.min.js');
 /* @var $this yii\web\View */
 $this->title = $articleInfo['subject'];
 $tagNames = join(',',array_column($articleInfo['tagList'], 'tagname'));
