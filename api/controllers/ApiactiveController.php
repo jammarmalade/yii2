@@ -95,16 +95,16 @@ class ApiactiveController extends ActiveController {
             if(!$err){
                 return true;
             }else{
-                $this->resultError('请先登录 - 001',[]);
+                $this->resultError('请先登录 - 001','');
             }
         }
         $decodeKey = \api\common\Functions::authcode($authkey);
         if(!$decodeKey && $err){
-            $this->resultError('请先登录 - 002',[]);
+            $this->resultError('请先登录 - 002','');
         }
         list($this->uid,$this->username) = explode("\t", $decodeKey);
         if(!is_numeric($this->uid) && $err){
-            $this->resultError('验证错误',[]);
+            $this->resultError('验证错误','');
         }
     }
 }

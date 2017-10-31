@@ -34,6 +34,7 @@ class RecordController extends ApiactiveController
         if(!in_array($type, array_keys($model->recordType()))){
             $this->resultError('记录金额不能为负数');
         }
+        
         $content = $this->input('post.content');
         //插入记录
         $model->uid = $this->uid;
@@ -42,6 +43,10 @@ class RecordController extends ApiactiveController
         $model->type = $type;
         $model->content = $content;
         $model->imgstatus = 0;
+        $model->country = $this->input('post.country', null);
+        $model->province = $this->input('post.province', null);
+        $model->city = $this->input('post.city', null);
+        $model->area = $this->input('post.area', null);
         $model->address = $this->input('post.address', null);
         $model->longitude = $this->input('post.longitude', 0);
         $model->latitude = $this->input('post.latitude', 0);
