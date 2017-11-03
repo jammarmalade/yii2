@@ -78,7 +78,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
                     return  $model->create_time;   
                 },
                 'headerOptions' => ['width' => '200'],
-                'format' => ['datetime','php:Y-m-d H:i:s'],
+                //'format' => ['datetime','php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget([
                         'model' => $searchModel,
                         'attribute' => 'time_create_from',

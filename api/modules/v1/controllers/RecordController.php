@@ -4,6 +4,7 @@
  */
 namespace api\modules\v1\controllers;
 
+use Yii;
 use api\controllers\ApiactiveController;
 use backend\components\Functions as helper;
 use backend\models\Record;
@@ -111,4 +112,31 @@ class RecordController extends ApiactiveController
         return $this->result($reocrdList);
     }
     
+    /**
+     * 转换经纬度为地址信息(自己调用)
+     * http://192.168.1.136/advanced/api/web/index.php/v1/record/convertl
+     */
+    public function actionConvertl(){
+        //每次取出100个查询
+        $recordList = Record::find()->where(['and','country IS NULL','longitude > 0'])->limit(100)->asArray()->all();
+        $ak = Yii::$app->params['BmapAK'];
+        
+        $url = 'http://api.map.baidu.com/geocoder/v2/?output=json&ak='.$ak.'&location=';
+        foreach($recordList as $k=>$v){
+            if($v['longitude'] > 0 && $v['latitude'] > 0){
+                $tmp = json_decode(file_get_contents($url.$v['latitude'].','.$v['longitude']),1);
+                if($tmp['status']==0 && isset($tmp['result']['addressComponent'])){
+                    $result = $tmp['result']['addressComponent'];
+                    Record::updateAll([
+                        'country' => $result['country'],
+                        'province' => $result['province'],
+                        'city' => $result['city'],
+                        'area' => $result['district'],
+                        'address' => $result['street'].$result['street_number'],
+                    ], 'id = '.$v['id']);
+                }
+            }
+        }
+        return $this->result('');
+    }
 }

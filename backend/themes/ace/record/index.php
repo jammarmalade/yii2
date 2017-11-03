@@ -78,7 +78,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return  $model->time_create;   
                             },
                             'headerOptions' => ['width' => '200'],
-                            'format' => ['datetime','php:Y-m-d H:i:s'],
                             'filter' => DatePicker::widget([
                                     'model' => $searchModel,
                                     'attribute' => 'time_create_from',

@@ -84,6 +84,9 @@ $this->params['breadcrumbs'][] = $this->title;
         -moz-border-radius: 6px 0 6px 6px;  
         border-radius: 6px 0 6px 6px;  
     }
+    #map_area{
+        margin: 20px 0px;
+    }
 </style>
 <div class="record-statistics">
     <div class="record-title">
@@ -161,6 +164,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php }?>
         </table>
         
+    </div>
+    <div id="map_area">
+        地图区域
     </div>
 </div>
 

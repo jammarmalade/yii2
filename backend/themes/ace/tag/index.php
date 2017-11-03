@@ -41,7 +41,6 @@ https://segmentfault.com/a/1190000006868819
                     return  $model->time_create;   
                 },
                 'headerOptions' => ['width' => '200'],
-                'format' => ['datetime','php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget([
                         'model' => $searchModel,
                         'attribute' => 'time_create_from',
