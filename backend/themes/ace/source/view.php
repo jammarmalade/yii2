@@ -10,8 +10,9 @@ use backend\assets\AppAsset;
 $this->title = $model->subject;
 $this->params['breadcrumbs'][] = ['label' => '数据列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+AppAsset::addCss($this, 'viewer.min.css');
 AppAsset::addScript($this, 'lazyload.min.js');
-AppAsset::addScript($this, 'jquery.colorbox.min.js');
+AppAsset::addScript($this, 'viewer.min.js');
 
 ?>
 <div class="source-view">
@@ -19,46 +20,29 @@ AppAsset::addScript($this, 'jquery.colorbox.min.js');
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p><?= $model->content?></p>
+    
+    <div id="imgs">
     <?php
-    echo '<ul class="ace-thumbnails">';
     foreach($sourceImageList as $k=>$info){
         $url = \Yii::$app->params['SERVER_IMG'].$info->path;
         $defaultUrl = \Yii::$app->params['SERVER_IMG'].'static/image/404.png';
-        $imgStr = Html::img($url,['class' => 'lazy','data-original' => $url , 'onerror'=>'this.src=\''.$defaultUrl.'\'']);
-        echo '<li>'.Html::a($imgStr,$url, ['data-rel'=>"colorbox"]).'</li>';
+        $imgStr = Html::img($url,['class' => 'lazy','data-big' => $url , 'onerror'=>'this.src=\''.$defaultUrl.'\'']);
+        echo $imgStr;
     }
-    echo '</ul>';
     ?>
-
+    </div>
 </div>
 <?php $this->beginBlock("view") ?>
 jQuery(document).ready(function () {
     $("img.lazy").lazyload({
         effect: "fadeIn"
     });
-    //图片浏览
-    var colorbox_params = {
-        reposition:true,
-        scalePhotos:true,
-        scrolling:false,
-        previous:'<i class="icon-arrow-left"></i>',
-        next:'<i class="icon-arrow-right"></i>',
-        close:'&times;',
-        current:'{current} of {total}',
-        maxWidth:'100%',
-        maxHeight:'100%',
-        onOpen:function(){
-            document.body.style.overflow = 'hidden';
-        },
-        onClosed:function(){
-            document.body.style.overflow = 'auto';
-        },
-        onComplete:function(){
-            $.colorbox.resize();
-        }
-    };
-    $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-    $("#cboxLoadingGraphic").append("<i class='icon-spinner orange'></i>");
+    //图片查看
+    var viewer = new Viewer(document.getElementById('imgs'), {
+        url: 'data-big',
+        title: false,
+        navbar: false
+    });
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["view"], \yii\web\View::POS_END); ?>

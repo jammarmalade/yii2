@@ -280,19 +280,21 @@ class SourceController extends ApiactiveController {
      */
     public function actionCheck(){
         set_time_limit(0);
-        $imgList = SourceImage::find()->where(['status'=>1])->limit(20)->all();
+        $imgList = SourceImage::find()->where(['check'=>0])->asArray()->limit(50)->all();
         if(!$imgList){
             exit();
         }
+        $ids = array_column($imgList, 'id');
+        SourceImage::updateAll(['check' => 9],['in','id',$ids]);
         foreach($imgList as $k=>$v){
             $path = $this->getImage($v['surl'], substr($v['path'],0,-4));
             if ($path == -1) {
-                SourceImage::updateAll(['status' => 3],['id' => $v->id]);
+                SourceImage::updateAll(['status' => 3,'check' => 1],['id' => $v['id']]);
                 continue;
             }
             list($locaPath, $savePath) = $path;
             if(file_exists($savePath)){
-                SourceImage::updateAll(['status' => 3],['id' => $v->id]);
+                SourceImage::updateAll(['status' => 3,'check' => 1],['id' => $v['id']]);
             }
         }
     }
