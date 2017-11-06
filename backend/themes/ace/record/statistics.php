@@ -10,6 +10,7 @@ use yii\helpers\Url;
 
 AppAsset::addScript($this, 'highcharts.min.js');
 AppAsset::addScript($this, 'jquery-ui-1.10.3.full.min.js');
+AppAsset::addScript($this, 'http://api.map.baidu.com/api?v=2.0&ak=lz3rVG3ds7rfYkTSbQbAHuKH');
 
 $this->title = '记录统计';
 $this->params['breadcrumbs'][] = $this->title;
@@ -84,8 +85,33 @@ $this->params['breadcrumbs'][] = $this->title;
         -moz-border-radius: 6px 0 6px 6px;  
         border-radius: 6px 0 6px 6px;  
     }
+    .title{
+        magin:5px 0px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+        background-color: #F2F2F2;
+        font-size: 18px;
+        font-weight: bold;
+    }
     #map_area{
         margin: 20px 0px;
+    }
+    #map{
+        height:500px;
+        width: 100%;
+    }
+    //百度地图弹窗样式
+    .bd-dialog{
+        width:400px;
+        font-size:14px;
+        line-height:20px;
+    }
+    .bd-dialog .tag{
+        display:inline-block;
+        margin-right:10px;
+        color:#fff;
+        padding:3px 5px;
+        background-color:#428BCA;
     }
 </style>
 <div class="record-statistics">
@@ -133,8 +159,13 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="space-6"></div>
-    <div id="container"></div>
+    <div id="graph">
+        <div class="title">图表</div>
+        <div id="container"></div>
+    </div>
+    
     <div class="record-area">
+        <div class="title">详细记录</div>
         <table id="record-table" class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
@@ -166,7 +197,8 @@ $this->params['breadcrumbs'][] = $this->title;
         
     </div>
     <div id="map_area">
-        地图区域
+        <div class="title">坐标显示（有些定位不准确）</div>
+        <div id="map"></div>
     </div>
 </div>
 
@@ -241,6 +273,45 @@ jQuery(document).ready(function () {
             data: <?php echo json_encode($ydataOut); ?>
         }]
     });
+    //百度地图
+    var recordData = <?php echo $jsonData;?>;
+    var map = new BMap.Map("map"); // 创建Map实例
+    var point = new BMap.Point(106.565765, 29.541014); //地图中心点，重庆市
+    map.centerAndZoom(point, 15); // 初始化地图,设置中心点坐标和地图级别。
+    map.enableScrollWheelZoom(true); //启用滚轮放大缩小
+    //向地图中添加比例尺控件
+    var ctrlSca = new BMap.ScaleControl({
+        anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    map.addControl(ctrlSca);
+    //有坐标信息才执行
+    if(recordData.length > 0){
+        var marker = new Array(); //存放标注点对象的数组
+        var info = new Array(); //存放提示信息窗口对象的数组
+        var tmpData = [],html='',tmpPoint;
+        for (var k in recordData) {
+            tmpData = recordData[k];
+            var lng = tmpData['longitude'];
+            var lat = tmpData['latitude'];
+            tmpPoint = new BMap.Point(lng, lat); //循环生成新的地图点
+            marker[k] = new BMap.Marker(tmpPoint); //按照地图点坐标生成标记
+            map.addOverlay(marker[k]);
+
+            html = "<div class='bd-dialog'><table>";
+            html += "<tr><td style='width:50px'>地址：</td><td>" + tmpData['address'] + "</td></tr>";
+            html += "<tr><td style='width:50px'>标签：</td><td>" + tmpData['tags'] + "</td></tr>";
+            html += "<tr><td style='width:50px'>备注：</td><td>" + tmpData['content'] + "</td></tr>";
+            html += "<tr><td style='width:50px'>时间：</td><td>" + tmpData['time'] + "</td></tr>";
+            html += "</table></div>";
+            info[k] = new BMap.InfoWindow(html); // 创建信息窗口对象
+            (function(k){
+                marker[k].addEventListener("click",function(){
+                    this.openInfoWindow(info[k]);
+                });
+            })(k);
+        }
+    }
+    
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>

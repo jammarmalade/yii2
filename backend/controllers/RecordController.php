@@ -198,7 +198,7 @@ class RecordController extends AdminController
         
         //记录标签
         $rids = array_column($recordData, 'id');
-        $recordGroupData = [];
+        $recordGroupData = $bdRecordData = [];
         if($rids){
             $tagRecordData = TagRecord::find()->where('uid =:uid AND rid IN('.join(',',$rids).')')
                 ->addParams([':uid'=>$uid])
@@ -218,11 +218,22 @@ class RecordController extends AdminController
             }
             //记录按照日期分组
             foreach($recordData as $k=>$v){
-                $tmpTags = [];
+                $tmpTags = $bdtmp = [];
+                $tagsHtml = '';
                 foreach($recordTag[$v['id']] as $tmpTagId){
                     $tmpTags[] = $tagNameData[$tmpTagId];
+                    $tagsHtml .= '<span class="tag">'.$tagNameData[$tmpTagId].'</span>';
                 }
                 $v['tags'] = $tmpTags;
+                if($v['longitude'] && $v['latitude']){
+                    $bdtmp['address'] = $v['province'].$v['city'].$v['area'].$v['address'];
+                    $bdtmp['longitude'] = $v['longitude'];
+                    $bdtmp['latitude'] = $v['latitude'];
+                    $bdtmp['content'] = $v['content'];
+                    $bdtmp['tags'] = $tagsHtml;
+                    $bdtmp['time'] = $v['time_create'];
+                    $bdRecordData[] = $bdtmp;
+                }
                 $recordGroupData[$v['date']][] = $v;
             }
         }
@@ -266,8 +277,7 @@ class RecordController extends AdminController
             $recordGroupData[$k] = func::multi_array_sort($v, 'account',SORT_DESC);
         }
         
-        
-//        func::fput($recordGroupData,1);
+        $jsonData = json_encode($bdRecordData);
         return $this->render('statistics', [
             'ydataIn' => $ydataIn,
             'ydataOut' => $ydataOut,
@@ -277,6 +287,7 @@ class RecordController extends AdminController
             'yearArr' => $yearArr,
             'chooseYear' => $chooseYear,
             'chooseMouth' => $chooseMouth,
+            'jsonData' => $jsonData,
         ]);
     }
 }
