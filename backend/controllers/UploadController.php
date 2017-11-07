@@ -165,6 +165,10 @@ class UploadController extends Controller {
         $saveFileName = $this->getTargetFilename() . '.jpg';
         $savePathSuffix = $this->getTargetDir(). $saveFileName;
         $savePath = Yii::getAlias('@uploads').$savePathSuffix;
+        //水印图片
+        $waterMarkPath = Yii::getAlias('@webroot').'/static/images/watermark.png';
+        $waterMarkHeight = 35;//水印图片高
+        $waterMarkWidth = 260;//水印图片宽
         if (copy($tmpPath, $savePath) || move_uploaded_file($tmpPath, $savePath)) {
             $tmpImgInfo = getimagesize($savePath);
             $imageInfo['width'] = $tmpImgInfo[0];
@@ -180,8 +184,10 @@ class UploadController extends Controller {
                 $imageInfo['width_thumb'] = $this->thumbWidth;
                 //以宽为基准计算缩略图等比例高度
                 $imageInfo['height_thumb'] = ceil($imageInfo['height'] * ($this->thumbWidth / $imageInfo['width']));
-                //生成缩略图
-                Image::thumbnail($savePath, $imageInfo['width_thumb'], $imageInfo['height_thumb'])->save($savePath.'.thumb.jpg', ['quality' => $thumbQuality]);
+                //生成缩略图并打水印
+                $waterX = $imageInfo['width_thumb'] - $waterMarkWidth - 10;
+                $waterY = $imageInfo['height_thumb'] - $waterMarkHeight - 10;
+                Image::watermark(Image::thumbnail($savePath, $imageInfo['width_thumb'], $imageInfo['height_thumb']), $waterMarkPath, [$waterX,$waterY])->save($savePath.'.thumb.jpg', ['quality' => $thumbQuality]);
                 $imageInfo['thumb'] = 1;
             }
             $imageInfo['path'] = $savePathSuffix;
@@ -199,8 +205,18 @@ class UploadController extends Controller {
                     $sourceImageHeight = ceil($sourceImageHeight * ($sourceImageWidth / $imageInfo['width']));
                 }
                 $sourceImageQuality = isset($this->config['sourceImageQuality']) ? $this->config['sourceImageQuality'] : 85;//原图缩略质量
-                Image::thumbnail($savePath, $sourceImageWidth, $sourceImageHeight)->save($savePath, ['quality' => $sourceImageQuality]);
+                //打水印
+                $waterX = $sourceImageWidth - $waterMarkWidth - 10;
+                $waterY = $sourceImageHeight - $waterMarkHeight - 10;
+                Image::watermark(Image::thumbnail($savePath, $sourceImageWidth, $sourceImageHeight), $waterMarkPath, [$waterX,$waterY])->save($savePath, ['quality' => $sourceImageQuality]);
                 $imageInfo['size'] = filesize($savePath);
+            }else{
+                if($imageInfo['width'] > $waterMarkWidth){
+                    //打水印
+                    $waterY = $imageInfo['height'] - $waterMarkHeight - 10;
+                    $waterX = ($imageInfo['width'] - $waterMarkWidth - 10) >= 0 ? $imageInfo['width'] - $waterMarkWidth - 10 : $imageInfo['width'] - $waterMarkWidth;
+                    Image::watermark($savePath, $waterMarkPath, [$waterX,$waterY])->save($savePath, ['quality' => 85]);
+                }
             }
             //获取图片 exif 信息
             $exif = $this->getExif($savePath);
