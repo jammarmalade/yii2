@@ -7,7 +7,6 @@ use yii\helpers\Url;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-//AppAsset::addCss($this, 'common.min.css');
 AppAsset::addScript($this, 'layui/layui.js');
 AppAsset::addScript($this, 'common.min.js');
 $confg = $this->params['config'];
@@ -26,7 +25,7 @@ $menuList = $this->params['menuList'];
     (function() {
       var hm = document.createElement("script");
       hm.src = "https://hm.baidu.com/hm.js?c5086800fa16121de2279a538e62b16d";
-      var s = document.getElementsByTagName("script")[0]; 
+      var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
     </script>
@@ -38,7 +37,7 @@ $menuList = $this->params['menuList'];
     <div class="site-bg" style="background-color:rgb(255, 255, 255);background-image:url(<?=$confg['bgImageUrl']?>);">  </div>
     <?php }?>
     <div class="wrap">
-        
+
         <nav id="w0" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -53,7 +52,7 @@ $menuList = $this->params['menuList'];
                 <div id="w0-collapse" class="collapse navbar-collapse">
                     <ul id="w1" class="navbar-nav nav">
                         <li <?php if(Yii::$app->controller->id=='site' && Yii::$app->controller->action->id=='index'){?>class="active"<?php }?>><a href="<?= Yii::$app->request->hostInfo ?>">首页</a></li>
-                        <?php 
+                        <?php
                         if(is_array($menuList) && count($menuList) > 0){
                             $html = '';
                             foreach($menuList as $k=>$menu){
@@ -101,12 +100,12 @@ $menuList = $this->params['menuList'];
         </nav>
 
         <div class="container" id="main">
-        
+
         <?= Alert::widget() ?>
         <?= $content ?>
         </div>
     </div>
-    
+
     <footer class="footer">
         <div class="container ba-area">
         <p class="pull-left"><?=$confg['beian']?></p>
@@ -115,6 +114,10 @@ $menuList = $this->params['menuList'];
         </p>
         </div>
     </footer>
+    
+    <?= $this->render('../common/_chat', [
+        'data' => [],
+    ]) ?>
 
     <?php $this->endBody() ?>
 </body>

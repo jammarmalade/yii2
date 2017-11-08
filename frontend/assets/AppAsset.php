@@ -32,9 +32,9 @@ class AppAsset extends AssetBundle
         $this->basePath = Yii::$app->view->theme->basePath;
         $this->baseUrl = Yii::$app->view->theme->baseUrl;
     }
-    
+
     //view 层使用 AppAsset::addScript($this,Yii::$app->request->baseUrl."/css/main.js");
-    //定义按需加载JS方法，注意加载顺序在最后  
+    //定义按需加载JS方法，注意加载顺序在最后
     public static function addScript($view, $jsfile,$position = \yii\web\View::POS_END) {
         $baseUrl = Yii::$app->view->theme->baseUrl;
         if(strpos($jsfile, 'http')===false){
@@ -43,7 +43,7 @@ class AppAsset extends AssetBundle
         $view->registerJsFile($jsfile, [AppAsset::className(), "depends" => "frontend\assets\AppAsset",'position'=>$position]);
     }
 
-    //定义按需加载css方法，注意加载顺序在最后  
+    //定义按需加载css方法，注意加载顺序在最后
     public static function addCss($view, $cssfile,$fullPath = false,$position = \yii\web\View::POS_HEAD) {
         $baseUrl = Yii::$app->view->theme->baseUrl;
         if(strpos($cssfile, 'http')===false){

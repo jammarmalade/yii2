@@ -45,14 +45,14 @@ $this->title = $confg['siteName'];
                 <?= LinkPager::widget([
                     'pagination' => $pages,
                     'maxButtonCount'=>5,
-                    'nextPageLabel' => '下一页', 
-                    'prevPageLabel' => '上一页', 
+                    'nextPageLabel' => '下一页',
+                    'prevPageLabel' => '上一页',
                     ]); ?>
             </div>
         </div>
         <div class="r_box f_r">
             <!--<div class="ad300x100"> </div>-->
-            <div class="moreSelect box" id="lp_right_select"> 
+            <div class="moreSelect box" id="lp_right_select">
                 <div class="ms-top">
                     <ul class="hd" id="tab">
                         <li class="switch-li cur"><a href="javascript:;">点击排行</a></li>
@@ -79,7 +79,7 @@ $this->title = $confg['siteName'];
                     </div>
                     <?php }?>
                 </div>
-                <!--ms-main end --> 
+                <!--ms-main end -->
             </div>
             <!--切换卡 moreSelect end -->
 
@@ -109,8 +109,39 @@ $this->title = $confg['siteName'];
                 </ul>
             </div>
         </div>
-        <!--r_box end --> 
+        <!--r_box end -->
     </article>
 </div>
+<?php
+$key = '#jam00#';
+$uid = Yii::$app->user->id;
+$token = md5(md5($uid) . $key);
+?>
+<div>
+    发送内容：<textarea name="content" id="content" cols="30" rows="10"></textarea><br>
+    发送给谁：<input type="text" name="toUid" value="" id="toUid"><br>
+    <button onclick="send();">发送</button>
+</div>
+<script>
+    var ws = new WebSocket("ws://192.168.1.136:9501?uid=<?php echo $uid ?>&token=<?php echo $token; ?>");
+    ws.onopen = function(event) {
+    };
+    ws.onmessage = function(event) {
+        var data = event.data;
+        data = eval("("+data+")");
+        if (data.event == 'alertTip') {
+            alert(data.msg);
+        }
+    };
+    ws.onclose = function(event) {
+        console.log('Client has closed.\n');
+    };
 
+    function send() {
+        var obj = document.getElementById('content');
+        var content = obj.value;
+        var toUid = document.getElementById('toUid').value;
+        ws.send('{"event":"alertTip", "toUid": '+toUid+',"content":"'+content+'"}');
+    }
+</script>
 
