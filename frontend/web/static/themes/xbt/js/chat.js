@@ -13,11 +13,11 @@
         $(this).siblings().removeClass('cur');
         var type = $(this).attr('data-type');
         if(type=='message'){
-            $('#jam_chat_message').show();
+            $('#jam_chat_content').show();
             $('#jam_chat_member').hide();
         }else{
             $('#jam_chat_member').show();
-            $('#jam_chat_message').hide();
+            $('#jam_chat_content').hide();
         }
     })
 })();
