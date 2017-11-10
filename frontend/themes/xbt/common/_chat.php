@@ -20,26 +20,26 @@ AppAsset::addScript($this, 'chat.js');
             </ul>
         </div>
     </div>
-    <div id="jam_chat_content">
+    <div id="jam_chat_content" style="display: none;">
         <div id="jam_chat_message">
             <ul>
                 <li>
                     <div class="jam-chat-user">
-                        <img src="http://tva1.sinaimg.cn/crop.0.23.1242.1242.180/8693225ajw8fbimjimpjwj20yi0zs77l.jpg">
+                        <img src="<?=$this->params['defaultHeadImg']?>">
                         <span>jam00 <i>2017-11-10 00:23:18</i></span>
                     </div>
                     <div class="jam-chat-text">测试一下，哈哈哈哈~~~！黑河呵呵，傻逼打死你打算年底阿森纳多看哈 那块思念对方那可</div>
                 </li>
                 <li class="jam-chat-mine">
                     <div class="jam-chat-user">
-                        <img src="http://tva1.sinaimg.cn/crop.0.23.1242.1242.180/8693225ajw8fbimjimpjwj20yi0zs77l.jpg">
+                        <img src="<?=$this->params['defaultHeadImg']?>">
                         <span><i>2017-11-10 00:23:18</i>admin </span>
                     </div>
                     <div class="jam-chat-text">测试一下，哈哈哈哈~~~！黑河呵呵，傻逼打死你打算年底阿森纳多看哈 那块思念对方那可</div>
                 </li>
                 <li>
                     <div class="jam-chat-user">
-                        <img src="http://tva1.sinaimg.cn/crop.0.23.1242.1242.180/8693225ajw8fbimjimpjwj20yi0zs77l.jpg">
+                        <img src="<?=$this->params['defaultHeadImg']?>">
                         <span>jam00 <i>2017-11-10 00:23:18</i></span>
                     </div>
                     <div class="jam-chat-text">测试一下，哈哈哈哈~~~！黑河呵呵，傻逼打死你打算年底阿森纳多看哈 那块思念对方那可</div>
@@ -51,7 +51,38 @@ AppAsset::addScript($this, 'chat.js');
             <a href="javascript:;" id="jam_chat_send_btn">发送</a>
         </div>
     </div>
-    <div id="jam_chat_member" style="display: none;">
-        在线成员
+    <div id="jam_chat_member">
+        <div id="jam_chat_member_list">
+            <ul>
+                <li>
+                    <img src="<?=$this->params['defaultHeadImg']?>">
+                    <span>jam00</span>
+                    <p></p>
+                </li>
+                <li>
+                    <img src="<?=$this->params['defaultHeadImg']?>">
+                    <span>admin</span>
+                    <p>IP：192.168.1.100</p>
+                </li>
+                <li>
+                    <img src="<?=$this->params['defaultHeadImg']?>">
+                    <span>jam00</span>
+                    <p>IP：192.168.1.100</p>
+                </li>
+                <li>
+                    <img src="<?=$this->params['defaultHeadImg']?>">
+                    <span>admin</span>
+                    <p>IP：192.168.1.100</p>
+                </li>
+                <li>
+                    <img src="<?=$this->params['defaultHeadImg']?>">
+                    <span>jam00</span>
+                    <p>IP：192.168.1.100</p>
+                </li>
+            </ul>
+        </div>
+        <div id="jam_chat_member_tool">
+            工具栏，暂时用不到
+        </div>
     </div>
 </div>
