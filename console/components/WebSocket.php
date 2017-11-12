@@ -11,11 +11,11 @@ class WebSocket {
     private $_serv;
     //加密key
     public $key = '#jam00#';
-    // 用户id和fd对应的映射,key => value,key是用户的uid,value是用户的fd
-    public $user2fd = [];
+    // 用户信息，uid => username ,fd
+    public $userInfo = [];
 
     public function __construct() {
-        $this->_serv = new \swoole_websocket_server("192.168.1.136", 9501);
+        $this->_serv = new \swoole_websocket_server("192.168.31.200", 9501);
         $this->_serv->set([
             'worker_num' => 1,
             'heartbeat_check_interval' => 60,
@@ -38,14 +38,15 @@ class WebSocket {
             return false;
         }
         // 始终把用户最新的fd跟uid映射在一起
-        if (array_key_exists($request->get['uid'], $this->user2fd)) {
-            $existFd = $this->user2fd[$request->get['uid']];
+        if (array_key_exists($request->get['uid'], $this->userInfo)) {
+            $existFd = $this->userInfo[$request->get['uid']]['fd'];
             $this->close($existFd, 'uid exists.');
-            $this->user2fd[$request->get['uid']] = $request->fd;
-            return false;
+            $this->userInfo[$request->get['uid']]['fd'] = $request->fd;
         } else {
-            $this->user2fd[$request->get['uid']] = $request->fd;
+            $this->userInfo[$request->get['uid']]['fd'] = $request->fd;
         }
+        $this->userInfo[$request->get['uid']]['username'] = urldecode($request->get['username']);
+        $this->log($this->userInfo[$request->get['uid']]['username']." connected");
     }
 
     /**
@@ -72,7 +73,7 @@ class WebSocket {
     }
 
     public function onClose($serv, $fd) {
-        echo "client {$fd} closed.\n";
+        $this->log("client {$fd} closed.");
     }
 
     /**
@@ -103,21 +104,29 @@ class WebSocket {
      * @param $message
      */
     public function close($fd, $message = '') {
-        // 关闭连接
-        $this->_serv->close($fd);
         // 删除映射关系
-        if ($uid = array_search($fd, $this->user2fd)) {
-            unset($this->user2fd[$uid]);
+        foreach ($this->userInfo as $uid=>$info){
+            if ($info['fd']==$fd) {
+                // 关闭连接
+                $this->_serv->close($fd);
+                unset($this->userInfo[$uid]);
+            }
         }
+
     }
 
-    public function alertTip($fd, $data) {
-        // 推送目标用户的uid非真或者该uid尚无保存的映射fd，关闭连接
-        if (empty($data['toUid']) || !array_key_exists($data['toUid'], $this->user2fd)) {
-            $this->close($fd);
-            return false;
+    public function sendMsgAll($fd, $data) {
+        //群发
+        if(!isset($this->userInfo[$data['uid']])){
+            $this->close($fd, 'user not exists.');
         }
-        $this->push($this->user2fd[$data['toUid']], ['event' => $data['event'], 'msg' => '收到一条新的回复：'.$data['content']]);
+        $fromUser = $this->userInfo[$data['uid']];
+        $now = date('Y-m-d H:i:s');
+        $content = htmlentities($data['content']);
+        foreach($this->userInfo as $uid=>$info){
+            $this->log("send to ".$info['username']);
+            $this->push($info['fd'], ['fromUserId'=>$data['uid'],'event' => 'sendMsgAll', 'message' => $content,'username'=>$fromUser['username'],'sendtime'=>$now]);
+        }
     }
 
     /**
@@ -133,6 +142,13 @@ class WebSocket {
         if ($this->_serv->push($fd, $message) == false) {
             $this->close($fd);
         }
+    }
+
+    /**
+     * 输出
+     */
+    public function log($msg){
+        echo $msg."\n";
     }
 
     public function start() {

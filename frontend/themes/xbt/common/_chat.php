@@ -1,4 +1,5 @@
 <?php
+
 use frontend\assets\AppAsset;
 
 AppAsset::addCss($this, 'chat.css');
@@ -20,9 +21,9 @@ AppAsset::addScript($this, 'chat.js');
             </ul>
         </div>
     </div>
-    <div id="jam_chat_content" style="display: none;">
+    <div id="jam_chat_content">
         <div id="jam_chat_message">
-            <ul>
+            <ul id="jam_chat_message_list">
                 <li>
                     <div class="jam-chat-user">
                         <img src="<?=$this->params['defaultHeadImg']?>">
@@ -86,3 +87,21 @@ AppAsset::addScript($this, 'chat.js');
         </div>
     </div>
 </div>
+<?php
+$key = '#jam00#';
+$uid = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
+$username = '';
+
+if($uid!=0) {
+    $username = Yii::$app->user->identity->username;
+    $token = md5(md5($uid) . $key);
+    ?>
+    <script type="text/javascript">
+        window.WS_UID = <?=$uid?>;
+        window.WS_USERNAME = '<?=$username?>';
+        window.WS_HEADURL = '<?=$this->params['defaultHeadImg']?>';
+        window.WS_URL = '<?php echo 'ws://192.168.31.200:9501?uid=' . $uid . '&username=' . urlencode($username) . '&token=' . $token;?>';
+    </script>
+    <?php
+}
+?>
