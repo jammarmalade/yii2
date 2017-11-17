@@ -86,11 +86,11 @@ class Config extends \yii\db\ActiveRecord
     /**
      * 获取配置
      * @param string  $key     key 值
-     * @return string|key 
+     * @return string|key
      */
-    public static function getConfig($key = ''){
+    public static function getConfig($key = '',$from = 'other'){
         $cache = Yii::$app->cache;
-        if(Yii::$app->request->get('t')==1){
+        if($from=='other' && Yii::$app->request->get('t')==1){
             $cache->delete('config');
         }
         $configList = $cache->getOrSet('config', function () {
@@ -105,7 +105,7 @@ class Config extends \yii\db\ActiveRecord
             }
             return $configList;
         },86400);
-        
+
         $returnData = $configList;
         if($key && isset($returnData[$key])){
             $returnData = $returnData[$key];

@@ -44,6 +44,19 @@
 .jam_chat_head .close a:link{
     color: #000;
 }
+#jam_chat_online{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    margin-right: 10px;
+    background-color: #3FDD86;
+    box-shadow: 0px 0px 15px rgba(8,255,8,.9);
+}
+.jam_chat_online_off{
+    background-color: #000!important;
+    box-shadow: 0px 0px 15px rgba(0,0,0,.8)!important;
+}
 .chat-choose{
 
 }

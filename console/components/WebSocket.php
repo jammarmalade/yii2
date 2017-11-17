@@ -8,22 +8,23 @@ use yii;
 
 class WebSocket {
 
-    private $_serv;
+    private $_server;
     //加密key
-    public $key = '#jam00#';
+    public $key = '';
     // 用户信息，uid => username ,fd
     public $userInfo = [];
 
-    public function __construct() {
-        $this->_serv = new \swoole_websocket_server("192.168.31.200", 9501);
-        $this->_serv->set([
+    public function __construct($config) {
+        $this->_server = new \swoole_websocket_server($config['host'], $config['port']);
+        $this->key = $config['key'];
+        $this->_server->set([
             'worker_num' => 1,
-            'heartbeat_check_interval' => 60,
-            'heartbeat_idle_time' => 125,
+            'heartbeat_check_interval' => 30,
+            'heartbeat_idle_time' => 65,
         ]);
-        $this->_serv->on('open', [$this, 'onOpen']);
-        $this->_serv->on('message', [$this, 'onMessage']);
-        $this->_serv->on('close', [$this, 'onClose']);
+        $this->_server->on('open', [$this, 'onOpen']);
+        $this->_server->on('message', [$this, 'onMessage']);
+        $this->_server->on('close', [$this, 'onClose']);
     }
 
     /**
@@ -37,16 +38,43 @@ class WebSocket {
         if (!$accessResult) {
             return false;
         }
+        $notice = false;
         // 始终把用户最新的fd跟uid映射在一起
         if (array_key_exists($request->get['uid'], $this->userInfo)) {
             $existFd = $this->userInfo[$request->get['uid']]['fd'];
+            //前端有心跳检测，防止新开页面和旧页面之间反复重连，通知旧页面停止心跳检测
+            $this->push($existFd, [
+                'event' => 'uncheck',
+            ]);
             $this->close($existFd, 'uid exists.');
             $this->userInfo[$request->get['uid']]['fd'] = $request->fd;
         } else {
             $this->userInfo[$request->get['uid']]['fd'] = $request->fd;
+            //更新所有用户的成员列表
+            $notice = true;
         }
+        //用户名
         $this->userInfo[$request->get['uid']]['username'] = urldecode($request->get['username']);
+        //城市
+        $this->userInfo[$request->get['uid']]['city'] = urldecode($request->get['city']);
+        if($notice){
+            $this->noticeAll($request->get['uid']);
+        }
         $this->log($this->userInfo[$request->get['uid']]['username']." connected");
+    }
+    //通知所有在线用户，此用户上线
+    public function noticeAll($uid){
+        $tmpUserInfo = $this->userInfo[$uid];
+        foreach($this->userInfo as $tmpuid=>$info){
+            if($tmpuid!=$uid){
+                $this->push($info['fd'], [
+                    'event' => 'addMember',
+                    'uid' => $uid,
+                    'username' => $tmpUserInfo['username'],
+                    'city' => $tmpUserInfo['city']
+                ]);
+            }
+        }
     }
 
     /**
@@ -73,6 +101,24 @@ class WebSocket {
     }
 
     public function onClose($serv, $fd) {
+        //删除用户信息
+        $tmpUid = '';
+        foreach ($this->userInfo as $uid=>$info){
+            if ($info['fd']==$fd) {
+                $tmpUid = $uid;
+                unset($this->userInfo[$uid]);
+            }
+        }
+        if($tmpUid==''){
+            return false;
+        }
+        //通知所有用户刷新成员列表
+        foreach ($this->userInfo as $uid => $info) {
+            $this->push($info['fd'], [
+                'uid' => $tmpUid,
+                'event' => 'deleteMember',
+            ]);
+        }
         $this->log("client {$fd} closed.");
     }
 
@@ -99,22 +145,18 @@ class WebSocket {
     }
 
     /**
-     * 关闭$fd的连接，并删除该用户的映射
-     * @param $fd
-     * @param $message
+     * 关闭链接 - 内部调用
+     * @param type $fd
      */
-    public function close($fd, $message = '') {
-        // 删除映射关系
-        foreach ($this->userInfo as $uid=>$info){
-            if ($info['fd']==$fd) {
-                // 关闭连接
-                $this->_serv->close($fd);
-                unset($this->userInfo[$uid]);
-            }
-        }
-
+    public function close($fd) {
+        // 关闭连接
+        $this->_server->close($fd);
     }
-
+    /**
+     * 发送群体消息
+     * @param type $fd      当前用户的标识
+     * @param type $data    接收到的内容
+     */
     public function sendMsgAll($fd, $data) {
         //群发
         if(!isset($this->userInfo[$data['uid']])){
@@ -125,8 +167,36 @@ class WebSocket {
         $content = htmlentities($data['content']);
         foreach($this->userInfo as $uid=>$info){
             $this->log("send to ".$info['username']);
-            $this->push($info['fd'], ['fromUserId'=>$data['uid'],'event' => 'sendMsgAll', 'message' => $content,'username'=>$fromUser['username'],'sendtime'=>$now]);
+            $this->push($info['fd'], [
+                'fromUserId'=>$data['uid'],
+                'event' => 'sendMsgAll',
+                'message' => $content,
+                'username'=>$fromUser['username'],
+                'sendtime'=>$now
+            ]);
         }
+    }
+    //获取成员列表
+    public function getMemberList($fd, $data){
+        $memberList = [];
+        foreach($this->userInfo as $uid=>$info){
+            $tmp = [];
+            $tmp['uid'] = $uid;
+            $tmp['username'] = $info['username'];
+            $tmp['city'] = $info['city'];
+            $memberList[] = $tmp;
+        }
+        $this->push($fd, [
+            'event' => 'getMemberList',
+            'memberList' => $memberList,
+        ]);
+    }
+    //保持在线
+    public function keepalive($fd,$data){
+        $this->push($fd, [
+            'event' => 'keepalive',
+            'data' => '',
+        ]);
     }
 
     /**
@@ -139,7 +209,7 @@ class WebSocket {
         }
         $message = json_encode($message);
         // push失败，close
-        if ($this->_serv->push($fd, $message) == false) {
+        if ($this->_server->push($fd, $message) == false) {
             $this->close($fd);
         }
     }
@@ -152,7 +222,7 @@ class WebSocket {
     }
 
     public function start() {
-        $this->_serv->start();
+        $this->_server->start();
     }
 
 }

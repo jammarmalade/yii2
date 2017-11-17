@@ -1,17 +1,27 @@
 <?php
 
 use frontend\assets\AppAsset;
+use frontend\components\Functions as tools;
 
 AppAsset::addCss($this, 'chat.css');
 AppAsset::addScript($this, 'chat.js');
+
+$confg = $this->params['config'];
+$key = $confg['ws_key'];
+$uid = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
+$username = '';
+if($uid){
+   $username = Yii::$app->user->identity->username;
+}
+$cityName = tools::ip2city(Yii::$app->request->userIP);
 ?>
 <div id="jam_chat_sbox" style="display:none;">
-    在线人数 <span>666</span>
+    即时聊天
 </div>
 <div id="jam_chat_main">
     <div id="jam_chat_top">
         <div class="jam_chat_head">
-            <div class="title">在线人数 666</div>
+            <div class="title"><span id="jam_chat_online" class="jam_chat_online_off"></span><?=$username?></div>
             <div class="close"><a id="jam_chat_main_close" href="javascript:;">X</a></div>
         </div>
         <div class="chat-choose">
@@ -54,32 +64,8 @@ AppAsset::addScript($this, 'chat.js');
     </div>
     <div id="jam_chat_member">
         <div id="jam_chat_member_list">
-            <ul>
-                <li>
-                    <img src="<?=$this->params['defaultHeadImg']?>">
-                    <span>jam00</span>
-                    <p></p>
-                </li>
-                <li>
-                    <img src="<?=$this->params['defaultHeadImg']?>">
-                    <span>admin</span>
-                    <p>IP：192.168.1.100</p>
-                </li>
-                <li>
-                    <img src="<?=$this->params['defaultHeadImg']?>">
-                    <span>jam00</span>
-                    <p>IP：192.168.1.100</p>
-                </li>
-                <li>
-                    <img src="<?=$this->params['defaultHeadImg']?>">
-                    <span>admin</span>
-                    <p>IP：192.168.1.100</p>
-                </li>
-                <li>
-                    <img src="<?=$this->params['defaultHeadImg']?>">
-                    <span>jam00</span>
-                    <p>IP：192.168.1.100</p>
-                </li>
+            <ul id="jam_chat_member_list_ul">
+
             </ul>
         </div>
         <div id="jam_chat_member_tool">
@@ -88,19 +74,15 @@ AppAsset::addScript($this, 'chat.js');
     </div>
 </div>
 <?php
-$key = '#jam00#';
-$uid = Yii::$app->user->isGuest ? 0 : Yii::$app->user->id;
-$username = '';
-
 if($uid!=0) {
-    $username = Yii::$app->user->identity->username;
     $token = md5(md5($uid) . $key);
     ?>
     <script type="text/javascript">
         window.WS_UID = <?=$uid?>;
         window.WS_USERNAME = '<?=$username?>';
+        window.FROM_CITY = '<?=$cityName?>';
         window.WS_HEADURL = '<?=$this->params['defaultHeadImg']?>';
-        window.WS_URL = '<?php echo 'ws://192.168.31.200:9501?uid=' . $uid . '&username=' . urlencode($username) . '&token=' . $token;?>';
+        window.WS_URL = '<?php echo 'ws://'.$confg['ws_host'].':'.$confg['ws_port'].'?uid=' . $uid . '&username=' . urlencode($username) . '&token=' . $token.'&city='.  urlencode($cityName);?>';
     </script>
     <?php
 }
