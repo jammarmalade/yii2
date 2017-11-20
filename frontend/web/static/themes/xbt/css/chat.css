@@ -263,4 +263,45 @@
     vertical-align: top;
     font-size: 14px;
 }
+/*通知闪烁*/
+.notice-shake {
+    -webkit-animation: glow 800ms ease-out infinite alternate;
+    -moz-animation: glow 800ms ease-out infinite alternate;
+    -o-animation: glow 800ms ease-out infinite alternate;
+    -ms-animation: glow 800ms ease-out infinite alternate;
+    /*呼吸动画*/
+    animation: glow 1000ms ease-out infinite alternate;
+    background: -webkit-linear-gradient(#fff, #fff);
+    background: -moz-linear-gradient(#fff, #fff);
+    background: -o-linear-gradient(#fff, #fff);
+    background: -ms-linear-gradient(#fff, #fff);/*#F77825*/
+    background: linear-gradient(#fff, #fff);
+    border-color: #000;
+    box-shadow: 0 0 5px rgba(247, 120, 37,.2), inset 0 0 5px rgba(247, 120, 37,.1), 0 5px 0 #000;
+    color: #000;
+}
 
+@-webkit-keyframes glow {
+    0% {
+        border-color: #000;
+        box-shadow: 0 0 5px rgba(247, 120, 37,.2), inset 0 0 5px rgba(247, 120, 37,.1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #000;
+        box-shadow: 0 0 20px rgba(247, 120, 37,.9), inset 0 0 10px rgba(247, 120, 37,.7), 0 5px 0 #000;
+    }
+}
+
+@-moz-keyframes glow {
+    0% {
+        border-color: #000;
+        box-shadow: 0 0 5px rgba(247, 120, 37,.2), inset 0 0 5px rgba(247, 120, 37,.1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #000;
+        box-shadow: 0 0 20px rgba(247, 120, 37,.9), inset 0 0 10px rgba(247, 120, 37,.7), 0 5px 0 #000;
+    }
+}
+.member-self{
+    background-color: rgba(250,126,44,.1);
+}

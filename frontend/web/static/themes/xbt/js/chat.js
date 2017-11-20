@@ -3,6 +3,7 @@
     $('#jam_chat_sbox').click(function(){
         $('#jam_chat_main').show();
         $(this).hide();
+        $(this).removeClass('notice-shake');
     })
     $('#jam_chat_main_close').click(function(){
         $('#jam_chat_sbox').show();
@@ -59,9 +60,10 @@ function initWebSocket(){
         }else if(data.event =='addMember'){//上线通知
             addMember(data);
         }else if(data.event =='getMemberList'){//获取在线用户列表
-            addMemberList(data.memberList);
+            addMemberList(data.memberList,data.memberCount);
         }else if(data.event =='deleteMember'){//下线通知
             $('#member_'+data.uid).remove();
+            updateMemberCount(data['memberCount']);
         }else if(data.event =='uncheck'){
             console.log('stop check.\n');
             //停止重连
@@ -74,13 +76,16 @@ function initWebSocket(){
         //下线状态
         $('#jam_chat_online').addClass('jam_chat_online_off');
         console.log('Client has closed.\n');
+        if(event.code == 1006){
+            return false;
+        }
         reconnect();
     };
     ws.onerror = function () {
         //下线状态
         $('#jam_chat_online').addClass('jam_chat_online_off');
         console.log('Client error.\n');
-        reconnect();
+        //reconnect();//错误后不重连
     };
 }
 
@@ -158,17 +163,30 @@ function showMessage(data){
     html += '</div><div class="jam-chat-text">'+data['message']+'</div></li>';
     $('#jam_chat_message_list').append(html);
     $('#jam_chat_message').animate({"scrollTop":$('#jam_chat_message').prop('scrollHeight')},1000);
+    //若聊天界面是关闭状态，添加呼吸灯提示
+    if(!$('#jam_chat_sbox').is(':hidden')){
+        $('#jam_chat_sbox').addClass('notice-shake');
+    }
+}
+//更新在线人数
+function updateMemberCount(count){
+    $('#jam_chat_member_count').text(count);
 }
 function addMember(data){
     var html = '';
     html += '<li id="member_'+data['uid']+'"><img src="'+window.WS_HEADURL+'"><span>'+data['username']+'</span><p>'+data['city']+'</p></li>';
     $('#jam_chat_member_list_ul').append(html);
+    //在线人数
+    updateMemberCount(data['memberCount']);
 }
-function addMemberList(data){
+function addMemberList(data,count){
     var html = '',tmpData=[];
     for(var k in data){
         tmpData = data[k];
         html += '<li id="member_'+tmpData['uid']+'"><img src="'+window.WS_HEADURL+'"><span>'+tmpData['username']+'</span><p>'+tmpData['city']+'</p></li>';
     }
     $('#jam_chat_member_list_ul').append(html);
+    //给自己添加样式
+    $('#member_'+window.WS_UID).addClass('member-self');
+    updateMemberCount(count);
 }

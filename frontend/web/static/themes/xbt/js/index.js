@@ -4,7 +4,7 @@
         var num = $(this).index();
         $('.bd-news').hide();
         $('.bd-news').eq(num).show();
-        $('.cur').removeClass('cur');
+        $('.ms-top .cur').removeClass('cur');
         $(this).addClass('cur');
     });
 })();

@@ -114,10 +114,14 @@ $menuList = $this->params['menuList'];
         </p>
         </div>
     </footer>
-    
-    <?= $this->render('../common/_chat', [
-        'data' => [],
-    ]) ?>
+
+    <?php
+    if($confg['openChat']==1){
+        echo $this->render('../common/_chat', [
+            'data' => [],
+        ]);
+    }
+    ?>
 
     <?php $this->endBody() ?>
 </body>

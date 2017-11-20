@@ -11,6 +11,8 @@ class WebSocket {
     private $_server;
     //加密key
     public $key = '';
+    //在线人数
+    public $memberCount = 0;
     // 用户信息，uid => username ,fd
     public $userInfo = [];
 
@@ -49,6 +51,7 @@ class WebSocket {
             $this->close($existFd, 'uid exists.');
             $this->userInfo[$request->get['uid']]['fd'] = $request->fd;
         } else {
+            $this->memberCount++;
             $this->userInfo[$request->get['uid']]['fd'] = $request->fd;
             //更新所有用户的成员列表
             $notice = true;
@@ -71,7 +74,8 @@ class WebSocket {
                     'event' => 'addMember',
                     'uid' => $uid,
                     'username' => $tmpUserInfo['username'],
-                    'city' => $tmpUserInfo['city']
+                    'city' => $tmpUserInfo['city'],
+                    'memberCount' => $this->memberCount,
                 ]);
             }
         }
@@ -106,6 +110,7 @@ class WebSocket {
         foreach ($this->userInfo as $uid=>$info){
             if ($info['fd']==$fd) {
                 $tmpUid = $uid;
+                $this->memberCount--;
                 unset($this->userInfo[$uid]);
             }
         }
@@ -117,6 +122,7 @@ class WebSocket {
             $this->push($info['fd'], [
                 'uid' => $tmpUid,
                 'event' => 'deleteMember',
+                'memberCount' => $this->memberCount,
             ]);
         }
         $this->log("client {$fd} closed.");
@@ -189,6 +195,7 @@ class WebSocket {
         $this->push($fd, [
             'event' => 'getMemberList',
             'memberList' => $memberList,
+            'memberCount' => $this->memberCount,
         ]);
     }
     //保持在线

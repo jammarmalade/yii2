@@ -3,8 +3,8 @@
 use frontend\assets\AppAsset;
 use frontend\components\Functions as tools;
 
-AppAsset::addCss($this, 'chat.css');
-AppAsset::addScript($this, 'chat.js');
+AppAsset::addCss($this, 'chat.min.css');
+AppAsset::addScript($this, 'chat.min.js');
 
 $confg = $this->params['config'];
 $key = $confg['ws_key'];
@@ -15,10 +15,10 @@ if($uid){
 }
 $cityName = tools::ip2city(Yii::$app->request->userIP);
 ?>
-<div id="jam_chat_sbox" style="display:none;">
-    即时聊天
+<div id="jam_chat_sbox" class="">
+    聊天室
 </div>
-<div id="jam_chat_main">
+<div id="jam_chat_main" style="display:none;">
     <div id="jam_chat_top">
         <div class="jam_chat_head">
             <div class="title"><span id="jam_chat_online" class="jam_chat_online_off"></span><?=$username?></div>
@@ -27,34 +27,14 @@ $cityName = tools::ip2city(Yii::$app->request->userIP);
         <div class="chat-choose">
             <ul>
                 <li class="cur" data-type="message">群聊</li>
-                <li data-type="member">成员</li>
+                <li data-type="member">成员（<span id="jam_chat_member_count">0</span>）</li>
             </ul>
         </div>
     </div>
     <div id="jam_chat_content">
         <div id="jam_chat_message">
             <ul id="jam_chat_message_list">
-                <li>
-                    <div class="jam-chat-user">
-                        <img src="<?=$this->params['defaultHeadImg']?>">
-                        <span>jam00 <i>2017-11-10 00:23:18</i></span>
-                    </div>
-                    <div class="jam-chat-text">测试一下，哈哈哈哈~~~！黑河呵呵，傻逼打死你打算年底阿森纳多看哈 那块思念对方那可</div>
-                </li>
-                <li class="jam-chat-mine">
-                    <div class="jam-chat-user">
-                        <img src="<?=$this->params['defaultHeadImg']?>">
-                        <span><i>2017-11-10 00:23:18</i>admin </span>
-                    </div>
-                    <div class="jam-chat-text">测试一下，哈哈哈哈~~~！黑河呵呵，傻逼打死你打算年底阿森纳多看哈 那块思念对方那可</div>
-                </li>
-                <li>
-                    <div class="jam-chat-user">
-                        <img src="<?=$this->params['defaultHeadImg']?>">
-                        <span>jam00 <i>2017-11-10 00:23:18</i></span>
-                    </div>
-                    <div class="jam-chat-text">测试一下，哈哈哈哈~~~！黑河呵呵，傻逼打死你打算年底阿森纳多看哈 那块思念对方那可</div>
-                </li>
+
             </ul>
         </div>
         <div id="jam_chat_message_send">
