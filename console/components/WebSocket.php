@@ -17,10 +17,12 @@ class WebSocket {
     public $userInfo = [];
 
     public function __construct($config) {
+        //线上绑定的ip要为 127.0.0.1 用nginix 代理，因为网站是 https 的
         $this->_server = new \swoole_websocket_server($config['host'], $config['port']);
         $this->key = $config['key'];
         $this->_server->set([
             'worker_num' => 1,
+//            'daemonize' => true,//线上为守护进程
             'heartbeat_check_interval' => 30,
             'heartbeat_idle_time' => 65,
         ]);
@@ -225,7 +227,7 @@ class WebSocket {
      * 输出
      */
     public function log($msg){
-        echo $msg."\n";
+    //    echo $msg."\n";
     }
 
     public function start() {

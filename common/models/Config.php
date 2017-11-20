@@ -90,7 +90,7 @@ class Config extends \yii\db\ActiveRecord
      */
     public static function getConfig($key = '',$from = 'other'){
         $cache = Yii::$app->cache;
-        if($from=='other' && Yii::$app->request->get('t')==1){
+        if(($from=='other' && Yii::$app->request->get('t')==1) || $from=='console'){
             $cache->delete('config');
         }
         $configList = $cache->getOrSet('config', function () {
