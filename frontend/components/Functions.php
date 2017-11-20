@@ -239,7 +239,7 @@ class Functions {
         } else {
             return '';
         }
-        $ipdatafile = 'wry.dat';
+        $ipdatafile = \Yii::getAlias('@webroot').'/../components/wry.dat';
         if (!$fd = @fopen($ipdatafile, 'rb')) {
             return '- Invalid IP data file';
         }
@@ -375,6 +375,6 @@ class Functions {
         if (preg_match('/http/i', $ipaddr) || $ipaddr == '') {
             $ipaddr = '- Unknown';
         }
-        return '- ' . $ipaddr;
+        return '- ' . iconv('gbk','utf-8',$ipaddr);
     }
 }
