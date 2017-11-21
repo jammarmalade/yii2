@@ -57,10 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '版权',
                 'value' => function($model){
                     $state = $model->copyrightArr();
-                    return $state[$model->status];   
+                    return $state[$model->copyright];
                 },
                 'headerOptions' => ['width' => '70'],
-                'filter' => Html::activeDropDownList($searchModel,'status',$searchModel->copyrightArr(),['prompt'=>'全部'])
+                'filter' => Html::activeDropDownList($searchModel,'copyright',$searchModel->copyrightArr(),['prompt'=>'全部'])
             ],
             // 'time_update',
             // 'time_create',
