@@ -18,7 +18,7 @@ $this->title = '登录';
                 <?= $form->field($model, 'password')->passwordInput()->label('密码') ?>
                 <?= $form->field($model, 'rememberMe')->checkbox()->label('记住我') ?>
                 <div style="color:#999;margin:1em 0">
-                    <?= Html::a('忘记密码？', ['site/request-password-reset']) ?>
+                    <?= Html::a('忘记密码？', ['request-password-reset']) ?>
                 </div>
                 <div class="form-group">
                     <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>

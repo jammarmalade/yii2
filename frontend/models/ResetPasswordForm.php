@@ -1,7 +1,7 @@
 <?php
 namespace frontend\models;
 
-use common\models\User;
+use backend\models\UserBackend as User;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 use Yii;
@@ -12,6 +12,7 @@ use Yii;
 class ResetPasswordForm extends Model
 {
     public $password;
+    public $password1;
 
     /**
      * @var \common\models\User
@@ -29,11 +30,11 @@ class ResetPasswordForm extends Model
     public function __construct($token, $config = [])
     {
         if (empty($token) || !is_string($token)) {
-            throw new InvalidParamException('Password reset token cannot be blank.');
+            throw new InvalidParamException('重置密码的token不正确');
         }
         $this->_user = User::findByPasswordResetToken($token);
         if (!$this->_user) {
-            throw new InvalidParamException('Wrong password reset token.');
+            throw new InvalidParamException('非法token');
         }
         parent::__construct($config);
     }
@@ -44,8 +45,9 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'required','message'=>'密码不能为空！'],
+            ['password', 'string', 'min' => 6,'message'=>'密码最少六个字符！'],
+            ['password1', 'compare', 'compareAttribute' => 'password','message'=>'两次输入的密码不一致！'],
         ];
     }
 

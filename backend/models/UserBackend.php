@@ -11,6 +11,7 @@ use yii\web\IdentityInterface;
  * @property string $id
  * @property string $username
  * @property string $password
+ * @property string $password_reset_token
  * @property string $email
  * @property integer $notice
  * @property string $group_id
@@ -19,7 +20,9 @@ use yii\web\IdentityInterface;
  * @property integer $status
  */
 class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
-    
+
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 1;
     //注册开始时间
     public $time_register_form;
     //注册结束时间
@@ -54,6 +57,7 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
             'id' => '用户id',
             'username' => '用户名',
             'password' => '密码',
+            'password_reset_token' => '重置密码token',
             'password1' => '确认密码',
             'email' => '邮箱',
             'auth_key' => '记住我的认证key',
@@ -138,6 +142,49 @@ class UserBackend extends \yii\db\ActiveRecord implements IdentityInterface {
      */
     public function validatePassword($password) {
         return Yii::$app->security->validatePassword($password, $this->password);
+    }
+    /**
+     * 获取重置密码的token
+     */
+    public function generatePasswordResetToken() {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+    /**
+     * 验证重置密码token 的时效性，是否过期
+     *
+     * @param string $token password reset token
+     * @return boolean
+     */
+    public static function isPasswordResetTokenValid($token) {
+        if (empty($token)) {
+            return false;
+        }
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $parts = explode('_', $token);
+        $timestamp = (int) end($parts);
+        return $timestamp + $expire >= time();
+    }
+    /**
+     * 删除重置密码token
+     */
+    public function removePasswordResetToken(){
+        $this->password_reset_token = null;
+    }
+    /**
+     * 根据token查找用户
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token){
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
     }
 
 }

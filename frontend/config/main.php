@@ -42,7 +42,23 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        //配置主题
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false, //这句一定有，false发送邮件，true只是生成邮件在runtime文件夹下，不发邮件
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.163.com', //每种邮箱的host配置不一样
+                'username' => 'jammarmalade@163.com',
+                'password' => 'lxg0806',
+                'port' => '994',
+                'encryption' => 'ssl',
+            ],
+            'messageConfig' => [
+                'charset' => 'UTF-8',
+                'from' => ['jammarmalde@163.com' => 'jammarmalade']
+            ],
+        ],
+    //配置主题
 //        'view' => [
 //            'theme' => [
 //                'basePath' => '@webroot/static/themes/xbt',//资源目录

@@ -7,14 +7,14 @@ use yii\helpers\Html;
 /* @var $message string */
 /* @var $exception Exception */
 
-$this->title = $name;
+$this->title = '错误提示';
 ?>
 <div class="site-error box">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+        <?= nl2br(Html::encode($message)).' - （'.$name.'）' ?>
     </div>
 
 </div>
