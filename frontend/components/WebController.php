@@ -53,7 +53,7 @@ class WebController extends Controller {
         $this->view->params['defaultArticlItemImg'] = $this->defaultArticlItemImg = $this->staticUrl . '/images/articl-item.jpg';
         $this->view->params['defaultHeadImg'] = $this->defaultHeadImg = $this->staticUrl . '/images/default_head.png';
         $this->imageUrl = Yii::$app->params['imgDomain'];
-        $this->mobile = $this->checkmobile(); //是否是手机端访问
+        $this->view->params['mobile'] = $this->mobile = $this->checkmobile(); //是否是手机端访问
         //配置缓存
         $this->view->params['config'] = $this->config = Config::getConfig();
         //主导航栏
@@ -81,7 +81,7 @@ class WebController extends Controller {
             ],
         ];
     }
-    
+
     public function message($data) {
         if (!isset($data['title'])) {
             $data['title'] = '错误提示';

@@ -144,12 +144,12 @@ class Image extends \yii\db\ActiveRecord
             return $tmpContent;
         }elseif($type=='show'){
             $mobileContent = $articleInfo['content'];
-            
+
             if($mobileReplaceArr){
                 $mobileContent = str_replace($searchArr, $mobileReplaceArr, $mobileContent);
             }
-            $mobileContent = self::replaceDynamicMap($mobileContent,true);
-            $tmpContent = self::replaceDynamicMap($tmpContent);
+            $mobileContent = self::replaceDynamicMap($mobileContent);
+//            $tmpContent = self::replaceDynamicMap($tmpContent);
             foreach($tmpIds as $k=>$tmpId){
                 $imgList[] = $tmpImgList[$tmpId];
             }
@@ -162,22 +162,13 @@ class Image extends \yii\db\ActiveRecord
     /**
      * 替换百度动态地图链接地址
      */
-    public static function replaceDynamicMap($content,$mobile = false){
-        return preg_replace_callback('#<iframe src="http://([^/]+?)/static/js/ueditor/dialogs/map/show.html([^"]+?)"([^>]+?)>#',function($m) use($mobile){
-            $serverName = Yii::$app->request->serverName;
-            if($serverName!='admin.jam00.com'){
-                $path = Yii::$app->view->theme->baseUrl.'/js/ueditor/dialogs/map/show.html';
-            }else{
-                $path = 'http://admin.jam00.com/static/js/ueditor/dialogs/map/show.html';
-            }
+    public static function replaceDynamicMap($content){
+        return preg_replace_callback('#<img([^>]+?)src="https://api.map.baidu.com/staticimage\?([^"]+?)"[^>]*?>#is',function($m){
+            $attrs = $m[1];
+            $attrs = str_replace('width="800"', 'width="100%"', $attrs);
             $fragment = $m[2];
-            $attrs = $m[3];
-            if($mobile){
-                $fragment = str_replace('width=800', 'width=100%', $fragment);
-                $attrs = str_replace('width="804"', 'width="100%"', $attrs);
-            }
-            $src = $path.$fragment;
-            return '<iframe src="'.$src.'"'.$attrs.'>';
+            $fragment = str_replace('width=800', 'width=400', $fragment);
+            return '<img'.$attrs.'src="https://api.map.baidu.com/staticimage?'.$fragment.'">';
         },$content);
     }
 }

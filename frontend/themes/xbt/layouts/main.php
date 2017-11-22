@@ -116,7 +116,7 @@ $menuList = $this->params['menuList'];
     </footer>
 
     <?php
-    if($confg['openChat']==1){
+    if($confg['openChat']==1 && !$this->params['mobile']){
         echo $this->render('../common/_chat', [
             'data' => [],
         ]);

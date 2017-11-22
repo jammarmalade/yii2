@@ -65,7 +65,7 @@ $this->title = $confg['siteName'];
                     <div style="display: block;" class="bd bd-news" >
                         <ul>
                             <?php foreach($topList as $k=>$v){?>
-                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/info','id'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
+                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/info','id'=>$v['id']])?>" target="_blank" title="<?=$v['subject']?>"><?=$v['subject']?></a></li>
                             <?php }?>
                         </ul>
                     </div>
@@ -73,7 +73,7 @@ $this->title = $confg['siteName'];
                     <div  class="bd bd-news">
                         <ul>
                             <?php foreach($recommendList as $k=>$v){?>
-                                <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/info','id'=>$v['id']])?>" target="_blank"><?=$v['subject']?></a></li>
+                            <li><span><?php echo ++$k;?></span><a href="<?=Url::to(['article/info','id'=>$v['id']])?>" target="_blank" title="<?=$v['subject']?>"><?=$v['subject']?></a></li>
                             <?php }?>
                         </ul>
                     </div>

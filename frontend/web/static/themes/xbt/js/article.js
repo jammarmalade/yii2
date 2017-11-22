@@ -5,9 +5,13 @@ var viewer = new Viewer(document.getElementById('content'), {
     title: false,
     navbar: false
 });
+$("img.lazy").lazyload({
+    effect: "fadeIn",
+    threshold : $(window).height()
+});
 //markdown编辑器
 var simplemde = new SimpleMDE({
-    element: document.getElementById("comment_content"),//textarea的DOM对象 
+    element: document.getElementById("comment_content"),//textarea的DOM对象
     //autoDownloadFontAwesome: false,//自动下载FontAwesome
     status: false//编辑器底部的状态栏
 });
