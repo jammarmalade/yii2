@@ -93,10 +93,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $this->beginBlock("index") ?>
 jQuery(document).ready(function () {
     var ue = UE.getEditor('editor');
-    ue.ready(function() { 
-        ue.setContent($('#old_content').html()); 
+    ue.ready(function() {
+        ue.setContent($('#old_content').html());
     });
-    
+
     //绑定搜索
     $('#search_tag_input').autocomplete({
         minLength: 1,
@@ -106,8 +106,8 @@ jQuery(document).ready(function () {
             return false;
         },
         select: function(e, ui) {
-            event.preventDefault(); 
-            
+            event.preventDefault();
+
             var tagid = ui.item.value;
             var tagname = ui.item.label;
 
@@ -154,21 +154,21 @@ jQuery(document).ready(function () {
             }
             var addStatus = false;
             if(tagid==0){
-                $.ajax({  
-                    type : "post",  
-                    url : "<?php echo Url::to(['tag/add']);?>",  
-                    data : {'tagname': tagname},  
+                $.ajax({
+                    type : "post",
+                    url : "<?php echo Url::to(['tag/add']);?>",
+                    data : {'tagname': tagname},
                     async : false,
                     dataType : 'json',
-                    success : function(d){  
+                    success : function(d){
                        if(d.status){
                             addStatus = true;
                             tagid = d.data;
                         }else{
                             showMsg(d.msg);
                         }
-                    }  
-                }); 
+                    }
+                });
             }else{
                 addStatus = true;
             }
@@ -237,6 +237,13 @@ jQuery(document).ready(function () {
             }
         },'json')
     })
+    //离开时提示
+    var blnCheckUnload = true;
+    window.onbeforeunload = function() {
+        if(blnCheckUnload) {
+            return "确定离开？";
+        }
+    }
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>
