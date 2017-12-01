@@ -3,7 +3,6 @@ namespace backend\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\web\UploadedFile;
 use yii\helpers\Json;
 use yii\imagine\Image;
 use backend\components\Functions as tools;
@@ -15,7 +14,7 @@ class UploadController extends Controller {
     //取消csrf验证
     public $enableCsrfValidation = false;
     //分类文件夹
-    private $typeDir = '';
+    public $typeDir = '';
     //文件后缀
     private $ext = '';
     /**
@@ -76,7 +75,7 @@ class UploadController extends Controller {
             $where = ['uid'=>$uid,'status'=>2];
         }
         $imageList = TableImage::find()->select('id,sid,thumb,path')->where($where)->orderBy('time_create DESC')->asArray()->all();
-        
+
         if(!$imageList){
             return Json::encode([
                 "state" => "no match file",
@@ -104,7 +103,7 @@ class UploadController extends Controller {
         if($usedList){
             $resList = array_merge($usedList, $resList);
         }
-        
+
         return Json::encode([
                 "state" => "SUCCESS",
                 "list" => $resList,
@@ -138,7 +137,7 @@ class UploadController extends Controller {
             return $this->ajaxReturn('', '请先上传图片', false);
         }
     }
-    
+
     private function save(){
         if (isset($_FILES['imageFile'])) {
             $imgSource = $_FILES['imageFile']; //图片资源
@@ -238,11 +237,11 @@ class UploadController extends Controller {
             return $this->ajaxReturn('',$errorMsg, false);
         }
     }
-    
+
     private function ajaxReturn($data , $msg = '', $status = false){
         $state = $status ? 'SUCCESS' : $msg;
         if(!$status){
-           return Json::encode(['state'=>$state]); 
+           return Json::encode(['state'=>$state]);
         }
         $resData = [
             'state' => $state,
@@ -255,7 +254,7 @@ class UploadController extends Controller {
         ];
         return Json::encode($resData);
     }
-    
+
     /**
      * 检查文件夹目录是否存在，不存在则创建
      * @param type $sub1    第一级目录
@@ -294,7 +293,7 @@ class UploadController extends Controller {
     /**
      * 获取图片exif信息
      * @param type $path 图片原图路径
-     * @return type 
+     * @return type
      */
     private function getExif($path){
         if (extension_loaded('exif') && extension_loaded('mbstring')) {

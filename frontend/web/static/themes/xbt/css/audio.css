@@ -1,0 +1,70 @@
+.box{
+    font-size: 16px;
+}
+.audio-title{
+    font-size: 18px;
+    font-weight: bold;
+}
+#content{
+    width:100%;
+    margin-top: 10px;
+    height: 200px;
+    resize: vertical;
+    outline: 0;
+    padding: 10px;
+    font-size: 14px;
+}
+#content:focus{
+    color: #696969;
+    border-color: #f59942;
+    background-color: #fff;
+    outline: 0;
+}
+.audio-content-area{
+    font-size: 16px;
+}
+.site-index > div{
+    margin-bottom: 10px;
+}
+.audio-pople{
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    display:inline-block;
+    padding: 5px 10px;
+    background-color: #428BCA;
+}
+.audio-pople-active{
+    background-color: #F77825;
+}
+.option-title{
+    display: inline-block;
+    width:150px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.audio-select{
+    width:100px;
+}
+#create{
+    float: right;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: #F77825;
+    color: #fff;
+}
+.audio-item{
+    height:38px;
+}
+.audio-item-text{
+    display: inline-block;
+}

@@ -90,3 +90,36 @@ body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #
     color: #fff;
     background-color: #f77825;
 }
+/*分页*/
+.div-page{
+    text-align: center;
+}
+.pagination > li > a,
+.pagination > li > span {
+  padding: 8px 14px;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #F77825;
+  border-color: #F77825;
+}
+.pagination > li > a, .pagination > li > span {
+    color: #F77825;
+}
+.pagination > li > a:hover, .pagination > li > span:hover {
+    color: #F77825;
+}
+.open > .dropdown-toggle {
+  background-color: #EEEEEE;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color:#000;
+  background-color: #EEEEEE;
+}

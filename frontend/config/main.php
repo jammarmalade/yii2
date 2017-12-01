@@ -13,6 +13,9 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'language' => 'zh-CN',
     'timeZone' => 'Asia/Shanghai',
+    'aliases' => [
+        '@uploads' => '@app/../uploads/',//上传目录
+    ],
     'components' => [
         'user' => [
             'identityClass' => 'backend\models\UserBackend',

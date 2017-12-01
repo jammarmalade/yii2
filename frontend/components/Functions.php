@@ -377,4 +377,59 @@ class Functions {
         }
         return '- ' . iconv('gbk','utf-8',$ipaddr);
     }
+
+    /**
+     * 获取保存路径和文件名
+     * @param type $type    文件夹分类 image /audio
+     * @param type $suff    文件后缀 jpg，mp3
+     * @return array        savePath 后缀路径，localPath 本地保存的绝对路径
+     */
+    public static function getSavePath($type,$suff){
+        $subdir = $subdir1 = $subdir2 = '';
+        $subdir1 = date('Ym');
+        $subdir2 = date('d');
+        $subdir = $subdir1 . '/' . $subdir2;
+        $basedir = self::checkDirExists($type,$subdir1, $subdir2);
+
+        $savePath = $type.'/'.$subdir.'/'.date('His') . strtolower(self::random(16)).'.'.$suff;
+        return [
+            'savePath' => $savePath,
+            'localPath' => $basedir.$savePath,
+        ];
+    }
+    /**
+     * 检查文件夹目录是否存在，不存在则创建
+     * @param type $sub1    第一级目录
+     * @param type $sub2    第二级目录
+     * @return type
+     */
+    public static function checkDirExists($type,$sub1 = '', $sub2 = '') {
+        $basedir = Yii::getAlias('@uploads');
+        $typedir = $type ? ($basedir . '/' . $type) : '';
+        $subdir1 = $type && $sub1 !== '' ? ($typedir . '/' . $sub1) : '';
+        $subdir2 = $sub1 && $sub2 !== '' ? ($subdir1 . '/' . $sub2) : '';
+
+        $res = $subdir2 ? is_dir($subdir2) : ($subdir1 ? is_dir($subdir1) : is_dir($typedir));
+
+        if (!$res) {
+            $res = $typedir && self::makeDir($typedir);
+            $res && $subdir1 && ($res = self::makeDir($subdir1));
+            $res && $subdir1 && $subdir2 && ($res = self::makeDir($subdir2));
+        }
+        return $basedir;
+    }
+    /**
+     * 创建目录
+     * @param type $dir
+     * @param type $index 创建 index.html 文件
+     * @return type
+     */
+    public static function makeDir($dir, $index = true) {
+        $res = true;
+        if (!is_dir($dir)) {
+            $res = @mkdir($dir, 0777);
+            $index && touch($dir . '/index.html');
+        }
+        return $res;
+    }
 }
