@@ -56,15 +56,25 @@
     white-space: nowrap;
     vertical-align: middle;
     touch-action: manipulation;
-    background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
     background-color: #F77825;
     color: #fff;
 }
 .audio-item{
-    height:38px;
+    border-bottom: #c1c1c1 1px solid;
+    margin-top: 10px;
 }
 .audio-item-text{
     display: inline-block;
+    position:relative;
+    top:-10px;
+}
+.audio-item-content{
+    margin-bottom: 10px;
+}
+.audio-item-time{
+    font-size: 14px;
+    color: #c1c1c1;
+    margin-bottom: 10px;
 }

@@ -144,9 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     },
                     'unget' => function($url, $model, $key){
-                        if($model->status == 2){
-                            return Html::a('置为未获取','javascript:;', ['class' => 'btn btn-sm btn-danger ajax','data-href' => Url::to(['source/ajaxupdate','id'=>$key,'status'=>1])]);
-                        }
+                        return Html::a('置为未获取','javascript:;', ['class' => 'btn btn-sm btn-danger ajax','data-href' => Url::to(['source/ajaxupdate','id'=>$key,'status'=>1])]);
                     },
                     'digest' => function($url, $model, $key){
                         if($model->digest == 0){

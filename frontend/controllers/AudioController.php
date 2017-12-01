@@ -5,7 +5,6 @@ namespace frontend\controllers;
 use Yii;
 use frontend\components\WebController;
 use common\models\Audio;
-use backend\controllers\UploadController;
 use frontend\components\Functions as tools;
 use frontend\components\Audio\AipSpeech;
 
@@ -15,9 +14,21 @@ use frontend\components\Audio\AipSpeech;
 class AudioController extends WebController {
 
     public function actionIndex() {
-
+        $dataList = [];
+        if($this->uid){
+            $dataList = Audio::find()->where(['uid' =>$this->uid,'status' => 1])->orderBy('time_create DESC')->asArray()->all();
+            $preUrl = Yii::$app->params['staticDomain'];
+            $audioModel = new Audio();
+            $perArr = $audioModel->perArr();
+            foreach($dataList as $k=>$v){
+                $v['path'] = $preUrl.$v['path'];
+                $v['preTitle'] = $perArr[$v['per']];
+                $v['cut_content'] = mb_substr($v['content'],0,20,'utf-8').'...';
+                $dataList[$k] = $v;
+            }
+        }
         return $this->render('index', [
-
+            'dataList' => $dataList
         ]);
     }
 
@@ -76,6 +87,8 @@ class AudioController extends WebController {
                 $audioUrl = Yii::$app->params['staticDomain'].$pathArr['savePath'];
                 return $this->ajaxReturn([
                     'id' => $audioModel->id,
+                    'create_time' => $this->formatTime,
+                    'content' => mb_substr($content,0,20,'utf-8').'...',
                 ], $audioUrl,true);
             }else{
                 return $this->ajaxReturn('', '保存失败');

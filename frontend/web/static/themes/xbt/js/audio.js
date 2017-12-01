@@ -21,16 +21,21 @@
             return false;
         }
         $(this).text('生成中...');
+        var _this = $(this);
         ajaxSending = true;
         //提交
         $.post(window.URL_AUDIO,{'content': content,'spd': spd,'pit': pit,'vol': vol,'per': per},function(d){
             if(d.status){
-                var html = '<div class="audio-item">'+text+' <audio src="'+d.msg+'" controls="controls">您的浏览器不支持 audio 标签。</audio></div>';
-                $('#audio_list').append(html);
+                var data = d.data;
+                var html = '<div class="audio-item"><span class="audio-item-text">'+text+' </span>';
+                html += '<audio src="'+d.msg+'" controls="controls">您的浏览器不支持 audio 标签。</audio>';
+                html += '<div class="audio-item-content">内容：'+data['content']+'</div><div class="audio-item-time">生成时间：'+data['create_time']+'</div>';
+                html += '</div>';
+                $('#audio_list').prepend(html);
             }else{
                 showMsg(d.msg);
             }
-            $(this).text('合成语音');
+            _this.text('合成语音');
             ajaxSending = false;
         },'json')
     })

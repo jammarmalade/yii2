@@ -17,7 +17,7 @@ AppAsset::addScript($this, 'viewer.min.js');
 ?>
 <div class="source-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>【<?=count($sourceImageList)?>】</h1>
 
     <p><?= $model->content?></p>
     

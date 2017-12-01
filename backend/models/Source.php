@@ -86,6 +86,7 @@ class Source extends \yii\db\ActiveRecord {
             'zhaifuli.xyz' => '宅福利5',
             'yxpjw.vip' => '宅福利6',
             'yxpjw.me' => '宅福利7',
+            'yxpjw.club' => '宅福利8',
         ];
     }
 

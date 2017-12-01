@@ -70,7 +70,16 @@ $this->title = '语音合成 - '.$confg['siteName'];
         <a href="javascript:;" id="create">合成语音</a>
     </div>
     <div id="audio_list">
-        <div class="audio-item"><span class="audio-item-text">普通女声 </span><audio src="http://test1.jam00.com/uploads/audio/201712/01/180727hnyrorjrn5r5z5jr.mp3" controls="controls">您的浏览器不支持 audio 标签。</audio></div>
+        <?php
+        foreach($dataList as $k=>$v){
+        ?>
+            <div class="audio-item">
+                <span class="audio-item-text"><?=$v['preTitle']?></span>
+                <audio src="<?=$v['path']?>" controls="controls">您的浏览器不支持 audio 标签。</audio>
+                <div class="audio-item-content">内容：<?=$v['cut_content']?></div>
+                <div class="audio-item-time">生成时间：<?=$v['time_create']?></div>
+            </div>
+        <?php }?>
     </div>
 
 </div>

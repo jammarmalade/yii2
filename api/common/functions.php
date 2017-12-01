@@ -62,9 +62,20 @@ class Functions {
         curl_setopt($hander, CURLOPT_TIMEOUT, 60);
         curl_setopt($hander, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($hander, CURLOPT_BINARYTRANSFER, 1);
-        curl_setopt($hander, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36");
-        $header[] = "image/webp,*/*;q=0.8";
+        curl_setopt($hander, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+//        $header[] = "Accept:image/webp,*/*;q=0.8";
+//        $header[] = "Accept-Encoding:gzip, deflate, sdch";
+//        $header[] = "Accept-Language:zh-CN,zh;q=0.8";
+//        $header[] = "Cache-Control:no-cache";
+//        $header[] = "Pragma:no-cache";
+        $header[] = "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
         $header[] = "Accept-Encoding:gzip, deflate, sdch";
+        $header[] = "Accept-Language:zh-CN,zh;q=0.8";
+        $header[] = "Cache-Control:no-cache";
+        $header[] = "Connection:keep-alive";
+        $header[] = "Pragma:no-cache";
+        $header[] = "Upgrade-Insecure-Requests:1";
+        $header[] = "User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
         if ($referer) {
             $header[] = "Referer:$referer";
         }
@@ -76,6 +87,7 @@ class Functions {
         }
         $img = curl_exec($hander);
         curl_close($hander);
+
         if ($img) {
             $fp = fopen($filename, 'wb');
             fwrite($fp, $img);

@@ -14,7 +14,7 @@ use backend\models\SourceImage;
 
 class SourceController extends ApiactiveController {
 
-    public $nameZfl = 'yxpjw.me';
+    public $nameZfl = 'yxpjw.club';
 
     /**
      * 获取列表
@@ -126,7 +126,7 @@ class SourceController extends ApiactiveController {
     public function deepGetInfo($info, $getUrl, $page) {
         static $deepCount;
         $html = $this->getInfo($getUrl);
-        $nextUrl = $this->saveInfo($html, $info, $page);
+        $nextUrl = $this->saveInfo($html, $info, $page,$getUrl);
         if ($nextUrl && $deepCount < 100) {
             $deepCount++;
             $this->deepGetInfo($info, $nextUrl, ++$page);
@@ -138,7 +138,7 @@ class SourceController extends ApiactiveController {
     /**
      * 将详情页内容存入数据库
      */
-    private function saveInfo($html, $info, $page) {
+    private function saveInfo($html, $info, $page,$getUrl) {
         include_once \Yii::getAlias("@app") . '/common/simple_html_dom.php';
 
         $dom = new \simple_html_dom();
@@ -172,7 +172,7 @@ class SourceController extends ApiactiveController {
             $tmp['name'] = $this->nameZfl;
             $tmp['sid'] = $m[2];
             $tmp['surl'] = $src;
-            $path = $this->getImage($src, $this->nameZfl . '/' . $m[1] . '/' . $info['id'] . '/' . md5($src));
+            $path = $this->getImage($src, $this->nameZfl . '/' . $m[1] . '/' . $info['id'] . '/' . md5($src),'info');
             if ($path == -1) {
                 $tmp = [];
                 continue;
@@ -230,12 +230,18 @@ class SourceController extends ApiactiveController {
     /**
      * 下载图片
      */
-    private function getImage($url, $preDir) {
+    private function getImage($url, $preDir,$type = 'check') {
         $preSavePath = \Yii::getAlias('@uploads');
         $locaPath = $preDir . '.jpg';
         $savePath = $preSavePath . $locaPath;
+
         if (file_exists($savePath) && is_readable($savePath)) {
-            return -1;
+            if(!in_array(filesize($savePath),[154,568,1459])){
+                return -1;
+            }elseif ($type=='info'){
+                Functions::curlGetImage($url, $savePath, 'http://'.$this->nameZfl.'/', 'images.zhaofulipic.com:8818');
+                return -1;
+            }
         }
         $saveDir = dirname($savePath);
         if (!is_dir($saveDir)) {
@@ -280,7 +286,7 @@ class SourceController extends ApiactiveController {
      */
     public function actionCheck(){
         set_time_limit(0);
-        $imgList = SourceImage::find()->where(['check'=>0])->asArray()->limit(50)->all();
+        $imgList = SourceImage::find()->where(['check'=>0])->asArray()->limit(10)->all();
         if(!$imgList){
             exit();
         }
@@ -294,7 +300,11 @@ class SourceController extends ApiactiveController {
             }
             list($locaPath, $savePath) = $path;
             if(file_exists($savePath)){
-                SourceImage::updateAll(['status' => 3,'check' => 1],['id' => $v['id']]);
+                if(!in_array(filesize($savePath),[154,568,1459])){
+                    SourceImage::updateAll(['status' => 3,'check' => 1],['id' => $v['id']]);
+                }else{
+                    SourceImage::updateAll(['status' => 3,'check' => 0],['id' => $v['id']]);
+                }
             }
         }
     }

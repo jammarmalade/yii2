@@ -73,5 +73,14 @@ class Audio extends \yii\db\ActiveRecord
             2 => '删除',
         ];
     }
+
+    public function perArr(){
+        return [
+            0 => '普通女声',
+            1 => '普通男声',
+            3 => '情感合成-男声',
+            4 => '情感合成-女声',
+        ];
+    }
     
 }
