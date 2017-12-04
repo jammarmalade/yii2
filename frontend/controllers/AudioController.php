@@ -7,6 +7,7 @@ use frontend\components\WebController;
 use common\models\Audio;
 use frontend\components\Functions as tools;
 use frontend\components\Audio\AipSpeech;
+use FFMpeg;
 
 /**
  * audio controller
@@ -103,6 +104,13 @@ class AudioController extends WebController {
             return $this->ajaxReturn('', '合成失败！[ '.$err[$result['err_no']].' ]');
         }
 
+    }
+
+    public function actionTest(){
+        $ffmpeg = \FFMpeg\FFMpeg::create();
+        $file = Yii::getAlias('@uploads').'/audio/201712/03/173205tczcfy00y3i9tqc3.mp3';
+        $audio = $ffmpeg->open($file);
+        tools::printarr($audio);
     }
 
 }
