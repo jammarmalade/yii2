@@ -13,7 +13,7 @@ use yii\helpers\Json;
  * Admin controller
  */
 class AdminController extends Controller {
-    
+
     private $nav1ActiveId ;
     protected $formatTime ;
     protected $time ;
@@ -38,18 +38,18 @@ class AdminController extends Controller {
             $active = 'class="active"';
             $this->nav1ActiveId = $menu['parent'];
         }
-        $return = [ 
+        $return = [
             'id' => $menu['id'],
             'label' => $menu['name'],
             'url' => $menu['route'] ? Url::to([$menu['route']]) : 'javascript:;',
             'route' => $menu['route'],
-            'icon' => $menu['data'], 
+            'icon' => $menu['data'],
             'items' => $menu['children'],
             'active' => $active,
         ];
         return $return;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -90,14 +90,14 @@ class AdminController extends Controller {
             ],
         ];
     }
-    
+
     public function message($data){
         if(!isset($data['title'])){
             $data['title'] = '错误提示';
         }
         return $this->render('/site/message', $data);
     }
-    
+
     public function ajaxReturn($data , $msg = '', $status = false){
         $resData = [
             'data' => $data,

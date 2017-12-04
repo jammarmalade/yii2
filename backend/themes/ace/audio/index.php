@@ -1,66 +1,70 @@
 <?php
 
-use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
-
-/* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\crud\Generator */
-
-$urlParams = $generator->generateUrlParams();
-$nameAttribute = $generator->getNameAttribute();
-
-echo "<?php\n";
-?>
-
 use yii\helpers\Html;
-use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
+use yii\grid\GridView;
 use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
-<?= !empty($generator->searchModelClass) ? "/* @var \$searchModel " . ltrim($generator->searchModelClass, '\\') . " */\n" : '' ?>
+/* @var $searchModel backend\models\AudioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>;
+$this->title = '语音合成列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
+<div class="audio-index">
 
-    <h1><?= "<?= " ?>Html::encode($this->title) ?></h1>
-<?php if(!empty($generator->searchModelClass)): ?>
-<?= "    <?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
-<?php endif; ?>
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+<!--    <p>
+        <?= Html::a('Create Audio', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>-->
 
-<?php if ($generator->indexWidgetType === 'grid'): ?>
-    <?= "<?= " ?>GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => [\n" : "'columns' => [\n"; ?>
-            ['class' => 'yii\grid\SerialColumn'],
-
-<?php
-$count = 0;
-if (($tableSchema = $generator->getTableSchema()) === false) {
-    foreach ($generator->getColumnNames() as $name) {
-        if (++$count < 6) {
-            echo "            '" . $name . "',\n";
-        } else {
-            echo "            // '" . $name . "',\n";
-        }
-    }
-} else {
-    foreach ($tableSchema->columns as $column) {
-        $format = $generator->generateColumnFormat($column);
-        if (++$count < 6) {
-            echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
-        } else {
-            echo "            // '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
-        }
-    }
-}
-?>
+        'filterModel' => $searchModel,
+        'columns' => [
+            'id',
+            [
+                'attribute' => 'username',
+                'value' => function($model){
+                    return Html::a($model->username,['user-backend/view','id'=>$model->uid] , ["target" => "_blank"]);
+                },
+                'headerOptions' => ['width' => '100px'],
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => 'content',
+                'label' => '合成内容',
+                'value' => function($model){
+                    return mb_substr($model->content, 0,300).'...';
+                },
+                'headerOptions' => ['width' => '400px'],
+            ],
+            [
+                'label' => '语速/音调/音量',
+                'value' => function($model){
+                    return $model->spd.' / '.$model->pit.' / '.$model->vol;
+                },
+                'headerOptions' => ['width' => '120px'],
+            ],
+            [
+                'attribute' => 'per',
+                'label' => '发声人',
+                'value' => function($model){
+                    return $model->per;
+                },
+                'headerOptions' => ['width' => '100px'],
+            ],
+            [
+                'attribute' => 'path',
+                'label' => '合成语音',
+                'value' => function($model){
+                    $staticDomain = Yii::$app->params['staticDomain'];
+                    return '<audio src="'.$staticDomain.$model->path.'" controls="controls">您的浏览器不支持 audio 标签。</audio>';
+                },
+                'format' => 'raw',
+            ],
             [
                 'attribute' => 'status',
                 'label' => '状态',
@@ -124,15 +128,6 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
             ],
         ],
     ]); ?>
-<?php else: ?>
-    <?= "<?= " ?>ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]);
-        },
-    ]) ?>
-<?php endif; ?>
 
 </div>
 

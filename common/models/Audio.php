@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $id
  * @property string $uid
+ * @property string $username
  * @property string $content
  * @property integer $spd
  * @property integer $pit
@@ -54,6 +55,7 @@ class Audio extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'uid' => '用户id',
+            'username' => '用户名',
             'content' => '合成文本',
             'spd' => '语速，取值0-9，默认为5中语速',
             'pit' => '音调，取值0-9，默认为5中语调',
@@ -73,5 +75,5 @@ class Audio extends \yii\db\ActiveRecord
             2 => '删除',
         ];
     }
-    
+
 }
