@@ -26,6 +26,7 @@ use common\models\BaseModel;
  * @property string $image_id
  * @property string $copyright
  * @property integer $status
+ * @property integer $bdlink
  * @property string $time_update
  * @property string $time_create
  */
@@ -78,6 +79,7 @@ class Article extends BaseModel
             'image_id' => '内容第一张图片的id',
             'copyright' => '显示版权',
             'status' => '状态，1正常，2删除',
+            'bdlink' => '提交链接到百度，0未提交，1已提交可更新',
             'time_update' => '更新时间',
             'time_create' => '创建时间',
         ];
@@ -109,7 +111,7 @@ class Article extends BaseModel
         $count = $articleQuery->count();
         $pages = new Pagination(['totalCount' => $count, 'pageSize' => $limit,'defaultPageSize' => $defaultPageSize]);
         $articleList = $articleQuery->select($field)->orderBy('a.time_create DESC')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
-        
+
         $imgList = $imageIds = $aids = $groupTagList = [];
         if (is_array($articleList)) {
             $imageIds = array_filter(array_column($articleList, 'image_id'));
@@ -129,7 +131,7 @@ class Article extends BaseModel
                 $groupTagList[$v['aid']][] = $v;
             }
         }
-        
+
         if (is_array($articleList)) {
             $defaultArticlItemImg = Yii::$app->view->theme->baseUrl.'/images/articl-item.jpg';
             foreach ($articleList as $k => $v) {
@@ -154,5 +156,5 @@ class Article extends BaseModel
         $cacheData['pages'] = $pages;
         return $cacheData;
     }
-    
+
 }
