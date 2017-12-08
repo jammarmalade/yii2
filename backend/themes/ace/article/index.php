@@ -14,7 +14,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="article-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+    if(Yii::$app->getSession()->getFlash('success')){
+        echo '<div class="alert alert-block alert-success">'.Yii::$app->getSession()->getFlash('success').'</div>';
+    }
+    if(Yii::$app->getSession()->getFlash('error')){
+        echo '<div class="alert alert-block alert-danger">'.Yii::$app->getSession()->getFlash('error').'</div>';
+    }
+    ?>
+
 
     <p>
         <?= Html::a('新增文章', ['create'], ['class' => 'btn btn-success']) ?>
@@ -47,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         '1' => '正常',
                         '2' => '删除',
                     ];
-                    return $state[$model->status];   
+                    return $state[$model->status];
                 },
                 'headerOptions' => ['width' => '70'],
                 'filter' => Html::activeDropDownList($searchModel,'status',['1'=>'正常','2'=>'删除'],['prompt'=>'全部'])
@@ -68,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'time_create',
                 'label' => '创建时间',
                 'value' => function($model){
-                    return  $model->time_create;   
+                    return  $model->time_create;
                 },
                 'headerOptions' => ['width' => '200'],
                 'filter' => DatePicker::widget([
@@ -77,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'language' => 'zh-CN',
                         'dateFormat' => 'yyyy-MM-dd',
                         'value' =>  function($model){
-                            return  $model->time_create_from;   
+                            return  $model->time_create_from;
                         },
                         'options' => ['class' => 'col-xs-6','id' => 'time_create_from','title'=> '选择开始日期'],
                     ]).DatePicker::widget([
@@ -86,12 +94,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         'language' => 'zh-CN',
                         'dateFormat' => 'yyyy-MM-dd',
                         'value' =>  function($model){
-                            return  $model->time_create_to;   
+                            return  $model->time_create_to;
                         },
                         'options' => ['class' => 'col-xs-6','id' => 'time_create_to','title'=> '选择结束日期'],
                     ]),
             ],
             //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => '提交到百度',
+                'template' => '{submit}',
+                'buttons' => [
+                    'submit' => function($url, $model, $key){
+                        if($model->bdlink == 0){
+                            return Html::a('推送数据到百度',['bdlink', 'id' => $key ,'type' => 0], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '确定推送吗？','method' => 'post']]);
+                        }else{
+                            return Html::a('更新数据到百度',['bdlink', 'id' => $key ,'type' => 1], ['class' => 'btn btn-sm btn-success','data' => ['confirm' => '确定更新吗？','method' => 'post']]);
+                        }
+                    },
+                ],
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
