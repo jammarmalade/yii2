@@ -146,7 +146,7 @@ class ArticleController extends WebController {
             $apiType = 'update';
         }
         $articleUrl = 'https://blog.jam00.com/article/info/' . $id . '.html';
-        $apiUrl = 'http://data.zz.baidu.com/'.$apiType.'?site=https://blog.jam00.com&token=oCdtFTedue07WkJ3&type=original';
+        $apiUrl = 'http://data.zz.baidu.com/'.$apiType.'?site=https://blog.jam00.com&token=oCdtFTedue07WkJ3';
         $urls = [$articleUrl];
         $ch = curl_init();
         $options = array(
