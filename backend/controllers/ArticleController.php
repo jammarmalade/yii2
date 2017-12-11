@@ -255,18 +255,18 @@ class ArticleController extends AdminController {
      */
     public function actionBdlink() {
 
-        $id = $this->input('post.id', 0);
+        $id = $this->input('get.id', 0);
         if (!$id) {
             return $this->message(['msg' => '数据错误 id']);
         }
-        $type = $this->input('post.type', 0);
+        $type = $this->input('get.type', 0);
         if ($type == 0) {
             $apiType = 'urls';
         } else {
             $apiType = 'update';
         }
         $articleUrl = 'https://blog.jam00.com/article/info/' . $id . '.html';
-        $apiUrl = 'http://data.zz.baidu.com/'.$apiType.'?site=https://blog.jam00.com&token=gFTvGyQgYth3Mr1j&type=original';
+        $apiUrl = 'http://data.zz.baidu.com/'.$apiType.'?site=https://blog.jam00.com&token=oCdtFTedue07WkJ3&type=original';
         $urls = [$articleUrl];
         $ch = curl_init();
         $options = array(
@@ -278,9 +278,9 @@ class ArticleController extends AdminController {
         );
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
-        $resArr = json_encode($result, true);
-        if($resArr['error']){
-            Yii::$app->getSession()->setFlash('error', '提交链接到百度失败：'.$resArr['message']);
+        $resArr = json_decode($result, true);
+        if(isset($resArr['error'])){
+            Yii::$app->getSession()->setFlash('error', '提交链接到百度失败：【'.$resArr['error'].'】'.$resArr['message']);
             return $this->redirect(['index']);
         }else{
             if($type == 0) {

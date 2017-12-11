@@ -52,7 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'per',
                 'label' => '发声人',
                 'value' => function($model){
-                    return $model->per;
+                    $perArr = $model->perArr();
+                    return $perArr[$model->per];
                 },
                 'headerOptions' => ['width' => '100px'],
             ],
