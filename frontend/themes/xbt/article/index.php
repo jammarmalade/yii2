@@ -51,7 +51,7 @@ $this->metaTags[]="<meta name='description' content='".$articleInfo['description
     <div id="copyright">
         本内容为博主原创，转载请注明出处。本文链接 <a href="<?=$selfUrl?>"><?=$selfUrl?></a>
         <?php
-        if(Yii::$app->user->identity->id==1){
+        if(isset(Yii::$app->user->identity->id) && Yii::$app->user->identity->id==1){
             if($articleInfo['bdlink']==0){
                 $title = '提交到百度';
             }else{
