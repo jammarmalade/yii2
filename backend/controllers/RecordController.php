@@ -180,10 +180,10 @@ class RecordController extends AdminController
         $uid = Yii::$app->user->identity->id;
         $startMouth = $endMouth = date('m');
         $chooseYear = date('Y');
+        $groupType = 'day';
         if($chooseDate){
             $tmmMouth = explode('-', $chooseDate);
             if(count($tmmMouth)==2){
-                $groupType = 'day';
                 //获取月份数据
                 $startMouth = $endMouth = $tmmMouth[1];
                 $chooseYear = $chooseYear;
