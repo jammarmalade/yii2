@@ -17,7 +17,7 @@ use backend\models\Tag;
  */
 class RecordController extends AdminController
 {
-    
+
     /**
      * Lists all Record models.
      * @return mixed
@@ -26,11 +26,17 @@ class RecordController extends AdminController
     {
         $searchModel = new RecordSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
+
+        $tid = $this->input('tid',0);
+        $tagInfo = [];
+        if($tid){
+            $tagInfo = Tag::findOne($tid);
+        }
         //查询id
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tagInfo' => $tagInfo,
         ]);
     }
 
@@ -169,7 +175,7 @@ class RecordController extends AdminController
     //统计
     public function actionStatistics(){
         $chooseDate = Yii::$app->request->get('date');
-        
+
         //默认获取本月数据
         $uid = Yii::$app->user->identity->id;
         $startMouth = $endMouth = date('m');
@@ -177,10 +183,12 @@ class RecordController extends AdminController
         if($chooseDate){
             $tmmMouth = explode('-', $chooseDate);
             if(count($tmmMouth)==2){
+                $groupType = 'day';
                 //获取月份数据
                 $startMouth = $endMouth = $tmmMouth[1];
                 $chooseYear = $chooseYear;
             }else{
+                $groupType = 'mouth';
                 $chooseYear = $chooseDate;
                 //获取年份数据
                 $startMouth = 1;
@@ -195,7 +203,7 @@ class RecordController extends AdminController
             ->orderBy('time_create DESC')
             ->asArray()
             ->all();
-        
+
         //记录标签
         $rids = array_column($recordData, 'id');
         $recordGroupData = $bdRecordData = [];
@@ -228,17 +236,29 @@ class RecordController extends AdminController
                 if($v['longitude'] && $v['latitude']){
                     $bdtmp['address'] = $v['province'].$v['city'].$v['area'].$v['address'];
                     $bdtmp['longitude'] = $v['longitude'];
+                    $bdtmp['account'] = $v['account'].($v['type']==1 ? '（支出）' : '（收入）');
                     $bdtmp['latitude'] = $v['latitude'];
                     $bdtmp['content'] = $v['content'];
                     $bdtmp['tags'] = $tagsHtml;
                     $bdtmp['time'] = $v['time_create'];
                     $bdRecordData[] = $bdtmp;
                 }
-                $recordGroupData[$v['date']][] = $v;
+                //若是查看全年数据，则安装月份来分组
+                $groupKey = $groupType == 'day' ? $v['date'] : substr($v['date'], 0,7);
+                $recordGroupData[$groupKey][] = $v;
             }
         }
-        
-        $dateArr = func::rangDate($startDate, $endDate,'Y-m-d');
+
+        if($groupType == 'day'){
+            $dateArr = func::rangDate($startDate, $endDate,'Y-m-d');
+        }else{
+            //按照月份来显示
+            $dateArr = [];
+            for($i=1;$i<=12;$i++){
+                $dateArr[] = $chooseDate.'-'.($i < 10 ? '0'.$i : $i);
+            }
+        }
+
         $ydataIn = $ydataOut = [];
         $data = [];
         $data['accountOut'] = $data['accountIn'] = 0;
@@ -252,13 +272,20 @@ class RecordController extends AdminController
             if(isset($recordGroupData[$tmpDate])){
                 foreach($recordGroupData[$tmpDate] as $dateData){
                     if($dateData['type']==1){
-                        $data['accountOut'] += $dateData['account'];
-                        $tmpOut['y'] += $dateData['account'];
-                        $tmpOut['tags'] = array_values(array_unique(array_merge($dateData['tags'], $tmpOut['tags'])));
+                        //支出数据
+                        $data['accountOut'] = floatval(bcadd($data['accountOut'], $dateData['account'],2));
+                        $tmpOut['y'] = floatval(bcadd($tmpOut['y'],$dateData['account'],2));
+                        //若是标签太长，前端显示不下
+                        if(count($tmpOut['tags']) < 20){
+                            $tmpOut['tags'] = array_values(array_unique(array_merge($dateData['tags'], $tmpOut['tags'])));
+                        }
                     }else{
-                        $data['accountIn'] += $dateData['account'];
-                        $tmpIn['y'] += $dateData['account'];
-                        $tmpIn['tags'] = array_values(array_unique(array_merge($dateData['tags'], $tmpIn['tags'])));
+                        //收入数据
+                        $data['accountIn'] = floatval(bcadd($data['accountIn'], $dateData['account'],2));
+                        $tmpIn['y'] = floatval(bcadd($tmpIn['y'],$dateData['account'],2));
+                        if(count($tmpIn['tags']) < 20){
+                            $tmpIn['tags'] = array_values(array_unique(array_merge($dateData['tags'], $tmpIn['tags'])));
+                        }
                     }
                 }
             }
@@ -266,17 +293,18 @@ class RecordController extends AdminController
             $ydataOut[] = $tmpOut;
             $dateArr[$k] = date('n-d',strtotime($tmpDate));
         }
-        $data['income'] = $data['accountIn'] - $data['accountOut'];
-        
+        $data['income'] = floatval(bcsub($data['accountIn'], $data['accountOut'],2));
+
         //所有年份
         $yearArr = range(2017, date('Y'));
+        $chooseMouth = '';
         if($startMouth == $endMouth){
             $chooseMouth = $startMouth;
         }
         foreach($recordGroupData as $k=>$v){
             $recordGroupData[$k] = func::multi_array_sort($v, 'account',SORT_DESC);
         }
-        
+
         $jsonData = json_encode($bdRecordData);
         return $this->render('statistics', [
             'ydataIn' => $ydataIn,

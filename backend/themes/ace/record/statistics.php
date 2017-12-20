@@ -44,46 +44,46 @@ $this->params['breadcrumbs'][] = $this->title;
         display: none;
     }
     //多级下拉菜单
-    .dropdown-submenu {  
-        position: relative;  
-    }  
-    .dropdown-submenu > .dropdown-menu {  
-        top: 0;  
-        left: 100%;  
-        margin-top: -6px;  
-        margin-left: -1px;  
-        -webkit-border-radius: 0 6px 6px 6px;  
-        -moz-border-radius: 0 6px 6px;  
-        border-radius: 0 6px 6px 6px;  
+    .dropdown-submenu {
+        position: relative;
     }
-    .dropdown-submenu:hover > .dropdown-menu {  
-        display: block;  
-    }  
-    .dropdown-submenu > a:after {  
-        display: block;  
-        content: " ";  
-        float: right;  
-        width: 0;  
-        height: 0;  
-        border-color: transparent;  
-        border-style: solid;  
-        border-width: 5px 0 5px 5px;  
-        border-left-color: #ccc;  
-        margin-top: 5px;  
+    .dropdown-submenu > .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -6px;
+        margin-left: -1px;
+        -webkit-border-radius: 0 6px 6px 6px;
+        -moz-border-radius: 0 6px 6px;
+        border-radius: 0 6px 6px 6px;
+    }
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+    .dropdown-submenu > a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
         margin-right: 10px;
     }
-    .dropdown-submenu:hover > a:after {  
-        border-left-color: #fff;  
-    }  
-    .dropdown-submenu.pull-left {  
-        float: none;  
-    }  
-    .dropdown-submenu.pull-left > .dropdown-menu {  
-        left: -100%;  
-        margin-left: 10px;  
-        -webkit-border-radius: 6px 0 6px 6px;  
-        -moz-border-radius: 6px 0 6px 6px;  
-        border-radius: 6px 0 6px 6px;  
+    .dropdown-submenu:hover > a:after {
+        border-left-color: #fff;
+    }
+    .dropdown-submenu.pull-left {
+        float: none;
+    }
+    .dropdown-submenu.pull-left > .dropdown-menu {
+        left: -100%;
+        margin-left: 10px;
+        -webkit-border-radius: 6px 0 6px 6px;
+        -moz-border-radius: 6px 0 6px 6px;
+        border-radius: 6px 0 6px 6px;
     }
     .title{
         magin:5px 0px;
@@ -124,11 +124,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
                 <?php foreach($yearArr as $v){?>
                     <li class="dropdown-submenu <?php if($v==$chooseYear){echo 'li-active';}?>">
-                        <a href="#">
+                        <a href="<?php echo Url::to(['record/statistics','date'=>$chooseYear]);?>">
                             <i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
                             <?=$v?> 年
                         </a>
-                        <ul class="dropdown-menu pull-right">  
+                        <ul class="dropdown-menu pull-right">
                         <?php for($i=1;$i<=12;$i++){?>
                             <li><a href="<?php echo Url::to(['record/statistics','date'=>$chooseYear.'-'.$i]);?>" class="<?php if($v==$chooseYear && $i==intval($chooseMouth)){echo 'li-active';}?>"><?=$i?>月</a></li>
                         <?php }?>
@@ -163,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="title">图表</div>
         <div id="container"></div>
     </div>
-    
+
     <div class="record-area">
         <div class="title">详细记录</div>
         <table id="record-table" class="table table-striped table-bordered table-hover">
@@ -173,6 +173,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th>标签</th>
                     <th>金额</th>
                     <th>类型</th>
+                    <th>日期</th>
                     <th>备注</th>
                 </tr>
             </thead>
@@ -188,13 +189,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         </td>
                         <td><?=$v['account']?></td>
                         <td><?php if($v['type']==1){echo '<span style="color:#FF3030;">支出</span>';}else{echo '<span style="color:#9ACD32;">收入</span>';}?></td>
+                        <td><?=$v['date']?></td>
                         <td><?=$v['content']?></td>
                     </tr>
                     <?php }?>
                 </tbody>
             <?php }?>
         </table>
-        
+
     </div>
     <div id="map_area">
         <div class="title">坐标显示（有些定位不准确）</div>
@@ -298,6 +300,7 @@ jQuery(document).ready(function () {
             map.addOverlay(marker[k]);
 
             html = "<div class='bd-dialog'><table>";
+            html += "<tr><td style='width:50px'>金额：</td><td>" + tmpData['account'] + "</td></tr>";
             html += "<tr><td style='width:50px'>地址：</td><td>" + tmpData['address'] + "</td></tr>";
             html += "<tr><td style='width:50px'>标签：</td><td>" + tmpData['tags'] + "</td></tr>";
             html += "<tr><td style='width:50px'>备注：</td><td>" + tmpData['content'] + "</td></tr>";
@@ -311,7 +314,7 @@ jQuery(document).ready(function () {
             })(k);
         }
     }
-    
+
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>

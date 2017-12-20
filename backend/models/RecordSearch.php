@@ -59,7 +59,10 @@ class RecordSearch extends Record
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        //若是有tid
+        if(isset($params['tid'])){
+            $query->from(Record::tableName().' r')->innerJoin(['tr' => TagRecord::tableName()], "r.id = tr.rid")->where(['tr.tid' => $params['tid']])->select('r.*');
+        }
         $query->andFilterWhere([
             'id' => $this->id,
             'uid' => $this->uid,
@@ -82,7 +85,7 @@ class RecordSearch extends Record
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'weather', $this->weather])
             ->andFilterWhere(['like', 'remark', $this->remark]);
-        
+
         return $dataProvider;
     }
 }

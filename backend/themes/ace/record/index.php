@@ -9,7 +9,11 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\RecordSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '收支记录';
+if($tagInfo){
+    $this->title = '收支记录 - '.$tagInfo['name'];
+}else{
+    $this->title = '收支记录';
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -24,7 +28,18 @@ $this->params['breadcrumbs'][] = $this->title;
         margin-left: 10px;
         font-size: 14px;
     }
-    
+    #top_search_div{
+        position: static;
+        width:200px;
+        margin-bottom: 10px;
+    }
+    #top_search_input{
+        width:200px;
+    }
+    .tag a,a:hover, a:focus {
+        color: #fff;
+        text-decoration: none;
+    }
 </style>
 <div class="record-index">
     <div class="tabbable">
@@ -42,11 +57,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 </a>
             </li>
         </ul>
-        
+
         <div class="tab-content">
             <div id="list" class="tab-pane in active">
                 <p>
                     <?= Html::a('新增收支记录', ['create'], ['class' => 'btn btn-success']) ?>
+                    <?php
+                    if($tagInfo){
+                        echo Html::a('查看所有', ['index'], ['class' => 'btn btn-success']);
+                    }
+                    ?>
                 </p>
 
                 <?= GridView::widget([
@@ -66,16 +86,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'account',
                         'content:ntext',
-            //             'imgstatus',
-            //             'longitude',
-            //             'latitude',
-            //             'weather',
-            //             'remark',
+                        [
+                            'attribute' => 'address',
+                            'label' => '记录地址',
+                            'value' => function($model){
+                                $address = $model->country.$model->province;
+                                if($model->province != $model->city){
+                                    $address .= $model->city;
+                                }
+                                $address .= $model->area.'<br>'.$model->address;
+                                return $address;
+                            },
+                            'format' => 'raw',
+                        ],
                          [
                             'attribute' => 'time_create',
                             'label' => '创建时间',
                             'value' => function($model){
-                                return  $model->time_create;   
+                                return  $model->time_create;
                             },
                             'headerOptions' => ['width' => '200'],
                             'filter' => DatePicker::widget([
@@ -93,7 +121,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'language' => 'zh-CN',
                                     'dateFormat' => 'yyyy-MM-dd',
                                     'value' =>  function($model){
-                                        return  $model->time_create_to;   
+                                        return  $model->time_create_to;
                                     },
                                     'options' => ['class' => 'col-xs-6','id' => 'time_create_to','title'=> '选择结束日期'],
                                 ]),
@@ -103,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => '记录类型',
                             'value' => function($model){
                                 $state = $model->recordType();
-                                return $state[$model->type];   
+                                return $state[$model->type];
                             },
                             'headerOptions' => ['width' => '70'],
                             'filter' => Html::activeDropDownList($searchModel,'type',$searchModel->recordType(),['prompt'=>'全部'])
@@ -116,7 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $html = '<div class="show-tag-area" data-rid="'.$model->id.'">';
                                 foreach($res as $k=>$v){
                                     $tmpUrl = Url::to(['record/ajaxdeletetag']);
-                                    $html .= '<span class="tag"><m>'.$v['name'].'</m><button type="button" class="close delete-tag" data-rid="'.$model->id.'" data-tagid="'.$v['id'].'" data-href="'.$tmpUrl.'">×</button></span>';
+                                    $html .= '<span class="tag"><m>'.Html::a($v['name'],['index','tid'=>$v['id']] , ["class" => "tag-link"]).'</m><button type="button" class="close delete-tag" data-rid="'.$model->id.'" data-tagid="'.$v['id'].'" data-href="'.$tmpUrl.'">×</button></span>';
                                 }
                                 $html .= '</div>';
                                 //新增
@@ -124,7 +152,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //输入域
                                 $html .= '<div class="nav-search tag-search"><span class="tags-search-area input-icon"><input type="text" class="nav-search-input input-search-tag" placeholder="搜索标签" autocomplete="off"><i class="icon-search nav-search-icon"></i></span><a class="close-search-area label label-lg label-pink arrowed-right" href="javascript:;">完成</a></div>';
                                 return $html;
-                            }
+                            },
+                            'filter' => '<div class="nav-search" id="top_search_div">
+                                        <span class="tags-search-area input-icon">
+                                            <input type="text" class="nav-search-input" id="top_search_input" placeholder="搜索标签" autocomplete="off">
+                                            <i class="icon-search nav-search-icon"></i>
+                                        </span>
+                                    </div>'
                         ],
                         [
                             'class' => 'yii\grid\ActionColumn',
@@ -151,13 +185,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]); ?>
             </div>
-            
+
             <div id="search" class="tab-pane">
                 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
             </div>
         </div>
     </div>
-    
+
 
 </div>
 <div id="dialog-confirm" class="hide">
@@ -249,7 +283,7 @@ jQuery(document).ready(function () {
               return false;
             },
             select: function(e, ui) {
-                event.preventDefault(); 
+                event.preventDefault();
 
                 var tagid = ui.item.value;
                 var tagname = ui.item.label;
@@ -320,6 +354,32 @@ jQuery(document).ready(function () {
             return $("<li>").append(html).appendTo( ul );
         };
     }
+    //绑定顶部搜索
+    $('#top_search_input').autocomplete({
+        minLength: 1,
+        source: '<?php echo Url::to(['tag/search']);?>',
+        focus: function() {
+          // 防止在获得焦点时插入值
+          return false;
+        },
+        select: function(e, ui) {
+            event.preventDefault();
+
+            var tagid = ui.item.value;
+            this.value = '';
+            if(tagid > 0){
+                window.location.href = '<?php echo Url::to(['record/index']);?>'+'&tid='+tagid;
+            }
+            return false;
+        }
+    }).data("ui-autocomplete")._renderItem = function( ul, item ) {
+        console.log(item);
+        var html = '<span>' + item.label + '</span>';
+        if (item.value == 0) {
+            html =  '<span>没有该标签</span>';
+        }
+        return $("<li>").append(html).appendTo( ul );
+    };
 });
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["index"], \yii\web\View::POS_END); ?>

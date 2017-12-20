@@ -90,7 +90,11 @@ class AdminController extends Controller {
             ],
         ];
     }
-
+    /**
+     * 提示信息
+     * @param string $data ['title' => '提示标题' ,'msg' => '错误信息']
+     * @return type
+     */
     public function message($data){
         if(!isset($data['title'])){
             $data['title'] = '错误提示';
