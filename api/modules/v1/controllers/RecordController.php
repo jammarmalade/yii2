@@ -16,7 +16,7 @@ class RecordController extends ApiactiveController
     /**
      * 添加记录
      * $tids  1,2,3,4
-     * $account $type $content $imgstatus 
+     * $account $type $content $imgstatus
      * $longitude $latitude $weather $remark
      */
     public function actionAdd(){
@@ -26,16 +26,16 @@ class RecordController extends ApiactiveController
         if(count($tagArr)>10){
             $this->resultError('只能添加十个标签哦');
         }
-        $account = $this->input('post.account', 0);
-        if($account < 0){
-            $this->resultError('记录金额不能为负数');
-        }
         $type = $this->input('post.type', 0);
         $model = new Record();
         if(!in_array($type, array_keys($model->recordType()))){
+            $this->resultError('类型不正确');
+        }
+        $account = $this->input('post.account', 0);
+        if($type!=0 && $account < 0){
             $this->resultError('记录金额不能为负数');
         }
-        
+
         $content = $this->input('post.content');
         //插入记录
         $model->uid = $this->uid;
@@ -56,7 +56,7 @@ class RecordController extends ApiactiveController
         $model->remark = '';
         $model->time_create = $this->formatTime;
         $model->status = 1;
-        
+
         if($model->save(false)){
             $rid = $model->id;
         }else{
@@ -84,7 +84,7 @@ class RecordController extends ApiactiveController
         $page = $this->input('post.page',1);
         $limit = 10;
         $startLimit = ($page - 1) * $limit;
-        
+
         $reocrdList = Record::find()->where(['uid'=>$this->uid])->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
         $rids = array_column($reocrdList, 'id');
         //查询出标签名称
@@ -111,7 +111,7 @@ class RecordController extends ApiactiveController
         }
         return $this->result($reocrdList);
     }
-    
+
     /**
      * 转换经纬度为地址信息(自己调用)
      * http://192.168.1.136/advanced/api/web/index.php/v1/record/convertl
@@ -120,7 +120,7 @@ class RecordController extends ApiactiveController
         //每次取出100个查询
         $recordList = Record::find()->where(['and','country IS NULL','longitude > 0'])->limit(100)->asArray()->all();
         $ak = Yii::$app->params['BmapAK'];
-        
+
         $url = 'http://api.map.baidu.com/geocoder/v2/?output=json&ak='.$ak.'&location=';
         foreach($recordList as $k=>$v){
             if($v['longitude'] > 0 && $v['latitude'] > 0){
