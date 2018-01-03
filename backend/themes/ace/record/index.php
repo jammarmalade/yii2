@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
     #top_search_input{
         width:200px;
     }
-    .tag a,a:hover, a:focus {
+    .tag a,.tag a:hover,.tag a:focus {
         color: #fff;
         text-decoration: none;
     }
@@ -131,7 +131,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => '记录类型',
                             'value' => function($model){
                                 $state = $model->recordType();
-                                return $state[$model->type];
+                                //是否有图片
+                                $imgTitle = $model->imgstatus == 1 ? '（有图）' : '';
+                                return $state[$model->type].$imgTitle;
                             },
                             'headerOptions' => ['width' => '70'],
                             'filter' => Html::activeDropDownList($searchModel,'type',$searchModel->recordType(),['prompt'=>'全部'])

@@ -90,7 +90,7 @@ class Record extends \yii\db\ActiveRecord
      */
     public function recordType() {
         return [
-            0 => '没有消费',
+            0 => '记录',
             1 => '支出',
             2 => '收入',
         ];

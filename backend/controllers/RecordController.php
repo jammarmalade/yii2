@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use backend\components\Functions as func;
 use backend\models\TagRecord;
 use backend\models\Tag;
+use backend\models\Image as TableImage;
 
 /**
  * RecordController implements the CRUD actions for Record model.
@@ -47,8 +48,14 @@ class RecordController extends AdminController
      */
     public function actionView($id)
     {
+        $recordInfo = $this->findModel($id);
+        $imageList = '';
+        if($recordInfo['imgstatus']){
+            $imageList = TableImage::find()->select('filename,path,thumb')->where(['type' => 1,'sid' => $recordInfo->id])->asArray()->all();
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $recordInfo,
+            'imageList' => $imageList,
         ]);
     }
 

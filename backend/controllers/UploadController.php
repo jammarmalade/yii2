@@ -228,9 +228,9 @@ class UploadController extends Controller {
             //资源不可读
             if (!is_readable($tmpPath)) {
                 $errorMsg = '该图片不能读取';
-            } elseif (!is_writable($imgPath)) {
+            } elseif (!is_writable($savePath)) {
                 //目录不可写
-                $errorMsg = '目标路径不可写 - ' . $imgPath;
+                $errorMsg = '目标路径不可写 - ' . $savePath;
             } else {
                 $errorMsg = '保存失败';
             }
@@ -300,7 +300,7 @@ class UploadController extends Controller {
             getimagesize($path,$tempInfo);
             if(function_exists('exif_read_data') && isset($tempInfo['APP1']) && substr($tempInfo['APP1'], 0, 4)=='Exif'){
                 $arr = exif_read_data($path, "EXIF");
-                //删除不能识别和多于的数据
+                //删除不能识别和多余的数据
                 unset(
                     $arr['MakerNote'],
                     $arr['ModeArray'],
@@ -360,7 +360,94 @@ class UploadController extends Controller {
         $this->checkDirExists($subdir1, $subdir2);
         return $this->typeDir.'/'.$subdir;
     }
-
+    /**
+     * 外部调用保存图片，返回图片信息
+     * @param type $imgSource   图片元数据
+     * @param type $type        图片所属数据类型，在 Image 中定义的 typeArr
+     */
+    public function saveImage($imgSource,$type){
+        $this->typeDir = $type;
+        //允许上传的类型
+        $imageModel = new TableImage();
+        $allowType = array_keys($imageModel->typeArr);
+        if (!in_array($type, $allowType)) {
+            return ['errorMsg' => '不允许上传','status'=>false];
+        }
+        //判断大小和图片类型
+        if (!$this->isImage($imgSource['name'])) {
+            return ['errorMsg' => '请上传图片类型','status'=>false];
+        } else {
+            if ($imgSource['size'] > 10 * 1024 * 1024) {
+                return ['errorMsg' => '上传的图片文件不能大于10M','status'=>false];
+            }
+        }
+        $tmpPath = $imgSource['tmp_name'];
+        //保存原图
+        $saveFileName = $this->getTargetFilename() . '.jpg';
+        $savePathSuffix = $this->getTargetDir(). $saveFileName;
+        $savePath = Yii::getAlias('@uploads').$savePathSuffix;
+        if (copy($tmpPath, $savePath) || move_uploaded_file($tmpPath, $savePath)) {
+            $tmpImgInfo = getimagesize($savePath);
+            $imageInfo['width'] = $tmpImgInfo[0];
+            $imageInfo['height'] = $tmpImgInfo[1];
+            //若是宽度超过600 的，生成缩略图
+            $imageInfo['thumb'] = 0;
+            //后台设置的缩略图宽度
+            if(isset($this->config['thumbWidth'])){
+                $this->thumbWidth = $this->config['thumbWidth'];
+            }
+            $thumbQuality = isset($this->config['thumbQuality']) ? $this->config['thumbQuality'] : 90;//缩略图质量
+            $imageInfo['width_thumb'] = $imageInfo['height_thumb'] = 0;
+            if($imageInfo['width'] > $this->thumbWidth){
+                $imageInfo['width_thumb'] = $this->thumbWidth;
+                //以宽为基准计算缩略图等比例高度
+                $imageInfo['height_thumb'] = ceil($imageInfo['height'] * ($this->thumbWidth / $imageInfo['width']));
+                Image::thumbnail($savePath, $imageInfo['width_thumb'], $imageInfo['height_thumb'])->save($savePath.'.thumb.jpg', ['quality' => $thumbQuality]);
+                $imageInfo['thumb'] = 1;
+            }
+            $imageInfo['path'] = $savePathSuffix;
+            $imageInfo['filename'] = $imgSource['name'];
+            $imageInfo['size'] = $imgSource['size'];
+            $imageInfo['newFilename'] = $saveFileName;
+            $sourceImageMaxSize = isset($this->config['sourceImageMaxSize']) ? $this->config['sourceImageMaxSize'] : 2;//原图压缩大小（单位 M），大于此大小才会压缩
+            //若是图片大于4M ，就压缩图片
+            if($imgSource['size'] >= $sourceImageMaxSize * 1024 * 1024){
+                //有exif数据，去掉原图的exif数据
+                $sourceImageWidth = $imageInfo['width'];
+                $sourceImageHeight = $imageInfo['height'];
+                if(isset($this->config['sourceImageWidth']) && $this->config['sourceImageWidth'] < $sourceImageWidth){
+                    $sourceImageWidth = $this->config['sourceImageWidth'];
+                    $sourceImageHeight = ceil($sourceImageHeight * ($sourceImageWidth / $imageInfo['width']));
+                }
+                $sourceImageQuality = isset($this->config['sourceImageQuality']) ? $this->config['sourceImageQuality'] : 85;//原图缩略质量
+                Image::thumbnail($savePath, $sourceImageWidth, $sourceImageHeight)->save($savePath, ['quality' => $sourceImageQuality]);
+                $imageInfo['size'] = filesize($savePath);
+            }
+            //获取图片 exif 信息
+            $exif = $this->getExif($savePath);
+            $imageInfo['exif'] = '';
+            if($exif){
+                $imageInfo['exif'] = json_encode($exif);
+            }
+            $imageInfo['status'] = true;
+            return $imageInfo;
+        } else {
+            //资源不可读
+            if (!is_readable($tmpPath)) {
+                $errorMsg = '该图片不能读取';
+            } elseif (!is_writable($savePath)) {
+                //目录不可写
+                $errorMsg = '目标路径不可写 - ' . $savePath;
+            } else {
+                $errorMsg = '保存失败';
+            }
+            return ['errorMsg' => $errorMsg,'status'=>false];
+        }
+    }
+    /**
+     * ueditor 编辑器上传配置
+     * @return type
+     */
     private function jsonConfig() {
         $text = <<<'TEXT'
 /* 前后端通信相关的配置,注释只允许使用多行方式 */

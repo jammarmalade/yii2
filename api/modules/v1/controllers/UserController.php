@@ -23,5 +23,5 @@ class UserController extends ApiactiveController
         $userInfo['authkey'] = Functions::authcode($userInfo['id']."\t".$userInfo['username'], 'ENCODE');
         return $this->result($userInfo);
     }
-    
+
 }
