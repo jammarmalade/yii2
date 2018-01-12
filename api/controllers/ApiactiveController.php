@@ -76,7 +76,7 @@ class ApiactiveController extends ActiveController {
         }
         $value = $val ? $val : $default;
         if(!$val && $must){
-            return $this->resultError('缺少参数'.$name);
+            return $this->resultError('缺少参数：'.$name);
         }
         return $value;
     }

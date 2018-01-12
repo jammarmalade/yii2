@@ -42,30 +42,54 @@ class RecordController extends ApiactiveController {
         }
 
         $content = $this->input('post.content');
-        //插入记录
-        $model->uid = $this->uid;
-        $model->username = $this->username;
-        $model->account = $account;
-        $model->type = $type;
-        $model->content = $content;
-        $model->imgstatus = 0;
-        $model->country = $this->input('post.country', null);
-        $model->province = $this->input('post.province', null);
-        $model->city = $this->input('post.city', null);
-        $model->area = $this->input('post.area', null);
-        $model->address = $this->input('post.address', null);
-        $model->longitude = $this->input('post.longitude', 0);
-        $model->latitude = $this->input('post.latitude', 0);
-        $model->weather = '';
-        $model->date = $this->input('post.date', date('Y-m-d', $this->timestamp));
-        $model->remark = '';
-        $model->time_create = $this->formatTime;
-        $model->status = 1;
+        if($type==0 && $content==''){
+            $this->resultError('还是写点记录内容吧~~！');
+        }
+        $rid = $this->input('post.rid', 0);
+        if($rid){
+            //修改
+            Record::updateAll([
+                'type' => $type,
+                'account' => $account,
+                'content' => $content,
+            ], 'id = '.$rid.' AND uid = '.$this->uid);
+            //查询出原来的tagid
+            $tagRecordList = TagRecord::find()->where(['rid' =>$rid])->asArray()->all();
+            $oldTagIds = array_column($tagRecordList, 'tid');
+            //需要新增的tagid
+            $addTagIds = array_diff($tagArr,$oldTagIds);
+            $delTagIds = array_diff($oldTagIds,$tagArr);
+            //将删掉的tagid 删除
+            if($delTagIds){
+                TagRecord::deleteAll(['and',"rid=$rid",['in','tid',  array_values($delTagIds)]]);
+            }
+            $tagArr = $addTagIds;
+        }else{
+            //插入记录
+            $model->uid = $this->uid;
+            $model->username = $this->username;
+            $model->account = $account;
+            $model->type = $type;
+            $model->content = $content;
+            $model->imgstatus = 0;
+            $model->country = $this->input('post.country', null);
+            $model->province = $this->input('post.province', null);
+            $model->city = $this->input('post.city', null);
+            $model->area = $this->input('post.area', null);
+            $model->address = $this->input('post.address', null);
+            $model->longitude = $this->input('post.longitude', 0);
+            $model->latitude = $this->input('post.latitude', 0);
+            $model->weather = '';
+            $model->date = $this->input('post.date', date('Y-m-d', $this->timestamp));
+            $model->remark = '';
+            $model->time_create = $this->formatTime;
+            $model->status = 1;
 
-        if ($model->save(false)) {
-            $rid = $model->id;
-        } else {
-            $this->resultError('新增失败');
+            if ($model->save(false)) {
+                $rid = $model->id;
+            } else {
+                $this->resultError('新增失败');
+            }
         }
         //插入关系
         $insertData = [];
@@ -79,7 +103,9 @@ class RecordController extends ApiactiveController {
         if ($insertData) {
             \Yii::$app->db->createCommand()->batchInsert(TagRecord::tableName(), ['uid', 'tid', 'rid', 'create_time'], $insertData)->execute();
         } else {
-            $this->resultError('没有记录关系');
+            if(!$rid){
+                $this->resultError('没有记录关系');
+            }
         }
         //若是有图片数据，保存图片
         if ($_FILES) {
@@ -97,8 +123,15 @@ class RecordController extends ApiactiveController {
         $page = $this->input('post.page', 1);
         $limit = 10;
         $startLimit = ($page - 1) * $limit;
-
-        $reocrdList = Record::find()->where(['uid' => $this->uid])->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
+        $where = ['uid' => $this->uid,'status' => 1];
+        $count = Record::find()->where($where)->count();
+        $reocrdList = Record::find()->where($where)->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
+        //下一页页数
+        $pageCount = ceil($count / $limit);
+        $nextPage = 0;
+        if($page < $pageCount){
+            $nextPage = $page + 1;
+        }
         $rids = array_column($reocrdList, 'id');
         //查询出标签名称
         $tagRecord = TagRecord::find()->from(TagRecord::tableName() . ' as tr')
@@ -122,7 +155,35 @@ class RecordController extends ApiactiveController {
                 unset($reocrdList[$k]);
             }
         }
-        return $this->result($reocrdList);
+        return $this->result($reocrdList,$nextPage);
+    }
+    /**
+     * 获取记录信息
+     */
+    public function actionInfo(){
+        $this->isLogin();
+        $rid = $this->input('post.rid', 0);
+        if(!$rid){
+            $this->resultError('缺少参数 rid');
+        }
+        $info = Record::find()->where(['id' => $rid,'uid' => $this->uid])->asArray()->one();
+        if(!$info){
+            $this->resultError('修改记录不存在');
+        }
+        //查询出标签名称
+        $tagRecord = TagRecord::find()->from(TagRecord::tableName() . ' as tr')
+                        ->join('LEFT JOIN', Tag::tableName() . ' as t', 't.id = tr.tid')
+                        ->where(['rid'=>$rid])->select('tr.id,tr.rid,tr.tid,t.name as tagname')->asArray()->all();
+        foreach ($tagRecord as $k => $v) {
+            if ($v['tagname']) {
+                $tmp['id'] = $v['tid'];
+                $tmp['name'] = $v['tagname'];
+                $tmp['img'] = '';
+                $info['tagList'][] = $tmp;
+            }
+        }
+        $info['showTime'] = substr($info['time_create'], 0, 16);
+        return $this->result([$info]);
     }
 
     /**

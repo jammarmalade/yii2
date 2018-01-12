@@ -58,14 +58,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <h1>记录图片</h1>
         <div id="imgs">
             <?php
-            $imgDomain = Yii::$app->params['imgDomain'];
-            foreach($imageList as $k=>$info){
-                $info['imgUrl'] = $info['imgUrlThumb'] = $imgDomain.$info['path'];
-                if($info['thumb']){
-                    $info['imgUrlThumb'] = $info['imgUrl'].'.thumb.jpg';
+            if($imageList){
+                $imgDomain = Yii::$app->params['imgDomain'];
+                foreach($imageList as $k=>$info){
+                    $info['imgUrl'] = $info['imgUrlThumb'] = $imgDomain.$info['path'];
+                    if($info['thumb']){
+                        $info['imgUrlThumb'] = $info['imgUrl'].'.thumb.jpg';
+                    }
+                    $imgStr = Html::img($info['imgUrlThumb'],['class' => 'lazy','data-big' => $info['imgUrl']]);
+                    echo $imgStr;
                 }
-                $imgStr = Html::img($info['imgUrlThumb'],['class' => 'lazy','data-big' => $info['imgUrl']]);
-                echo $imgStr;
             }
             ?>
         </div>
