@@ -12,6 +12,7 @@ use backend\components\Functions as helper;
 use backend\models\Record;
 use backend\models\TagRecord;
 use backend\models\Tag;
+use backend\models\Image as TableImage;
 
 class RecordController extends ApiactiveController {
 
@@ -132,7 +133,14 @@ class RecordController extends ApiactiveController {
         if($page < $pageCount){
             $nextPage = $page + 1;
         }
-        $rids = array_column($reocrdList, 'id');
+        $rids = $sids = [];
+        foreach($reocrdList as $k=>$v){
+            $rids[] = $v['id'];
+            if($v['imgstatus']){
+                $sids[] = $v['id'];
+            }
+        }
+
         //查询出标签名称
         $tagRecord = TagRecord::find()->from(TagRecord::tableName() . ' as tr')
                         ->join('LEFT JOIN', Tag::tableName() . ' as t', 't.id = tr.tid')
@@ -147,10 +155,35 @@ class RecordController extends ApiactiveController {
                 $tagByRecord[$v['rid']][] = $tmp;
             }
         }
+
+        //图片数据
+        $imgList = [];
+        if($sids){
+            $resImgList = TableImage::find()->where(['and',"type=1",['in', 'sid', $sids]])->select('sid,path,thumb')->asArray()->all();
+            //根据sid分组
+            $imgDomain = Yii::$app->params['imgDomain'];
+//            $imgDomain = 'http://192.168.1.136/advanced/uploads/';
+            foreach($resImgList as $k=>$v){
+                $v['url']  = $v['thumbUrl'] = $imgDomain.$v['path'];
+                if($v['thumb']){
+                    $v['thumbUrl'] .= '.thumb.jpg';
+                }
+                unset($v['path']);
+                $imgList[$v['sid']][] = $v;
+            }
+        }
         foreach ($reocrdList as $k => $v) {
             if (isset($tagByRecord[$v['id']])) {
                 $reocrdList[$k]['tagList'] = $tagByRecord[$v['id']];
                 $reocrdList[$k]['showTime'] = substr($v['time_create'], 0, 16);
+                //记录地址
+                $reocrdList[$k]['location'] = $v['country'].'·'.($v['province']==$v['city'] ? $v['province'] : $v['province'].'·'.$v['city']).'·'.$v['area'].($v['address'] ? '·'.$v['address'] : '');
+                unset($reocrdList[$k]['country'],$reocrdList[$k]['province'],$reocrdList[$k]['city'],$reocrdList[$k]['area'],$reocrdList[$k]['address']);
+                //图片数据
+                $reocrdList[$k]['imgList'] = [];
+                if(isset($imgList[$v['id']])){
+                    $reocrdList[$k]['imgList'] = $imgList[$v['id']];
+                }
             } else {
                 unset($reocrdList[$k]);
             }
