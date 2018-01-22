@@ -76,6 +76,7 @@ class AudioController extends WebController {
             file_put_contents($pathArr['localPath'], $result);
             $audioModel = new Audio();
             $audioModel->uid = $this->uid;
+            $audioModel->username = $this->username;
             $audioModel->content = $content;
             $audioModel->spd = $spd;
             $audioModel->pit = $pit;

@@ -88,5 +88,15 @@ jQuery(document).ready(function () {
             })
         },'json');
     }
+    //提交到百度
+    $('#bdlink').click(function(e){
+        var id = $(this).attr('data-id');
+        var type = $(this).attr('data-type');
+        showConfirm('确认提交？',function(){
+            $.post(window.URL_BDLINK,{'id': id,'type': type},function(d){
+                showMsg(d['msg']);
+            },'json');
+        });
+    })
 });
 

@@ -78,7 +78,7 @@ class ArticleController extends WebController {
                $inputAuth = $this->input('post.auth', '');
                 if($inputAuth==''){
                     $inputAuth = $this->input('get.auth', '');
-                } 
+                }
             }
             if ($inputAuth != $articleInfo['view_auth']) {
                 $msg = $inputAuth != '' ? '密码错误' : '';
@@ -117,7 +117,7 @@ class ArticleController extends WebController {
                 ->join('LEFT JOIN', Tag::tableName() . ' as t', 't.id = at.tid')
                 ->where(['at.aid'=>$aid])->select('at.id,at.tid,at.aid,t.name as tagname')->asArray()->all();
         //图片列表
-        $articleInfo['imgList'] =[]; 
+        $articleInfo['imgList'] =[];
         if($articleInfo['image_id']){
             $tmpArr = TableImage::replaceImgCode($articleInfo,'show');
             $articleInfo['mobileContent'] = $tmpArr['mobileContent'];
@@ -127,8 +127,45 @@ class ArticleController extends WebController {
             //替换百度编辑的内容为https
             $articleInfo['content'] = preg_replace('#src="http://img.baidu.com([^"]+?)"#','src="https://img.baidu.com$1"',$articleInfo['content']);
         }
-        
+
         return $articleInfo;
     }
-    
+    //提交链接到百度
+    public function actionBdlink(){
+        if (!$this->uid) {
+            return $this->ajaxReturn('', '请先登录');
+        }
+        $id = $this->input('post.id', 0);
+        if (!$id) {
+            return $this->ajaxReturn('', '数据错误 id');
+        }
+        $type = $this->input('get.type', 0);
+        if ($type == 0) {
+            $apiType = 'urls';
+        } else {
+            $apiType = 'update';
+        }
+        $articleUrl = 'https://blog.jam00.com/article/info/' . $id . '.html';
+        $apiUrl = 'http://data.zz.baidu.com/'.$apiType.'?site=https://blog.jam00.com&token=oCdtFTedue07WkJ3';
+        $urls = [$articleUrl];
+        $ch = curl_init();
+        $options = array(
+            CURLOPT_URL => $apiUrl,
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => implode("\n", $urls),
+            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+        );
+        curl_setopt_array($ch, $options);
+        $result = curl_exec($ch);
+        $resArr = json_decode($result, true);
+        if(isset($resArr['error'])){
+            return $this->ajaxReturn('', '提交链接到百度失败：【'.$resArr['error'].'】'.$resArr['message']);
+        }else{
+            if($type == 0) {
+                Article::updateAll(['bdlink' => 1], ['id' => $id]);
+            }
+            return $this->ajaxReturn('', '提交链接到百度成功，当天剩余推送条数 【'.$resArr['remain'].'】');
+        }
+    }
 }

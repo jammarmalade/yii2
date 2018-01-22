@@ -50,6 +50,16 @@ $this->metaTags[]="<meta name='description' content='".$articleInfo['description
     <?php if($articleInfo['copyright']){?>
     <div id="copyright">
         本内容为博主原创，转载请注明出处。本文链接 <a href="<?=$selfUrl?>"><?=$selfUrl?></a>
+        <?php
+        if(isset(Yii::$app->user->identity->id) && Yii::$app->user->identity->id==1){
+            if($articleInfo['bdlink']==0){
+                $title = '提交到百度';
+            }else{
+                $title = '更新到百度';
+            }
+            echo '<br><a href="javascript:;" id="bdlink" data-id="'.$articleInfo['id'].'" data-type="'.$articleInfo['bdlink'].'">'.$title.'</a>';
+        }
+        ?>
     </div>
     <?php }?>
     <div id="comment_area">
@@ -71,6 +81,7 @@ $this->metaTags[]="<meta name='description' content='".$articleInfo['description
 </div>
 <?php $this->beginBlock("links") ?>
 window.URL_COMMENT_ADD = '<?php echo Url::to(['comment/add']);?>';
+window.URL_BDLINK = '<?php echo Url::to(['article/bdlink']);?>';
 <?php $this->endBlock() ?>
 <?php $this->registerJs($this->blocks["links"], \yii\web\View::POS_HEAD); ?>
 

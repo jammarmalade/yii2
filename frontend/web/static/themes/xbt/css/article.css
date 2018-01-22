@@ -118,3 +118,9 @@
 #comment_btn{
     float: right;
 }
+#bdlink{
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #F77825;
+    color:#fff;
+}

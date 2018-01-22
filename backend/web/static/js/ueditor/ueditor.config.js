@@ -56,7 +56,7 @@
             'link', 'unlink', 'anchor', '|',
             'horizontal', 'spechars', 'wordimage', '|',
              'drafts'
-        ],['insertcode','simpleupload', 'insertimage', 'emotion', 'scrawl', 'attachment', 'map', 'template'
+        ],['insertcode','simpleupload', 'insertimage','insertvideo', 'emotion', 'scrawl', 'attachment', 'map', 'template'
 		],['inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts']]
         //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
         //,labelMap:{
@@ -438,7 +438,9 @@
 			tt:     [],
 			u:      [],
 			ul:     ['class', 'style'],
-			video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style']
+			video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
+			source: ['src', 'type'],
+			embed:  ['type', 'class', 'pluginspage', 'src', 'width', 'height', 'align', 'style', 'wmode', 'play','autoplay','loop', 'menu', 'allowscriptaccess', 'allowfullscreen', 'controls', 'preload']
 		}
     };
 
