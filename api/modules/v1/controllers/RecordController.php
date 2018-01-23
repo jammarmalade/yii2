@@ -120,13 +120,46 @@ class RecordController extends ApiactiveController {
 
     //记录列表
     public function actionList() {
-        $this->isLogin();
+//        $this->isLogin();
+        $this->uid = 1;
         $page = $this->input('post.page', 1);
-        $limit = 10;
+        $limit = $this->input('post.limit', 10);
         $startLimit = ($page - 1) * $limit;
-        $where = ['uid' => $this->uid,'status' => 1];
-        $count = Record::find()->where($where)->count();
-        $reocrdList = Record::find()->where($where)->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
+
+        //是否有标签条件
+        $tagName = $this->input('post.tagName', '');
+        $tagId = 0;
+        if($tagName){
+            //查询tagid
+            $tagInfo = Tag::find()->where(['name' => $tagName])->select('id,name')->one();
+            if($tagInfo){
+                $tagId = $tagInfo['id'];
+            }
+        }
+        //是否有日期条件
+        $searchDate = $this->input('post.searchDate', '');
+        if($searchDate){
+            $searchDate = date('Y-m-d',  strtotime($searchDate));
+        }
+        if($tagId){
+            $where['r.uid'] = $this->uid;
+            if($searchDate){
+                $where['r.date'] = $searchDate;
+            }
+            $where['tr.tid'] = $tagId;
+            $where['r.status'] = 1;
+            $query = Record::find()->from(Record::tableName().' r')->innerJoin(['tr' => TagRecord::tableName()], "r.id = tr.rid")->where($where);
+            $count = $query->count();
+            $reocrdList = $query->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
+        }else{
+            $where['uid'] = $this->uid;
+            if($searchDate){
+                $where['date'] = $searchDate;
+            }
+            $where['status'] = 1;
+            $count = Record::find()->where($where)->count();
+            $reocrdList = Record::find()->where($where)->offset($startLimit)->limit($limit)->asArray()->orderBy("time_create DESC")->all();
+        }
         //下一页页数
         $pageCount = ceil($count / $limit);
         $nextPage = 0;
