@@ -120,8 +120,7 @@ class RecordController extends ApiactiveController {
 
     //记录列表
     public function actionList() {
-//        $this->isLogin();
-        $this->uid = 1;
+        $this->isLogin();
         $page = $this->input('post.page', 1);
         $limit = $this->input('post.limit', 10);
         $startLimit = ($page - 1) * $limit;
