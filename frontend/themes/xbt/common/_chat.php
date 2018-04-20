@@ -5,6 +5,8 @@ use frontend\components\Functions as tools;
 
 AppAsset::addCss($this, 'chat.min.css');
 AppAsset::addScript($this, 'chat.min.js');
+//AppAsset::addCss($this, 'chat.css');
+//AppAsset::addScript($this, 'chat.js');
 
 $confg = $this->params['config'];
 $key = $confg['ws_key'];
@@ -16,7 +18,7 @@ if($uid){
 $cityName = tools::ip2city(Yii::$app->request->userIP);
 ?>
 <div id="jam_chat_sbox" class="">
-    聊天室
+    聊天室（<span id="jam_chat_member_count_show">0</span>）
 </div>
 <div id="jam_chat_main" style="display:none;">
     <div id="jam_chat_top">

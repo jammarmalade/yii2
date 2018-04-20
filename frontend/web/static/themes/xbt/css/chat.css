@@ -1,4 +1,7 @@
 /*chat*/
+.remind-yellow{
+    background: #c0c0c0
+}
 #jam_chat_sbox,#jam_chat_main{
     position: fixed;
     right: 0;

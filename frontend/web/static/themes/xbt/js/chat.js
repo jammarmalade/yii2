@@ -171,6 +171,7 @@ function showMessage(data){
 //更新在线人数
 function updateMemberCount(count){
     $('#jam_chat_member_count').text(count);
+    $('#jam_chat_member_count_show').text(count);
 }
 function addMember(data){
     var html = '';
@@ -189,4 +190,24 @@ function addMemberList(data,count){
     //给自己添加样式
     $('#member_'+window.WS_UID).addClass('member-self');
     updateMemberCount(count);
+}
+//接收消息闪烁--暂未使用
+function flicker() {
+    var i = 0;
+    var flag = 0;
+    var dom = $('#jam_chat_sbox');
+    var clear = setInterval(function () {
+        if (!flag) {
+            dom.addClass('remind-yellow');
+            flag = 1;
+        } else {
+            dom.removeClass('remind-yellow');
+            flag = 0;
+        }
+        if (i >= 3) {
+            dom.addClass('remind-yellow');
+            clearInterval(clear);
+        }
+        i++;
+    }, 500);
 }
