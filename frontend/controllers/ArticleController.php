@@ -94,7 +94,7 @@ class ArticleController extends WebController {
         if(tools::getCookie($viewCounter,NULL) == NULL){
             //添加查看数
             Article::updateAll(['view' => $articleInfo['view'] + 1], "id = $aid");
-            tools::setCookie($viewCounter, $aid, 300);
+            tools::setCookie($viewCounter, $aid, 120);
         }
         //查询评论列表
         $commentskey = 'comment-list-'.$aid.'-'.$this->input('page', 0);
