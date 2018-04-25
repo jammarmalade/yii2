@@ -14,7 +14,7 @@ use backend\models\SourceImage;
 
 class SourceController extends ApiactiveController {
 
-    public $nameZfl = 'yxpjw.club';
+    public $nameZfl = 'yxpjwnet.com';
 
     /**
      * 获取列表
@@ -85,7 +85,7 @@ class SourceController extends ApiactiveController {
             $count++;
             $tmp['sid'] = $m[1];
             $tmp['surl'] = 'http://'.$this->nameZfl . $url;
-            $tmp['subject'] = iconv('gb2312', 'utf-8//IGNORE', $subject);
+            $tmp['subject'] = iconv('gbk', 'utf-8//IGNORE', $subject);
             $tmp['content'] = '';
             $tmp['type'] = 0;
             $tmp['page'] = $page;
@@ -108,7 +108,9 @@ class SourceController extends ApiactiveController {
 //        $nextUrl = $this->saveInfo($html, $info, 2);
 //        echo $nextUrl;
 //        exit();
-        
+        //半个小时前
+        $halfHourAgo = date('Y-m-d H:i:s',time()+600);
+        Source::updateAll(['status' => 1],"`status` = 2 AND exe_time < '$halfHourAgo'");
         
         //获取最新的内容
         $info = Source::find()->where(['type' => 0, 'status' => 1])->one();
@@ -151,7 +153,7 @@ class SourceController extends ApiactiveController {
         Source::updateAll(['status' => 2, 'page' => $page, 'exe_time' => $formatTime], 'id=' . $info['id']);
         foreach ($list as $k => $item) {
             if ($page == 1 && strpos($item->innertext, 'img') === false) {
-                $content = iconv('gb2312', 'utf-8//IGNORE', $item->innertext);
+                $content = iconv('gbk', 'utf-8//IGNORE', $item->innertext);
 //                $content = $item->innertext;
                 continue;
             }
@@ -198,9 +200,9 @@ class SourceController extends ApiactiveController {
             $subjectList = $dom->find('h1[class=article-title]');
             $subjectDom = array_shift($subjectList);
             
-            $subject = iconv('gb2312', 'utf-8//IGNORE', $subjectDom->innertext);
+            $subject = iconv('gbk', 'utf-8//IGNORE', $subjectDom->innertext);
             foreach ($tagsDom as $k => $v) {
-                $tags[] = iconv('gb2312', 'utf-8//IGNORE', $v->innertext);
+                $tags[] = iconv('gbk', 'utf-8//IGNORE', $v->innertext);
             }
             $content = $content ? $content : $info['subject'];
             Source::updateAll(['tags' => join(',', $tags), 'content' => $content,'subject' => $subject], 'id=' . $info['id']);
@@ -338,7 +340,7 @@ class SourceController extends ApiactiveController {
             $subject = $item->find('h2 a')[0]->text();
             
             $tmp['surl'] = 'http://'.$this->nameZfl . $url;
-            $tmp['subject'] = iconv('gb2312', 'utf-8//IGNORE', $subject);
+            $tmp['subject'] = iconv('gbk', 'utf-8//IGNORE', $subject);
             $tmp['time_create'] = $formatTime;
             $insertData[] = $tmp;
         }
