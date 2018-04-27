@@ -119,6 +119,7 @@ class WebSocket {
         if($tmpUid==''){
             return false;
         }
+        $this->memberCount = count($this->userInfo);
         //通知所有用户刷新成员列表
         foreach ($this->userInfo as $uid => $info) {
             $this->push($info['fd'], [
